@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App Name -->
+    <string name="app_name">FastMediaSorter</string>
+
+    <!-- Common Actions -->
+    <string name="action_add">Додати</string>
+    <string name="action_edit">Редагувати</string>
+    <string name="action_delete">Видалити</string>
+    <string name="action_save">Зберегти</string>
+    <string name="action_cancel">Скасувати</string>
+    <string name="action_ok">ОК</string>
+    <string name="action_retry">Повторити</string>
+    <string name="action_close">Закрити</string>
+    <string name="action_settings">Налаштування</string>
+    <string name="action_undo">Скасувати</string>
+
+    <!-- Welcome/Onboarding -->
+    <string name="welcome_title">Ласкаво просимо</string>
+    <string name="welcome_subtitle">Легко організуйте ваші медіафайли</string>
+    <string name="permissions_required">Потрібні дозволи сховища</string>
+    <string name="permissions_description">Для перегляду та керування файлами нам потрібен доступ до сховища.</string>
+    <string name="grant_permissions">Надати дозволи</string>
+    <string name="skip">Пропустити</string>
+    <string name="get_started">Почати</string>
+
+    <!-- Main Screen -->
+    <string name="resources">Ресурси</string>
+    <string name="no_resources">Немає доданих ресурсів</string>
+    <string name="add_first_resource">Натисніть + щоб додати перший ресурс</string>
+    <string name="add_resource">Додати ресурс</string>
+    <string name="local_folder">Локальна тека</string>
+    <string name="network_share">Мережевий ресурс</string>
+    <string name="cloud_storage">Хмарне сховище</string>
+
+    <!-- Resource Types -->
+    <string name="type_local">Локальний</string>
+    <string name="type_smb">SMB/Windows тека</string>
+    <string name="type_sftp">SFTP</string>
+    <string name="type_ftp">FTP</string>
+    <string name="type_google_drive">Google Drive</string>
+    <string name="type_onedrive">OneDrive</string>
+    <string name="type_dropbox">Dropbox</string>
+
+    <!-- File Browser -->
+    <string name="files">Файли</string>
+    <string name="folders">Теки</string>
+    <string name="no_files">Файли не знайдено</string>
+    <string name="loading">Завантаження…</string>
+    <string name="select_all">Вибрати все</string>
+    <string name="deselect_all">Зняти виділення</string>
+
+    <!-- Sort Options -->
+    <string name="sort_by">Сортування</string>
+    <string name="sort_name_asc">Ім\'я (А-Я)</string>
+    <string name="sort_name_desc">Ім\'я (Я-А)</string>
+    <string name="sort_date_asc">Дата (старіші)</string>
+    <string name="sort_date_desc">Дата (новіші)</string>
+    <string name="sort_size_asc">Розмір (менші)</string>
+    <string name="sort_size_desc">Розмір (більші)</string>
+
+    <!-- Display Options -->
+    <string name="view_list">Список</string>
+    <string name="view_grid">Сітка</string>
+
+    <!-- File Operations -->
+    <string name="copy">Копіювати</string>
+    <string name="move">Перемістити</string>
+    <string name="rename">Перейменувати</string>
+    <string name="select_destination">Виберіть призначення</string>
+    <string name="operation_complete">Операцію завершено</string>
+    <string name="operation_failed">Операція не вдалася</string>
+
+    <!-- Favorites -->
+    <string name="favorites">Вибране</string>
+    <string name="add_to_favorites">Додати до вибраного</string>
+    <string name="remove_from_favorites">Видалити з вибраного</string>
+
+    <!-- Errors -->
+    <string name="error_unknown">Сталася невідома помилка</string>
+    <string name="error_network">Помилка мережі. Перевірте з\'єднання.</string>
+    <string name="error_permission">Доступ заборонено</string>
+    <string name="error_file_not_found">Файл не знайдено</string>
+    <string name="error_connection_failed">Не вдалося підключитися</string>
+    <string name="error_authentication">Помилка автентифікації</string>
+
+    <!-- Confirmation Dialogs -->
+    <string name="confirm_delete_title">Видалити файл?</string>
+    <string name="confirm_delete_message">Файл буде переміщено до кошика.</string>
+    <string name="confirm_delete_permanent">Цю дію неможливо скасувати.</string>
+
+    <!-- Settings -->
+    <string name="settings">Налаштування</string>
+    <string name="general">Загальні</string>
+    <string name="appearance">Зовнішній вигляд</string>
+    <string name="dark_mode">Темна тема</string>
+    <string name="language">Мова</string>
+    <string name="system_default">За замовчуванням</string>
+</resources>

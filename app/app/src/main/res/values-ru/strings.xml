@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App Name -->
+    <string name="app_name">FastMediaSorter</string>
+
+    <!-- Common Actions -->
+    <string name="action_add">Добавить</string>
+    <string name="action_edit">Редактировать</string>
+    <string name="action_delete">Удалить</string>
+    <string name="action_save">Сохранить</string>
+    <string name="action_cancel">Отмена</string>
+    <string name="action_ok">ОК</string>
+    <string name="action_retry">Повторить</string>
+    <string name="action_close">Закрыть</string>
+    <string name="action_settings">Настройки</string>
+    <string name="action_undo">Отменить</string>
+
+    <!-- Welcome/Onboarding -->
+    <string name="welcome_title">Добро пожаловать</string>
+    <string name="welcome_subtitle">Легко организуйте ваши медиафайлы</string>
+    <string name="permissions_required">Требуются разрешения хранилища</string>
+    <string name="permissions_description">Для просмотра и управления файлами нам нужен доступ к хранилищу.</string>
+    <string name="grant_permissions">Предоставить разрешения</string>
+    <string name="skip">Пропустить</string>
+    <string name="get_started">Начать</string>
+
+    <!-- Main Screen -->
+    <string name="resources">Ресурсы</string>
+    <string name="no_resources">Нет добавленных ресурсов</string>
+    <string name="add_first_resource">Нажмите + чтобы добавить первый ресурс</string>
+    <string name="add_resource">Добавить ресурс</string>
+    <string name="local_folder">Локальная папка</string>
+    <string name="network_share">Сетевой ресурс</string>
+    <string name="cloud_storage">Облачное хранилище</string>
+
+    <!-- Resource Types -->
+    <string name="type_local">Локальный</string>
+    <string name="type_smb">SMB/Windows папка</string>
+    <string name="type_sftp">SFTP</string>
+    <string name="type_ftp">FTP</string>
+    <string name="type_google_drive">Google Drive</string>
+    <string name="type_onedrive">OneDrive</string>
+    <string name="type_dropbox">Dropbox</string>
+
+    <!-- File Browser -->
+    <string name="files">Файлы</string>
+    <string name="folders">Папки</string>
+    <string name="no_files">Файлы не найдены</string>
+    <string name="loading">Загрузка…</string>
+    <string name="select_all">Выбрать все</string>
+    <string name="deselect_all">Снять выделение</string>
+
+    <!-- Sort Options -->
+    <string name="sort_by">Сортировка</string>
+    <string name="sort_name_asc">Имя (А-Я)</string>
+    <string name="sort_name_desc">Имя (Я-А)</string>
+    <string name="sort_date_asc">Дата (старые)</string>
+    <string name="sort_date_desc">Дата (новые)</string>
+    <string name="sort_size_asc">Размер (меньше)</string>
+    <string name="sort_size_desc">Размер (больше)</string>
+
+    <!-- Display Options -->
+    <string name="view_list">Список</string>
+    <string name="view_grid">Сетка</string>
+
+    <!-- File Operations -->
+    <string name="copy">Копировать</string>
+    <string name="move">Переместить</string>
+    <string name="rename">Переименовать</string>
+    <string name="select_destination">Выберите назначение</string>
+    <string name="operation_complete">Операция завершена</string>
+    <string name="operation_failed">Операция не удалась</string>
+
+    <!-- Favorites -->
+    <string name="favorites">Избранное</string>
+    <string name="add_to_favorites">Добавить в избранное</string>
+    <string name="remove_from_favorites">Удалить из избранного</string>
+
+    <!-- Errors -->
+    <string name="error_unknown">Произошла неизвестная ошибка</string>
+    <string name="error_network">Ошибка сети. Проверьте подключение.</string>
+    <string name="error_permission">Доступ запрещён</string>
+    <string name="error_file_not_found">Файл не найден</string>
+    <string name="error_connection_failed">Не удалось подключиться</string>
+    <string name="error_authentication">Ошибка аутентификации</string>
+
+    <!-- Confirmation Dialogs -->
+    <string name="confirm_delete_title">Удалить файл?</string>
+    <string name="confirm_delete_message">Файл будет перемещён в корзину.</string>
+    <string name="confirm_delete_permanent">Это действие нельзя отменить.</string>
+
+    <!-- Settings -->
+    <string name="settings">Настройки</string>
+    <string name="general">Общие</string>
+    <string name="appearance">Внешний вид</string>
+    <string name="dark_mode">Тёмная тема</string>
+    <string name="language">Язык</string>
+    <string name="system_default">По умолчанию</string>
+</resources>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary Brand Colors -->
+    <color name="green_500">#4CAF50</color>
+    <color name="green_700">#388E3C</color>
+    <color name="green_200">#A5D6A7</color>
+
+    <!-- Accent/Secondary -->
+    <color name="amber_500">#FFC107</color>
+    <color name="amber_700">#FFA000</color>
+
+    <!-- Error -->
+    <color name="red_500">#F44336</color>
+    <color name="red_700">#D32F2F</color>
+
+    <!-- Neutral -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="gray_50">#FAFAFA</color>
+    <color name="gray_100">#F5F5F5</color>
+    <color name="gray_200">#EEEEEE</color>
+    <color name="gray_300">#E0E0E0</color>
+    <color name="gray_400">#BDBDBD</color>
+    <color name="gray_500">#9E9E9E</color>
+    <color name="gray_600">#757575</color>
+    <color name="gray_700">#616161</color>
+    <color name="gray_800">#424242</color>
+    <color name="gray_900">#212121</color>
+
+    <!-- Semantic Colors (Use these in layouts) -->
+    <color name="colorPrimary">@color/green_500</color>
+    <color name="colorPrimaryDark">@color/green_700</color>
+    <color name="colorPrimaryLight">@color/green_200</color>
+    <color name="colorSecondary">@color/amber_500</color>
+    <color name="colorSecondaryDark">@color/amber_700</color>
+    <color name="colorError">@color/red_500</color>
+
+    <!-- Surface Colors -->
+    <color name="colorSurface">@color/white</color>
+    <color name="colorOnSurface">@color/gray_900</color>
+    <color name="colorSurfaceVariant">@color/gray_100</color>
+
+    <!-- Text Colors -->
+    <color name="textPrimary">@color/gray_900</color>
+    <color name="textSecondary">@color/gray_600</color>
+    <color name="textHint">@color/gray_400</color>
+    <color name="textDisabled">@color/gray_300</color>
+
+    <!-- Destination Badge Colors (for resource destinations) -->
+    <color name="destination_green">#4CAF50</color>
+    <color name="destination_blue">#2196F3</color>
+    <color name="destination_orange">#FF9800</color>
+    <color name="destination_purple">#9C27B0</color>
+    <color name="destination_red">#F44336</color>
+    <color name="destination_teal">#009688</color>
+
+    <!-- Media Type Colors -->
+    <color name="media_image">#4CAF50</color>
+    <color name="media_video">#2196F3</color>
+    <color name="media_audio">#9C27B0</color>
+    <color name="media_document">#FF9800</color>
+
+    <!-- Overlay Colors -->
+    <color name="overlay_dark">#80000000</color>
+    <color name="overlay_light">#80FFFFFF</color>
+    <color name="scrim">#52000000</color>
+</resources>

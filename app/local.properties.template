@@ -1,0 +1,7 @@
+# SDK and keys locations - DO NOT COMMIT
+sdk.dir=C:\\Users\\<username>\\AppData\\Local\\Android\\Sdk
+
+# OAuth keys (optional for Epic 5)
+GOOGLE_CLIENT_ID=
+DROPBOX_KEY=
+ONEDRIVE_CLIENT_ID=

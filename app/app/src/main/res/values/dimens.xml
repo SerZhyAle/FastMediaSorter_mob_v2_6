@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Spacing (Compact Design per Project Rules) -->
+    <dimen name="spacing_tiny">2dp</dimen>
+    <dimen name="spacing_small">4dp</dimen>
+    <dimen name="spacing_normal">8dp</dimen>
+    <dimen name="spacing_medium">12dp</dimen>
+    <dimen name="spacing_large">16dp</dimen>
+    <dimen name="spacing_xlarge">24dp</dimen>
+    <dimen name="spacing_xxlarge">32dp</dimen>
+
+    <!-- List Items (Dense per Project Rules) -->
+    <dimen name="list_item_padding_vertical">6dp</dimen>
+    <dimen name="list_item_padding_horizontal">8dp</dimen>
+    <dimen name="list_item_height">56dp</dimen>
+    <dimen name="list_item_height_dense">48dp</dimen>
+    <dimen name="list_padding">8dp</dimen>
+
+    <!-- Grid Items -->
+    <dimen name="grid_item_size">120dp</dimen>
+    <dimen name="grid_spacing">4dp</dimen>
+
+    <!-- Touch Targets (Accessibility) -->
+    <dimen name="touch_target_min">48dp</dimen>
+    <dimen name="touch_target_recommended">56dp</dimen>
+
+    <!-- Icons -->
+    <dimen name="icon_size_small">20dp</dimen>
+    <dimen name="icon_size_normal">24dp</dimen>
+    <dimen name="icon_size_medium">36dp</dimen>
+    <dimen name="icon_size_large">48dp</dimen>
+    <dimen name="icon_size_xlarge">64dp</dimen>
+
+    <!-- Thumbnails -->
+    <dimen name="thumbnail_size_small">48dp</dimen>
+    <dimen name="thumbnail_size_medium">72dp</dimen>
+    <dimen name="thumbnail_size_large">120dp</dimen>
+
+    <!-- Text Sizes -->
+    <dimen name="text_size_caption">12sp</dimen>
+    <dimen name="text_size_body">14sp</dimen>
+    <dimen name="text_size_subtitle">16sp</dimen>
+    <dimen name="text_size_title">18sp</dimen>
+    <dimen name="text_size_headline">20sp</dimen>
+
+    <!-- Corner Radius -->
+    <dimen name="corner_radius_small">4dp</dimen>
+    <dimen name="corner_radius_medium">8dp</dimen>
+    <dimen name="corner_radius_large">12dp</dimen>
+    <dimen name="corner_radius_full">999dp</dimen>
+
+    <!-- Elevation -->
+    <dimen name="elevation_low">2dp</dimen>
+    <dimen name="elevation_medium">4dp</dimen>
+    <dimen name="elevation_high">8dp</dimen>
+
+    <!-- Toolbar -->
+    <dimen name="toolbar_height">56dp</dimen>
+
+    <!-- FAB -->
+    <dimen name="fab_margin">16dp</dimen>
+
+    <!-- Bottom Sheet -->
+    <dimen name="bottom_sheet_peek_height">200dp</dimen>
+
+    <!-- Dialog -->
+    <dimen name="dialog_padding">24dp</dimen>
+    <dimen name="dialog_min_width">280dp</dimen>
+
+    <!-- Player Controls -->
+    <dimen name="player_controls_height">80dp</dimen>
+    <dimen name="seekbar_height">4dp</dimen>
+</resources>

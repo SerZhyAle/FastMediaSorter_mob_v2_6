@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App Name -->
+    <string name="app_name">FastMediaSorter</string>
+
+    <!-- Common Actions -->
+    <string name="action_add">Add</string>
+    <string name="action_edit">Edit</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_save">Save</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_ok">OK</string>
+    <string name="action_retry">Retry</string>
+    <string name="action_close">Close</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_undo">Undo</string>
+
+    <!-- Welcome/Onboarding -->
+    <string name="welcome_title">Welcome</string>
+    <string name="welcome_subtitle">Organize your media files easily</string>
+    <string name="permissions_required">Storage permissions required</string>
+    <string name="permissions_description">To browse and manage your files, we need access to your storage.</string>
+    <string name="grant_permissions">Grant Permissions</string>
+    <string name="skip">Skip</string>
+    <string name="get_started">Get Started</string>
+
+    <!-- Main Screen -->
+    <string name="resources">Resources</string>
+    <string name="no_resources">No resources added</string>
+    <string name="add_first_resource">Tap + to add your first resource</string>
+    <string name="add_resource">Add Resource</string>
+    <string name="local_folder">Local Folder</string>
+    <string name="network_share">Network Share</string>
+    <string name="cloud_storage">Cloud Storage</string>
+
+    <!-- Resource Types -->
+    <string name="type_local">Local</string>
+    <string name="type_smb">SMB/Windows Share</string>
+    <string name="type_sftp">SFTP</string>
+    <string name="type_ftp">FTP</string>
+    <string name="type_google_drive">Google Drive</string>
+    <string name="type_onedrive">OneDrive</string>
+    <string name="type_dropbox">Dropbox</string>
+
+    <!-- File Browser -->
+    <string name="files">Files</string>
+    <string name="folders">Folders</string>
+    <string name="no_files">No files found</string>
+    <string name="loading">Loading…</string>
+    <string name="select_all">Select All</string>
+    <string name="deselect_all">Deselect All</string>
+
+    <!-- Sort Options -->
+    <string name="sort_by">Sort by</string>
+    <string name="sort_name_asc">Name (A-Z)</string>
+    <string name="sort_name_desc">Name (Z-A)</string>
+    <string name="sort_date_asc">Date (Oldest)</string>
+    <string name="sort_date_desc">Date (Newest)</string>
+    <string name="sort_size_asc">Size (Smallest)</string>
+    <string name="sort_size_desc">Size (Largest)</string>
+
+    <!-- Display Options -->
+    <string name="view_list">List View</string>
+    <string name="view_grid">Grid View</string>
+
+    <!-- File Operations -->
+    <string name="copy">Copy</string>
+    <string name="move">Move</string>
+    <string name="rename">Rename</string>
+    <string name="select_destination">Select Destination</string>
+    <string name="operation_complete">Operation complete</string>
+    <string name="operation_failed">Operation failed</string>
+
+    <!-- Favorites -->
+    <string name="favorites">Favorites</string>
+    <string name="add_to_favorites">Add to Favorites</string>
+    <string name="remove_from_favorites">Remove from Favorites</string>
+
+    <!-- Errors -->
+    <string name="error_unknown">Unknown error occurred</string>
+    <string name="error_network">Network error. Check your connection.</string>
+    <string name="error_permission">Permission denied</string>
+    <string name="error_file_not_found">File not found</string>
+    <string name="error_connection_failed">Connection failed</string>
+    <string name="error_authentication">Authentication failed</string>
+
+    <!-- Confirmation Dialogs -->
+    <string name="confirm_delete_title">Delete file?</string>
+    <string name="confirm_delete_message">This will move the file to trash.</string>
+    <string name="confirm_delete_permanent">This action cannot be undone.</string>
+
+    <!-- Settings -->
+    <string name="settings">Settings</string>
+    <string name="general">General</string>
+    <string name="appearance">Appearance</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="language">Language</string>
+    <string name="system_default">System Default</string>
+</resources>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?selectableItemBackground"
+    android:paddingHorizontal="@dimen/list_item_padding_horizontal"
+    android:paddingVertical="@dimen/list_item_padding_vertical"
+    android:minHeight="@dimen/list_item_height">
+
+    <!-- Resource Icon -->
+    <ImageView
+        android:id="@+id/iconResource"
+        android:layout_width="@dimen/icon_size_medium"
+        android:layout_height="@dimen/icon_size_medium"
+        android:contentDescription="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="?colorPrimary"
+        tools:src="@drawable/ic_folder" />
+
+    <!-- Destination Badge (colored dot if this is a destination) -->
+    <View
+        android:id="@+id/destinationBadge"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:background="@drawable/bg_destination_badge"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/iconResource"
+        app:layout_constraintEnd_toEndOf="@id/iconResource"
+        tools:visibility="visible" />
+
+    <!-- Resource Name -->
+    <TextView
+        android:id="@+id/textResourceName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_medium"
+        android:layout_marginEnd="@dimen/spacing_normal"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textAppearance="?attr/textAppearanceBodyLarge"
+        android:textColor="?colorOnSurface"
+        app:layout_constraintBottom_toTopOf="@id/textResourcePath"
+        app:layout_constraintEnd_toStartOf="@id/iconMore"
+        app:layout_constraintStart_toEndOf="@id/iconResource"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="My Photos" />
+
+    <!-- Resource Path / Type -->
+    <TextView
+        android:id="@+id/textResourcePath"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_medium"
+        android:layout_marginEnd="@dimen/spacing_normal"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textAppearance="?attr/textAppearanceBodySmall"
+        android:textColor="?colorOnSurfaceVariant"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/iconMore"
+        app:layout_constraintStart_toEndOf="@id/iconResource"
+        app:layout_constraintTop_toBottomOf="@id/textResourceName"
+        tools:text="/storage/emulated/0/DCIM/Camera" />
+
+    <!-- More Options -->
+    <ImageButton
+        android:id="@+id/iconMore"
+        android:layout_width="@dimen/touch_target_min"
+        android:layout_height="@dimen/touch_target_min"
+        android:background="?selectableItemBackgroundBorderless"
+        android:contentDescription="@string/action_edit"
+        android:src="@drawable/ic_more_vert"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="?colorOnSurfaceVariant" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
