@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.main.MainActivity">
+
+    <!-- Resource Type Tabs -->
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabResourceTypes"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorSurface"
+        app:tabMode="fixed"
+        app:tabGravity="fill"
+        app:tabIconTint="?attr/colorControlNormal"
+        app:tabSelectedTextColor="?attr/colorPrimary"
+        app:tabTextColor="?attr/colorControlNormal"
+        app:tabIndicatorColor="?attr/colorPrimary"
+        app:layout_constraintTop_toBottomOf="@id/layoutControlButtons"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvResources"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="8dp"
+        android:scrollbars="vertical"
+        android:scrollbarThumbVertical="?android:attr/colorControlNormal"
+        android:fadeScrollbars="false"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintTop_toBottomOf="@id/tabResourceTypes"
+        app:layout_constraintBottom_toTopOf="@id/tvFilterWarning"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:listitem="@layout/item_resource" />
+
+    <!-- Empty state view -->
+    <LinearLayout
+        android:id="@+id/emptyStateView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="32dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="@id/rvResources"
+        app:layout_constraintBottom_toBottomOf="@id/rvResources"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:visibility="visible">
+
+        <ImageView
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:src="@android:drawable/ic_input_add"
+            android:contentDescription="Add resource"
+            android:alpha="0.6" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/empty_state_message"
+            android:textSize="16sp"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:alpha="0.6" />
+    </LinearLayout>
+
+    <!-- Error state view for network errors -->
+    <LinearLayout
+        android:id="@+id/errorStateView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="32dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="@id/rvResources"
+        app:layout_constraintBottom_toBottomOf="@id/rvResources"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:src="@android:drawable/stat_notify_error"
+            android:contentDescription="@string/error"
+            android:tint="@android:color/holo_red_dark" />
+
+        <TextView
+            android:id="@+id/tvErrorMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/connection_failed"
+            android:textSize="16sp"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:textColor="@android:color/holo_red_dark" />
+
+        <Button
+            android:id="@+id/btnRetry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/retry"
+            style="@style/Widget.Material3.Button.TextButton" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvFilterWarning"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginBottom="4dp"
+        android:padding="8dp"
+        android:textSize="12sp"
+        android:textColor="@android:color/holo_orange_dark"
+        android:background="@android:color/darker_gray"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="Filters: Type: LOCAL, NETWORK | Media: Images, Videos | Name: 'test'"
+        tools:visibility="visible" />
+
+    <LinearLayout
+        android:id="@+id/layoutControlButtons"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="4dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- Exit -->
+        <ImageButton
+            android:id="@+id/btnExit"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/exit"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:tint="?attr/colorControlNormal" />
+
+        <!-- Larger space between Exit and Add Resource -->
+        <Space
+            android:layout_width="24dp"
+            android:layout_height="1dp" />
+
+        <!-- Add Resource -->
+        <ImageButton
+            android:id="@+id/btnAddResource"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/add"
+            android:src="@android:drawable/ic_menu_add"
+            android:tint="?attr/colorControlNormal" />
+
+        <!-- Small space -->
+        <Space
+            android:layout_width="8dp"
+            android:layout_height="1dp" />
+
+        <!-- Filter and Sort -->
+        <ImageButton
+            android:id="@+id/btnFilter"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/filter"
+            android:src="@android:drawable/ic_menu_search"
+            android:tint="?attr/colorControlNormal" />
+
+        <!-- Refresh -->
+        <ImageButton
+            android:id="@+id/btnRefresh"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/refresh"
+            android:src="@android:drawable/ic_popup_sync"
+            android:tint="?attr/colorControlNormal" />
+
+        <!-- Small space -->
+        <Space
+            android:layout_width="8dp"
+            android:layout_height="1dp" />
+
+        <!-- Settings -->
+        <ImageButton
+            android:id="@+id/btnSettings"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/settings"
+            android:src="@android:drawable/ic_menu_preferences"
+            android:tint="?attr/colorControlNormal" />
+
+        <!-- Small space -->
+        <Space
+            android:layout_width="8dp"
+            android:layout_height="1dp" />
+
+        <!-- Small space -->
+        <Space
+            android:layout_width="8dp"
+            android:layout_height="1dp" />
+
+        <!-- Toggle List/Grid View -->
+        <ImageButton
+            android:id="@+id/btnToggleView"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/toggle_view"
+            android:src="@drawable/ic_view_grid"
+            android:tint="?attr/colorControlNormal"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <!-- Favorites -->
+        <ImageButton
+            android:id="@+id/btnFavorites"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/tab_favorites"
+            android:src="@drawable/ic_star_outline"
+            android:tint="?attr/colorControlNormal" />
+
+        <!-- Start Player - double sized PLAY icon -->
+        <ImageButton
+            android:id="@+id/btnStartPlayer"
+            android:layout_width="96dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/start_player"
+            android:src="@android:drawable/ic_media_play"
+            android:tint="?attr/colorControlNormal"
+            android:scaleType="fitCenter" />
+
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:contentDescription="@string/loading_indicator"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Scan progress overlay -->
+    <LinearLayout
+        android:id="@+id/scanProgressLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:background="@android:drawable/dialog_holo_dark_frame"
+        android:elevation="8dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:id="@+id/tvScanProgress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Scanning resources..."
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/tvScanDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0 files scanned"
+            android:textSize="14sp"
+            android:layout_marginBottom="16dp" />
+
+        <ProgressBar
+            android:id="@+id/scanProgressBar"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:contentDescription="@string/scan_progress_indicator"
+            android:indeterminate="true" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

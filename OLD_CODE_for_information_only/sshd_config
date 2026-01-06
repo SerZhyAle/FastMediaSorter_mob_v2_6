@@ -1,0 +1,27 @@
+
+ListenAddress 0.0.0.0
+
+LogLevel INFO 
+
+PubkeyAuthentication yes
+
+PasswordAuthentication yes
+
+PermitEmptyPasswords no
+
+KbdInteractiveAuthentication yes
+
+AuthorizedKeysFile	.ssh/authorized_keys
+
+Subsystem sftp internal-sftp
+
+AllowGroups administrators sftp_users
+
+Match Group sftp_users
+    ChrootDirectory C:\sftp_root
+
+    ForceCommand internal-sftp -d /data
+
+    AllowTcpForwarding no
+    PermitTunnel no
+    X11Forwarding no

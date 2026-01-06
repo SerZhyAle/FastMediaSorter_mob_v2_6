@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="indicator_size">8dp</dimen>
+    <dimen name="indicator_margin">4dp</dimen>
+    
+    <!-- Destination buttons in Copy/Move dialogs -->
+    <dimen name="destination_button_min_height">64dp</dimen>
+    
+    <!-- Destination border width in resource list -->
+    <dimen name="destination_border_width">3dp</dimen>
+</resources>

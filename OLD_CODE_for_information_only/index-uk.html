@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="qwkzLSJrJ7adxFYz-95YY-Uhs0yX6QakWxZWFWtN-ks" />
+    <meta name="description"
+        content="FastMediaSorter v2 - Потужний додаток для організації медіа на Android з підтримкою локального сховища, мережі (SMB/SFTP/FTP) та хмари">
+    <meta name="keywords"
+        content="Android, Media Sorter, SMB, SFTP, FTP, Cloud Storage, Google Drive, Dropbox, OneDrive">
+    <title>FastMediaSorter v2 - Портал документації</title>
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --accent: #f093fb;
+            --text-main: #2d3748;
+            --text-light: #718096;
+            --card-bg: #ffffff;
+            --bg-color: #f7fafc;
+            --border-color: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 3rem 1rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2.8rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            margin-top: 0.5rem;
+            font-size: 1.2rem;
+            opacity: 0.95;
+            font-weight: 300;
+        }
+
+        .version-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 1rem;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--text-main);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary);
+            font-weight: 600;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.8rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+            border-color: var(--primary);
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .card h2 {
+            margin: 0 0 0.8rem 0;
+            color: var(--primary);
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .card p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            flex-grow: 1;
+            margin: 0;
+        }
+
+        .card-footer {
+            margin-top: 1.2rem;
+            color: var(--secondary);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-footer::after {
+            content: '→';
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover .card-footer::after {
+            transform: translateX(5px);
+        }
+
+        .feature-list {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .feature-list h3 {
+            color: var(--primary);
+            margin-top: 0;
+        }
+
+        .feature-list ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .feature-list li {
+            padding: 0.5rem 0;
+            color: var(--text-light);
+        }
+
+        .feature-list li::before {
+            content: '✓';
+            color: var(--primary);
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        footer {
+            background: var(--card-bg);
+            text-align: center;
+            padding: 2.5rem 1rem;
+            color: var(--text-light);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border-color);
+            margin-top: 4rem;
+        }
+
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        footer a:hover {
+            color: var(--secondary);
+        }
+
+        .github-corner {
+            position: fixed;
+            top: 0;
+            right: 0;
+            border: 0;
+            z-index: 1000;
+        }
+
+        .lang-switcher {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            display: flex;
+            gap: 0.5rem;
+            z-index: 100;
+        }
+
+        .lang-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .lang-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .lang-btn.active {
+            background: rgba(255, 255, 255, 0.4);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .feature-list ul {
+                grid-template-columns: 1fr;
+            }
+
+            .lang-switcher {
+                position: relative;
+                top: auto;
+                left: auto;
+                justify-content: center;
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- GitHub Corner -->
+    <a href="https://github.com/SerZhyAle/FastMediaSorter_mob_v2" class="github-corner" target="_blank"
+        aria-label="Вихідний код на GitHub">
+        <svg width="80" height="80" viewBox="0 0 250 250"
+            style="fill:#667eea; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true">
+            <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+            <path
+                d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+                fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+            <path
+                d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+                fill="currentColor" class="octo-body"></path>
+        </svg>
+    </a>
+
+    <header>
+        <div class="lang-switcher">
+            <a href="index.html" class="lang-btn">EN</a>
+            <a href="index-ru.html" class="lang-btn">RU</a>
+            <a href="index-uk.html" class="lang-btn active">UK</a>
+        </div>
+        <h1><img src="icon.png" alt="FastMediaSorter" style="height: 1em; vertical-align: middle; margin-right: 0.3em;">
+            FastMediaSorter v2</h1>
+        <div class="subtitle">Професійна організація медіафайлів для Android</div>
+        <div class="version-badge">Версія 2.x • Open Source</div>
+    </header>
+
+    <div class="container">
+
+        <div class="feature-list">
+            <h3>✨ Ключові можливості</h3>
+            <ul>
+                <li>Управління локальним сховищем</li>
+                <li>Підтримка мережевих SMB/CIFS ресурсів</li>
+                <li>Підтримка протоколів SFTP і FTP</li>
+                <li>Підтримка хмарних сховищ (Google Drive, Dropbox, OneDrive)</li>
+                <li>Підтримка читання книг EPUB</li>
+                <li>Просунутий відеоплеєр на ExoPlayer</li>
+                <li>Високопродуктивний перегляд зображень (Coil)</li>
+                <li>Пакетні операції з файлами (копіювання/переміщення/видалення)</li>
+                <li>Система обраного</li>
+                <li>Режим слайд-шоу з налаштовуваними інтервалами</li>
+                <li>Кешування мініатюр (за замовчуванням 8 ГБ)</li>
+                <li>Пагінація для великих папок (1000+ файлів)</li>
+                <li>Clean Architecture + патерн MVVM</li>
+            </ul>
+        </div>
+
+        <h2 class="section-title">🚀 Посібники користувача</h2>
+        <div class="cards-grid">
+
+            <a href="https://github.com/SerZhyAle/FastMediaSorter_mob_v2/blob/main/QUICK_START_UK.md" class="card"
+                target="_blank">
+                <div class="card-icon">⚡</div>
+                <div>
+                    <h2>Швидкий старт</h2>
+                    <p>Почніть за 5 хвилин! Простий покроковий посібник для початківців з діаграмою сенсорних зон та
+                        практичними порадами.</p>
+                </div>
+                <div class="card-footer">Почати →</div>
+            </a>
+
+            <a href="https://github.com/SerZhyAle/FastMediaSorter_mob_v2/blob/main/FAQ_UK.md" class="card"
+                target="_blank">
+                <div class="card-icon">❓</div>
+                <div>
+                    <h2>Часті питання</h2>
+                    <p>25+ питань по роботі з файлами, налаштуванню мережі, Quick Sort, сенсорним зонам та багато
+                        іншого.</p>
+                </div>
+                <div class="card-footer">Читати →</div>
+            </a>
+
+            <a href="https://github.com/SerZhyAle/FastMediaSorter_mob_v2/blob/main/TROUBLESHOOTING_UK.md" class="card"
+                target="_blank">
+                <div class="card-icon">🔧</div>
+                <div>
+                    <h2>Вирішення проблем</h2>
+                    <p>Рішення для 15+ типових проблем: підключення, продуктивність, операції з файлами та збої
+                        програми.</p>
+                </div>
+                <div class="card-footer">Виправити →</div>
+            </a>
+
+            <a href="https://github.com/SerZhyAle/FastMediaSorter_mob_v2/blob/main/HOW_TO.md" class="card"
+                target="_blank">
+                <div class="card-icon">📖</div>
+                <div>
+                    <h2>Покрокові інструкції</h2>
+                    <p>10 детальних туторіалів: підключення до SMB/SFTP/Drive, налаштування Quick Sort, використання
+                        сенсорних зон.</p>
+                </div>
+                <div class="card-footer">Дізнатися →</div>
+            </a>
+
+        </div>
+
+        <h2 class="section-title">📚 Документація</h2>
+        <div class="cards-grid">
+
+            <a href="https://github.com/SerZhyAle/FastMediaSorter_mob_v2/blob/main/README.md" class="card"
+                target="_blank">
+                <div class="card-icon">📖</div>
+                <div>
+                    <h2>Посібник користувача</h2>
+                    <p>Повний посібник з встановлення, огляд функцій та інструкції з використання для всіх підтримуваних
+                        типів сховищ.</p>
+                </div>
+                <div class="card-footer">Читати</div>
+            </a>
+
+            <a href="https://github.com/SerZhyAle/FastMediaSorter_mob_v2/blob/main/docs/V2_Specification.md"
+                class="card" target="_blank">
+                <div class="card-icon">📋</div>
+                <div>
+                    <h2>Технічна специфікація</h2>
+                    <p>Детальна технічна документація з описом архітектури, компонентів та деталей реалізації.</p>
+                </div>
+                <div class="card-footer">Дивитися</div>
+            </a>
+
+            <a href="https://github.com/SerZhyAle/FastMediaSorter_mob_v2/blob/main/docs/V2_architecture_overview.md"
+                class="card" target="_blank">
+                <div class="card-icon">🏗️</div>
+                <div>
+                    <h2>Огляд архітектури</h2>
+                    <p>Реалізація Clean Architecture з патерном MVVM, Hilt DI та поясненням модульної структури.</p>
+                </div>
+                <div class="card-footer">Детальніше</div>
+            </a>
+
+            <a href="https://github.com/SerZhyAle/FastMediaSorter_mob_v2/blob/main/docs/V2_TERMS.md" class="card"
+                target="_blank">
+                <div class="card-icon">📝</div>
+                <div>
+                    <h2>Довідник термінів</h2>
+                    <p>Визначення ключових термінів та концепцій, що використовуються в проєкті (Ресурси, Призначення
+                        тощо).</p>
+                </div>
+                <div class="card-footer">Дивитися</div>
+            </a>
+
+            <a href="https://github.com/SerZhyAle/FastMediaSorter_mob_v2/blob/main/docs/TODO_V2.md" class="card"
+                target="_blank">
+                <div class="card-icon">✅</div>
+                <div>
+                    <h2>Дорожня карта розробки</h2>
+                    <p>Поточні завдання розробки, плановані функції, останні виправлення та відстеження відомих проблем.
+                    </p>
+                </div>
+                <div class="card-footer">Дивитися</div>
+            </a>
+
+            <a href="https://github.com/SerZhyAle/FastMediaSorter_mob_v2/blob/main/docs/TEST_SCENARIOS.md" class="card"
+                target="_blank">
+                <div class="card-icon">🧪</div>
+                <div>
+                    <h2>Сценарії тестування</h2>
+                    <p>Комплексні тестові випадки для всіх функцій, включаючи мережеві протоколи та граничні випадки.
+                    </p>
+                </div>
+                <div class="card-footer">Дивитися</div>
+            </a>
+
+        </div>
+
+        <h2 class="section-title">⚙️ Ресурси проєкту</h2>
+        <div class="cards-grid">
+
+            <a href="https://github.com/SerZhyAle/FastMediaSorter_mob_v2" class="card" target="_blank">
+                <div class="card-icon">💻</div>
+                <div>
+                    <h2>Репозиторій GitHub</h2>
+                    <p>Доступ до вихідного коду, повідомлення про проблеми, участь у розробці та відстеження активності
+                        проєкту.</p>
+                </div>
+                <div class="card-footer">Код</div>
+            </a>
+
+            <a href="https://github.com/SerZhyAle/FastMediaSorter_mob_v2/releases" class="card" target="_blank">
+                <div class="card-icon">📦</div>
+                <div>
+                    <h2>Релізи та завантаження</h2>
+                    <p>Завантажте останні збірки APK з історією версій та примітками до випусків.</p>
+                </div>
+                <div class="card-footer">Завантажити</div>
+            </a>
+
+            <a href="https://github.com/SerZhyAle/FastMediaSorter_mob_v2/issues" class="card" target="_blank">
+                <div class="card-icon">🐛</div>
+                <div>
+                    <h2>Проблеми та підтримка</h2>
+                    <p>Повідомте про помилки, запитайте функції або отримайте допомогу з встановленням та налаштуванням.
+                    </p>
+                </div>
+                <div class="card-footer">Допомога</div>
+            </a>
+
+        </div>
+
+        <h2 class="section-title">⚖️ Правова інформація</h2>
+        <div class="cards-grid">
+
+            <a href="PRIVACY_POLICY.uk.html" class="card" target="_blank">
+                <div class="card-icon">🔒</div>
+                <div>
+                    <h2>Політика конфіденційності</h2>
+                    <p>Детальна інформація про обробку даних, дозволах, практиках безпеки та захисті конфіденційності
+                        користувачів.</p>
+                </div>
+                <div class="card-footer">Читати</div>
+            </a>
+
+            <a href="TERMS_OF_SERVICE.uk.html" class="card" target="_blank">
+                <div class="card-icon">📄</div>
+                <div>
+                    <h2>Умови використання</h2>
+                    <p>Користувацька угода, умови використання, відмова від відповідальності та юридична інформація.</p>
+                </div>
+                <div class="card-footer">Читати</div>
+            </a>
+
+        </div>
+
+    </div>
+
+    <footer>
+        <p><strong>FastMediaSorter v2</strong> - Open Source управління медіа для Android</p>
+        <p style="margin-top: 0.5rem;">
+            <a href="PRIVACY_POLICY.uk.html">Конфіденційність</a>
+            &bull;
+            <a href="TERMS_OF_SERVICE.uk.html">Умови</a>
+            &bull;
+            <a href="https://github.com/SerZhyAle/FastMediaSorter_mob_v2">GitHub</a>
+        </p>
+        <p style="margin-top: 0.5rem; font-size: 0.9em; opacity: 0.8;">
+            Автор: <a href="mailto:sza@ukr.net">sza@ukr.net</a>
+        </p>
+        <p style="margin-top: 1rem; font-size: 0.85rem;">&copy; 2024-2025 Проєкт FastMediaSorter. Створено з Kotlin,
+            Jetpack і ❤️</p>
+    </footer>
+
+</body>
+
+</html>
