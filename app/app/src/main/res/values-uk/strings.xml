@@ -16,13 +16,21 @@
     <string name="action_undo">Скасувати</string>
 
     <!-- Welcome/Onboarding -->
-    <string name="welcome_title">Ласкаво просимо</string>
+    <string name="welcome_title">Ласкаво просимо до FastMediaSorter</string>
     <string name="welcome_subtitle">Легко організуйте ваші медіафайли</string>
+    <string name="welcome_description">FastMediaSorter допоможе вам організувати фото, відео та аудіо файли з локальних тек та мережевих джерел.\n\nДля початку роботи нам потрібен дозвіл на доступ до ваших медіафайлів.</string>
     <string name="permissions_required">Потрібні дозволи сховища</string>
     <string name="permissions_description">Для перегляду та керування файлами нам потрібен доступ до сховища.</string>
+    <string name="grant_permission">Надати дозвіл</string>
     <string name="grant_permissions">Надати дозволи</string>
     <string name="skip">Пропустити</string>
     <string name="get_started">Почати</string>
+    <string name="cancel">Скасувати</string>
+    <string name="permission_required_title">Потрібен дозвіл</string>
+    <string name="permission_required_message">FastMediaSorter потребує доступу до сховища для перегляду та організації ваших медіафайлів. Без цього дозволу програма не зможе працювати.</string>
+    <string name="permission_denied_title">Дозвіл відхилено</string>
+    <string name="permission_denied_message">Дозвіл на доступ до сховища був відхилений. Будь ласка, увімкніть його в налаштуваннях програми.</string>
+    <string name="open_settings">Відкрити налаштування</string>
 
     <!-- Main Screen -->
     <string name="resources">Ресурси</string>
@@ -96,4 +104,13 @@
     <string name="dark_mode">Темна тема</string>
     <string name="language">Мова</string>
     <string name="system_default">За замовчуванням</string>
+
+    <!-- Additional UI Strings -->
+    <string name="thumbnail">Мініатюра</string>
+    <string name="resource_icon">Іконка ресурсу</string>
+    <string name="action_sort">Сортування</string>
+    <string name="view_mode">Режим перегляду</string>
+    <string name="local_folder_description">Перегляд фото та відео з вашого пристрою</string>
+    <string name="error_opening_folder_picker">Не вдалося відкрити вибір теки</string>
+    <string name="feature_not_yet_implemented">%1$s скоро буде доступний!</string>
 </resources>

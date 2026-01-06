@@ -1,6 +1,8 @@
 package com.sza.fastmediasorter.di
 
+import com.sza.fastmediasorter.data.repository.MediaRepositoryImpl
 import com.sza.fastmediasorter.data.repository.ResourceRepositoryImpl
+import com.sza.fastmediasorter.domain.repository.MediaRepository
 import com.sza.fastmediasorter.domain.repository.ResourceRepository
 import dagger.Binds
 import dagger.Module
@@ -20,6 +22,12 @@ abstract class RepositoryModule {
     abstract fun bindResourceRepository(
         impl: ResourceRepositoryImpl
     ): ResourceRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindMediaRepository(
+        impl: MediaRepositoryImpl
+    ): MediaRepository
 
     // TODO: Add other repository bindings as they are implemented
     // @Binds

@@ -16,13 +16,21 @@
     <string name="action_undo">Undo</string>
 
     <!-- Welcome/Onboarding -->
-    <string name="welcome_title">Welcome</string>
+    <string name="welcome_title">Welcome to FastMediaSorter</string>
     <string name="welcome_subtitle">Organize your media files easily</string>
+    <string name="welcome_description">FastMediaSorter helps you organize photos, videos, and audio files from local folders and network sources.\n\nTo get started, we need permission to access your media files.</string>
     <string name="permissions_required">Storage permissions required</string>
     <string name="permissions_description">To browse and manage your files, we need access to your storage.</string>
+    <string name="grant_permission">Grant Permission</string>
     <string name="grant_permissions">Grant Permissions</string>
     <string name="skip">Skip</string>
     <string name="get_started">Get Started</string>
+    <string name="cancel">Cancel</string>
+    <string name="permission_required_title">Permission Required</string>
+    <string name="permission_required_message">FastMediaSorter needs storage access to browse and organize your media files. Without this permission, the app cannot function.</string>
+    <string name="permission_denied_title">Permission Denied</string>
+    <string name="permission_denied_message">Storage permission was denied. Please enable it in app settings to continue.</string>
+    <string name="open_settings">Open Settings</string>
 
     <!-- Main Screen -->
     <string name="resources">Resources</string>
@@ -96,4 +104,13 @@
     <string name="dark_mode">Dark Mode</string>
     <string name="language">Language</string>
     <string name="system_default">System Default</string>
+
+    <!-- Additional UI Strings -->
+    <string name="thumbnail">Thumbnail</string>
+    <string name="resource_icon">Resource icon</string>
+    <string name="action_sort">Sort</string>
+    <string name="view_mode">View mode</string>
+    <string name="local_folder_description">Browse photos and videos from your device</string>
+    <string name="error_opening_folder_picker">Could not open folder picker</string>
+    <string name="feature_not_yet_implemented">%1$s is coming soon!</string>
 </resources>

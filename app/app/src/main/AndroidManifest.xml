@@ -32,9 +32,9 @@
         android:requestLegacyExternalStorage="true"
         tools:targetApi="35">
 
-        <!-- Main Activity -->
+        <!-- Welcome Activity (Launcher) -->
         <activity
-            android:name=".ui.main.MainActivity"
+            android:name=".ui.welcome.WelcomeActivity"
             android:exported="true"
             android:theme="@style/Theme.FastMediaSorter">
             <intent-filter>
@@ -42,6 +42,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Main Activity -->
+        <activity
+            android:name=".ui.main.MainActivity"
+            android:exported="false"
+            android:theme="@style/Theme.FastMediaSorter" />
+
+        <!-- Browse Activity -->
+        <activity
+            android:name=".ui.browse.BrowseActivity"
+            android:exported="false"
+            android:theme="@style/Theme.FastMediaSorter"
+            android:parentActivityName=".ui.main.MainActivity" />
+
+        <!-- Add Resource Activity -->
+        <activity
+            android:name=".ui.resource.AddResourceActivity"
+            android:exported="false"
+            android:theme="@style/Theme.FastMediaSorter"
+            android:parentActivityName=".ui.main.MainActivity" />
 
         <!-- FileProvider for sharing files -->
         <provider

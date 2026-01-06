@@ -1,5 +1,6 @@
 package com.sza.fastmediasorter.ui.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
@@ -11,6 +12,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.sza.fastmediasorter.R
 import com.sza.fastmediasorter.databinding.ActivityMainBinding
 import com.sza.fastmediasorter.ui.base.BaseActivity
+import com.sza.fastmediasorter.ui.browse.BrowseActivity
+import com.sza.fastmediasorter.ui.resource.AddResourceActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -126,11 +129,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             }
             is MainUiEvent.NavigateToBrowse -> {
                 Timber.d("Navigate to browse: ${event.resourceId}")
-                // TODO: Start BrowseActivity with resourceId
+                val intent = Intent(this, BrowseActivity::class.java).apply {
+                    putExtra(BrowseActivity.EXTRA_RESOURCE_ID, event.resourceId)
+                }
+                startActivity(intent)
             }
             is MainUiEvent.NavigateToAddResource -> {
                 Timber.d("Navigate to add resource")
-                // TODO: Start AddResourceActivity
+                startActivity(Intent(this, AddResourceActivity::class.java))
             }
             is MainUiEvent.NavigateToSettings -> {
                 Timber.d("Navigate to settings")

@@ -16,13 +16,21 @@
     <string name="action_undo">Отменить</string>
 
     <!-- Welcome/Onboarding -->
-    <string name="welcome_title">Добро пожаловать</string>
+    <string name="welcome_title">Добро пожаловать в FastMediaSorter</string>
     <string name="welcome_subtitle">Легко организуйте ваши медиафайлы</string>
+    <string name="welcome_description">FastMediaSorter поможет вам организовать фото, видео и аудио файлы из локальных папок и сетевых источников.\n\nДля начала работы нам нужно разрешение на доступ к вашим медиафайлам.</string>
     <string name="permissions_required">Требуются разрешения хранилища</string>
     <string name="permissions_description">Для просмотра и управления файлами нам нужен доступ к хранилищу.</string>
+    <string name="grant_permission">Предоставить разрешение</string>
     <string name="grant_permissions">Предоставить разрешения</string>
     <string name="skip">Пропустить</string>
     <string name="get_started">Начать</string>
+    <string name="cancel">Отмена</string>
+    <string name="permission_required_title">Требуется разрешение</string>
+    <string name="permission_required_message">FastMediaSorter необходим доступ к хранилищу для просмотра и организации ваших медиафайлов. Без этого разрешения приложение не сможет работать.</string>
+    <string name="permission_denied_title">Разрешение отклонено</string>
+    <string name="permission_denied_message">Разрешение на доступ к хранилищу было отклонено. Пожалуйста, включите его в настройках приложения.</string>
+    <string name="open_settings">Открыть настройки</string>
 
     <!-- Main Screen -->
     <string name="resources">Ресурсы</string>
@@ -96,4 +104,13 @@
     <string name="dark_mode">Тёмная тема</string>
     <string name="language">Язык</string>
     <string name="system_default">По умолчанию</string>
+
+    <!-- Additional UI Strings -->
+    <string name="thumbnail">Миниатюра</string>
+    <string name="resource_icon">Иконка ресурса</string>
+    <string name="action_sort">Сортировка</string>
+    <string name="view_mode">Режим просмотра</string>
+    <string name="local_folder_description">Просмотр фото и видео с вашего устройства</string>
+    <string name="error_opening_folder_picker">Не удалось открыть выбор папки</string>
+    <string name="feature_not_yet_implemented">%1$s скоро будет доступен!</string>
 </resources>
