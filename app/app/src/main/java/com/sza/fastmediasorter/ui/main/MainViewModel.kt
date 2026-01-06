@@ -80,7 +80,9 @@ class MainViewModel @Inject constructor(
      */
     fun onResourceLongClick(resource: Resource): Boolean {
         Timber.d("Resource long clicked: ${resource.name}")
-        // TODO: Show context menu for edit/delete
+        viewModelScope.launch {
+            _events.send(MainUiEvent.NavigateToEditResource(resource.id))
+        }
         return true
     }
 
@@ -89,7 +91,9 @@ class MainViewModel @Inject constructor(
      */
     fun onResourceMoreClick(resource: Resource) {
         Timber.d("Resource more clicked: ${resource.name}")
-        // TODO: Show popup menu for edit/delete
+        viewModelScope.launch {
+            _events.send(MainUiEvent.NavigateToEditResource(resource.id))
+        }
     }
 
     /**

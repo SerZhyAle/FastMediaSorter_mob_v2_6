@@ -113,4 +113,27 @@
     <string name="local_folder_description">Browse photos and videos from your device</string>
     <string name="error_opening_folder_picker">Could not open folder picker</string>
     <string name="feature_not_yet_implemented">%1$s is coming soon!</string>
+
+    <!-- Player -->
+    <string name="action_previous">Previous</string>
+    <string name="action_next">Next</string>
+    <string name="action_share">Share</string>
+    <string name="file_info">File Info</string>
+    <string name="media_content">Media content</string>
+    <string name="player">Player</string>
+
+    <!-- Edit Resource -->
+    <string name="edit_resource">Edit Resource</string>
+    <string name="resource_info">Resource Info</string>
+    <string name="resource_name">Name</string>
+    <string name="display_settings">Display Settings</string>
+    <string name="advanced_settings">Advanced Settings</string>
+    <string name="destination_settings">Destination Settings</string>
+    <string name="work_with_all_files">Work with all files</string>
+    <string name="work_with_all_files_description">Show all file types, not just media</string>
+    <string name="use_as_destination">Use as destination</string>
+    <string name="use_as_destination_description">Show in quick move/copy destinations</string>
+    <string name="destination_color">Destination badge color</string>
+    <string name="color_picker_coming_soon">Color picker coming soon</string>
+    <string name="confirm_delete_resource_message">Are you sure you want to remove this resource? Files will not be deleted.</string>
 </resources>

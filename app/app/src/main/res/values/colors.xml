@@ -64,4 +64,7 @@
     <color name="overlay_dark">#80000000</color>
     <color name="overlay_light">#80FFFFFF</color>
     <color name="scrim">#52000000</color>
+
+    <!-- Player Overlay -->
+    <color name="player_overlay_background">#99000000</color>
 </resources>

@@ -1,6 +1,7 @@
 package com.sza.fastmediasorter.domain.repository
 
 import com.sza.fastmediasorter.domain.model.MediaFile
+import com.sza.fastmediasorter.domain.model.Resource
 
 /**
  * Repository interface for media file operations.
@@ -14,6 +15,13 @@ interface MediaRepository {
      * @return List of MediaFile objects
      */
     suspend fun getFilesForResource(resourceId: Long): List<MediaFile>
+    
+    /**
+     * Get all media files for a resource object.
+     * @param resource The resource to get files for
+     * @return List of MediaFile objects
+     */
+    suspend fun getMediaFiles(resource: Resource): List<MediaFile>
     
     /**
      * Scan and cache files for a resource.

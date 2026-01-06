@@ -14,6 +14,7 @@ import com.sza.fastmediasorter.databinding.ActivityMainBinding
 import com.sza.fastmediasorter.ui.base.BaseActivity
 import com.sza.fastmediasorter.ui.browse.BrowseActivity
 import com.sza.fastmediasorter.ui.resource.AddResourceActivity
+import com.sza.fastmediasorter.ui.resource.EditResourceActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -137,6 +138,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             is MainUiEvent.NavigateToAddResource -> {
                 Timber.d("Navigate to add resource")
                 startActivity(Intent(this, AddResourceActivity::class.java))
+            }
+            is MainUiEvent.NavigateToEditResource -> {
+                Timber.d("Navigate to edit resource: ${event.resourceId}")
+                startActivity(EditResourceActivity.createIntent(this, event.resourceId))
             }
             is MainUiEvent.NavigateToSettings -> {
                 Timber.d("Navigate to settings")

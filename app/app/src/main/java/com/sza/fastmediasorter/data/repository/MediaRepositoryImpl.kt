@@ -2,6 +2,7 @@ package com.sza.fastmediasorter.data.repository
 
 import com.sza.fastmediasorter.data.scanner.LocalMediaScanner
 import com.sza.fastmediasorter.domain.model.MediaFile
+import com.sza.fastmediasorter.domain.model.Resource
 import com.sza.fastmediasorter.domain.model.ResourceType
 import com.sza.fastmediasorter.domain.repository.MediaRepository
 import com.sza.fastmediasorter.domain.repository.ResourceRepository
@@ -36,6 +37,16 @@ class MediaRepositoryImpl @Inject constructor(
             return emptyList()
         }
 
+        return getMediaFiles(resource)
+    }
+
+    override suspend fun getMediaFiles(resource: Resource): List<MediaFile> {
+        // Check cache first
+        fileCache[resource.id]?.let { cached ->
+            Timber.d("Returning cached files for resource ${resource.id}: ${cached.size} files")
+            return cached
+        }
+
         // Scan based on resource type
         val files = when (resource.type) {
             ResourceType.LOCAL -> {
@@ -54,8 +65,8 @@ class MediaRepositoryImpl @Inject constructor(
         }
 
         // Cache the results
-        fileCache[resourceId] = files
-        Timber.d("Scanned and cached ${files.size} files for resource $resourceId")
+        fileCache[resource.id] = files
+        Timber.d("Scanned and cached ${files.size} files for resource ${resource.id}")
 
         return files
     }

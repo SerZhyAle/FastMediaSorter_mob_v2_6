@@ -26,7 +26,7 @@ android {
         minSdk = 28
         targetSdk = 35
         versionCode = 26010623
-        versionName = "2.601.062.355"
+        versionName = "2.601.062.354"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -61,11 +61,6 @@ android {
         viewBinding = true
         buildConfig = true
     }
-}
-
-// Room schema export for migration testing
-ksp {
-    arg("room.schemaLocation", "$projectDir/schemas")
 }
 
 dependencies {

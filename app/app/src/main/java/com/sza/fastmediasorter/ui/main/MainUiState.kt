@@ -30,6 +30,7 @@ data class MainUiState(
 sealed class MainUiEvent {
     data class ShowSnackbar(val message: String) : MainUiEvent()
     data class NavigateToBrowse(val resourceId: Long) : MainUiEvent()
+    data class NavigateToEditResource(val resourceId: Long) : MainUiEvent()
     data object NavigateToAddResource : MainUiEvent()
     data object NavigateToSettings : MainUiEvent()
     data object NavigateToFavorites : MainUiEvent()

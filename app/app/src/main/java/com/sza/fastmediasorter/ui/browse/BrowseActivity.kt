@@ -1,6 +1,5 @@
 package com.sza.fastmediasorter.ui.browse
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
@@ -13,6 +12,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.sza.fastmediasorter.R
 import com.sza.fastmediasorter.databinding.ActivityBrowseBinding
 import com.sza.fastmediasorter.ui.base.BaseActivity
+import com.sza.fastmediasorter.ui.player.PlayerActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -148,7 +148,12 @@ class BrowseActivity : BaseActivity<ActivityBrowseBinding>() {
             }
             is BrowseUiEvent.NavigateToPlayer -> {
                 Timber.d("Navigate to player: ${event.filePath}")
-                // TODO: Start PlayerActivity with file path and list
+                val intent = PlayerActivity.createIntent(
+                    context = this,
+                    filePaths = event.files,
+                    currentIndex = event.currentIndex
+                )
+                startActivity(intent)
             }
             is BrowseUiEvent.NavigateBack -> {
                 finish()

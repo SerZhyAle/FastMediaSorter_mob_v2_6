@@ -2,6 +2,7 @@
 <resources>
     <!-- Spacing (Compact Design per Project Rules) -->
     <dimen name="spacing_tiny">2dp</dimen>
+    <dimen name="spacing_xsmall">3dp</dimen>
     <dimen name="spacing_small">4dp</dimen>
     <dimen name="spacing_normal">8dp</dimen>
     <dimen name="spacing_medium">12dp</dimen>

@@ -3,9 +3,8 @@ package com.sza.fastmediasorter.ui.resource
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sza.fastmediasorter.domain.model.Resource
 import com.sza.fastmediasorter.domain.model.ResourceType
-import com.sza.fastmediasorter.domain.repository.ResourceRepository
+import com.sza.fastmediasorter.domain.usecase.AddResourceUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -27,7 +26,7 @@ sealed class AddResourceEvent {
  */
 @HiltViewModel
 class AddResourceViewModel @Inject constructor(
-    private val resourceRepository: ResourceRepository
+    private val addResourceUseCase: AddResourceUseCase
 ) : ViewModel() {
 
     private val _events = MutableSharedFlow<AddResourceEvent>()
@@ -35,32 +34,27 @@ class AddResourceViewModel @Inject constructor(
 
     fun onFolderSelected(uri: Uri) {
         viewModelScope.launch {
-            try {
-                // Get folder name from URI
-                val folderName = extractFolderName(uri)
-                val folderPath = uri.toString()
+            // Get folder name from URI
+            val folderName = extractFolderName(uri)
+            val folderPath = uri.toString()
 
-                Timber.d("Selected folder: $folderName at $folderPath")
+            Timber.d("Selected folder: $folderName at $folderPath")
 
-                // Create resource
-                val resource = Resource(
-                    id = 0, // Auto-generated
-                    name = folderName,
-                    path = folderPath,
-                    type = ResourceType.LOCAL,
-                    isDestination = false,
-                    destinationOrder = 0
-                )
+            // Use the AddResourceUseCase
+            val result = addResourceUseCase.addLocalFolder(
+                name = folderName,
+                path = folderPath
+            )
 
-                val resourceId = resourceRepository.insertResource(resource)
-                Timber.d("Resource inserted with ID: $resourceId")
-
-                _events.emit(AddResourceEvent.ResourceAdded(resourceId))
-                
-            } catch (e: Exception) {
-                Timber.e(e, "Failed to add resource")
-                _events.emit(AddResourceEvent.ShowError("Failed to add folder: ${e.message}"))
-            }
+            result
+                .onSuccess { resourceId ->
+                    Timber.d("Resource inserted with ID: $resourceId")
+                    _events.emit(AddResourceEvent.ResourceAdded(resourceId))
+                }
+                .onError { message, _, _ ->
+                    Timber.e("Failed to add resource: $message")
+                    _events.emit(AddResourceEvent.ShowError("Failed to add folder: $message"))
+                }
         }
     }
 
@@ -87,23 +81,20 @@ class AddResourceViewModel @Inject constructor(
 
     fun onNetworkResourceSelected(type: ResourceType, host: String, path: String, name: String) {
         viewModelScope.launch {
-            try {
-                val resource = Resource(
-                    id = 0,
-                    name = name,
-                    path = "$host$path",
-                    type = type,
-                    isDestination = false,
-                    destinationOrder = 0
-                )
+            val result = addResourceUseCase(
+                name = name,
+                path = "$host$path",
+                type = type
+            )
 
-                val resourceId = resourceRepository.insertResource(resource)
-                _events.emit(AddResourceEvent.ResourceAdded(resourceId))
-                
-            } catch (e: Exception) {
-                Timber.e(e, "Failed to add network resource")
-                _events.emit(AddResourceEvent.ShowError("Failed to add resource: ${e.message}"))
-            }
+            result
+                .onSuccess { resourceId ->
+                    _events.emit(AddResourceEvent.ResourceAdded(resourceId))
+                }
+                .onError { message, _, _ ->
+                    Timber.e("Failed to add network resource: $message")
+                    _events.emit(AddResourceEvent.ShowError("Failed to add resource: $message"))
+                }
         }
     }
 }

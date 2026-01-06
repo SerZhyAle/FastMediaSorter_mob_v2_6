@@ -63,6 +63,21 @@
             android:theme="@style/Theme.FastMediaSorter"
             android:parentActivityName=".ui.main.MainActivity" />
 
+        <!-- Edit Resource Activity -->
+        <activity
+            android:name=".ui.resource.EditResourceActivity"
+            android:exported="false"
+            android:theme="@style/Theme.FastMediaSorter"
+            android:parentActivityName=".ui.main.MainActivity" />
+
+        <!-- Player Activity -->
+        <activity
+            android:name=".ui.player.PlayerActivity"
+            android:exported="false"
+            android:theme="@style/Theme.FastMediaSorter.Player"
+            android:configChanges="orientation|screenSize"
+            android:parentActivityName=".ui.browse.BrowseActivity" />
+
         <!-- FileProvider for sharing files -->
         <provider
             android:name="androidx.core.content.FileProvider"

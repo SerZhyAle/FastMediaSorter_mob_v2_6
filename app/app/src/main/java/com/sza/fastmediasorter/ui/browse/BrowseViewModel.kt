@@ -4,8 +4,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sza.fastmediasorter.domain.model.MediaFile
-import com.sza.fastmediasorter.domain.repository.MediaRepository
-import com.sza.fastmediasorter.domain.repository.ResourceRepository
+import com.sza.fastmediasorter.domain.model.Result
+import com.sza.fastmediasorter.domain.usecase.GetMediaFilesUseCase
+import com.sza.fastmediasorter.domain.usecase.GetResourcesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -25,8 +26,8 @@ import javax.inject.Inject
 @HiltViewModel
 class BrowseViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
-    private val resourceRepository: ResourceRepository,
-    private val mediaRepository: MediaRepository
+    private val getResourcesUseCase: GetResourcesUseCase,
+    private val getMediaFilesUseCase: GetMediaFilesUseCase
 ) : ViewModel() {
 
     companion object {
@@ -55,38 +56,46 @@ class BrowseViewModel @Inject constructor(
         loadingJob = viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, errorMessage = null) }
 
-            try {
-                // Load resource info
-                val resource = resourceRepository.getResourceById(resourceId)
-                if (resource == null) {
-                    _uiState.update { 
-                        it.copy(isLoading = false, errorMessage = "Resource not found")
+            // Load resource info
+            when (val resourceResult = getResourcesUseCase.getById(resourceId)) {
+                is Result.Success -> {
+                    val resource = resourceResult.data
+                    
+                    // Load files from the resource
+                    when (val filesResult = getMediaFilesUseCase(resourceId)) {
+                        is Result.Success -> {
+                            val files = filesResult.data
+                            _uiState.update {
+                                it.copy(
+                                    isLoading = false,
+                                    files = files,
+                                    resourceName = resource.name,
+                                    currentPath = resource.path,
+                                    showEmptyState = files.isEmpty()
+                                )
+                            }
+                            Timber.d("Loaded ${files.size} files for resource: ${resource.name}")
+                        }
+                        is Result.Error -> {
+                            _uiState.update {
+                                it.copy(
+                                    isLoading = false,
+                                    errorMessage = filesResult.message
+                                )
+                            }
+                        }
+                        is Result.Loading -> {
+                            // Already showing loading state
+                        }
                     }
-                    return@launch
                 }
-
-                // Load files from the resource
-                val files = mediaRepository.getFilesForResource(resourceId)
-
-                _uiState.update {
-                    it.copy(
-                        isLoading = false,
-                        files = files,
-                        resourceName = resource.name,
-                        currentPath = resource.path,
-                        showEmptyState = files.isEmpty()
-                    )
+                is Result.Error -> {
+                    _uiState.update { 
+                        it.copy(isLoading = false, errorMessage = resourceResult.message)
+                    }
                 }
-                
-                Timber.d("Loaded ${files.size} files for resource: ${resource.name}")
-
-            } catch (e: Exception) {
-                Timber.e(e, "Failed to load files")
-                _uiState.update {
-                    it.copy(
-                        isLoading = false,
-                        errorMessage = "Failed to load files: ${e.message}"
-                    )
+                is Result.Loading -> {
+                    // Already showing loading state
                 }
             }
         }

@@ -1,0 +1,254 @@
+# Tactical Development Plan - Current Phase
+
+**Date**: January 7, 2026  
+**Status**: Epic 1 Complete, Epic 2 ~90% Complete  
+**Project Version**: v2.0.0-dev
+
+---
+
+## Executive Summary
+
+The FastMediaSorter v2 project is being rebuilt from scratch with a clean architecture. The foundation (Epic 1) is **complete and solid**. Epic 2 (Local File Management) is approximately **90% complete** with core infrastructure including UseCases, FileOperationStrategy, PlayerActivity stub, and EditResourceActivity now implemented.
+
+---
+
+## 🟢 Epic 1: Foundation & Architecture - COMPLETE ✅
+
+### Completed Items
+
+| Component | Status | Files |
+|-----------|--------|-------|
+| Gradle Setup (Kotlin DSL) | ✅ | `build.gradle.kts`, `settings.gradle.kts` |
+| Version Catalog | ✅ | `gradle/libs.versions.toml` |
+| Hilt DI Configuration | ✅ | `FastMediaSorterApp.kt`, `di/*.kt` |
+| Room Database | ✅ | `AppDatabase.kt`, `dao/*.kt`, `entity/*.kt` |
+| BaseActivity/Fragment | ✅ | `ui/base/BaseActivity.kt`, `BaseFragment.kt` |
+| Timber Logging | ✅ | Configured in `FastMediaSorterApp.kt` |
+| Domain Models | ✅ | `Resource.kt`, `MediaFile.kt`, `Result.kt` |
+| Repository Interfaces | ✅ | `ResourceRepository.kt`, `MediaRepository.kt` |
+| Repository Implementations | ✅ | `ResourceRepositoryImpl.kt`, `MediaRepositoryImpl.kt` |
+
+### Verified Components
+
+- **Gradle Wrapper**: 8.9 ✅
+- **SDK Levels**: minSdk 28, targetSdk 35, compileSdk 35 ✅
+- **Dependencies**: Properly configured in `libs.versions.toml` ✅
+- **ViewBinding**: Enabled ✅
+- **BuildConfig**: Enabled with API key injection ✅
+
+---
+
+## 🟡 Epic 2: Local File Management - IN PROGRESS (75%)
+
+### Completed ✅
+
+| Component | Status | Files |
+|-----------|--------|-------|
+| WelcomeActivity | ✅ | `ui/welcome/WelcomeActivity.kt` |
+| Permissions Handler | ✅ | `util/PermissionsHandler.kt` |
+| MainActivity | ✅ | `ui/main/MainActivity.kt` |
+| MainViewModel | ✅ | `ui/main/MainViewModel.kt` |
+| ResourceAdapter | ✅ | `ui/main/ResourceAdapter.kt` |
+| BrowseActivity | ✅ | `ui/browse/BrowseActivity.kt` |
+| BrowseViewModel | ✅ | `ui/browse/BrowseViewModel.kt` (Updated with UseCases) |
+| MediaFileAdapter | ✅ | `ui/browse/MediaFileAdapter.kt` |
+| AddResourceActivity | ✅ | `ui/resource/AddResourceActivity.kt` |
+| AddResourceViewModel | ✅ | `ui/resource/AddResourceViewModel.kt` (Updated with UseCases) |
+| LocalMediaScanner | ✅ | `data/scanner/LocalMediaScanner.kt` |
+| Layouts | ✅ | All 6 layout files exist |
+| **GetMediaFilesUseCase** | ✅ NEW | `domain/usecase/GetMediaFilesUseCase.kt` |
+| **GetResourcesUseCase** | ✅ NEW | `domain/usecase/GetResourcesUseCase.kt` |
+| **AddResourceUseCase** | ✅ NEW | `domain/usecase/AddResourceUseCase.kt` |
+| **DeleteResourceUseCase** | ✅ NEW | `domain/usecase/DeleteResourceUseCase.kt` |
+| **UpdateResourceUseCase** | ✅ NEW | `domain/usecase/UpdateResourceUseCase.kt` |
+| **FileOperationStrategy** | ✅ NEW | `domain/operation/FileOperationStrategy.kt` |
+| **LocalOperationStrategy** | ✅ NEW | `data/operation/LocalOperationStrategy.kt` |
+| **OperationModule** | ✅ NEW | `di/OperationModule.kt` |
+| **PlayerActivity** | ✅ NEW | `ui/player/PlayerActivity.kt` |
+| **PlayerViewModel** | ✅ NEW | `ui/player/PlayerViewModel.kt` |
+| **PlayerUiState** | ✅ NEW | `ui/player/PlayerUiState.kt` |
+| **MediaPagerAdapter** | ✅ NEW | `ui/player/MediaPagerAdapter.kt` |
+| **Player Layouts** | ✅ NEW | `activity_player.xml`, `item_media_page.xml` |
+| **EditResourceActivity** | ✅ NEW | `ui/resource/EditResourceActivity.kt` |
+| **EditResourceViewModel** | ✅ NEW | `ui/resource/EditResourceViewModel.kt` |
+| **Edit Resource Layout** | ✅ NEW | `activity_edit_resource.xml` |
+
+### Missing - REMAINING WORK ⚠️
+
+| Component | Priority | Description |
+|-----------|----------|-------------|
+| **SettingsActivity** | 🟡 MEDIUM | No settings screen yet |
+| **FavoritesActivity** | 🟡 MEDIUM | No favorites browsing yet |
+| **Undo/Trash System** | 🟡 MEDIUM | Soft-delete not implemented |
+| **Pagination** | 🟡 MEDIUM | No pagination for large file lists |
+| **Sorting Dialog** | 🟢 LOW | Sort mode UI not implemented |
+| **Destinations System** | 🟡 MEDIUM | Move/copy destination selection |
+| **Video Player** | 🟡 MEDIUM | ExoPlayer integration (Epic 3) |
+| **Audio Player** | 🟡 MEDIUM | Audio playback with notification (Epic 3) |
+
+---
+
+## 🔵 Immediate Next Steps (Sprint 1) - UPDATED
+
+### ✅ Task 1: Create Core UseCases - COMPLETE
+**Status**: ✅ Completed January 6, 2026
+
+Created usecases:
+- `GetMediaFilesUseCase` ✅
+- `GetResourcesUseCase` ✅
+- `AddResourceUseCase` ✅
+- `DeleteResourceUseCase` ✅
+- `UpdateResourceUseCase` ✅
+
+### ✅ Task 2: Implement File Operation Strategy - COMPLETE
+**Status**: ✅ Completed January 6, 2026
+
+Implemented:
+- `FileOperationStrategy` interface ✅
+- `LocalOperationStrategy` implementation ✅
+- `OperationModule` for DI ✅
+- Operations: Copy, Move, Delete, Rename ✅
+
+### ✅ Task 3: Complete AddResourceActivity - COMPLETE
+**Status**: ✅ Completed January 6, 2026
+
+- ViewModel updated to use UseCases ✅
+- BrowseViewModel updated to use UseCases ✅
+
+### ✅ Task 4: Implement Player Activity Stub - COMPLETE
+**Status**: ✅ Completed January 6, 2026
+
+Created PlayerActivity with:
+- `PlayerActivity` with ViewPager2 ✅
+- `PlayerViewModel` for state management ✅
+- `PlayerUiState` and `PlayerUiEvent` sealed classes ✅
+- `MediaPagerAdapter` using Glide for images ✅
+- Full-screen mode with UI toggle ✅
+- Navigation integration from BrowseActivity ✅
+- Player theme with transparent status bar ✅
+
+**Location**: `ui/player/`
+
+### ✅ Task 5: Implement EditResourceActivity - COMPLETE
+**Status**: ✅ Completed January 7, 2026
+
+Created EditResourceActivity with:
+- `EditResourceActivity` with form UI ✅
+- `EditResourceViewModel` for state management ✅
+- `EditResourceUiState` and `EditResourceEvent` ✅
+- Name editing with validation ✅
+- Sort mode / Display mode dropdowns ✅
+- Destination toggle with options ✅
+- Work with all files toggle ✅
+- Delete with confirmation dialog ✅
+- Navigation from MainActivity (long-click / more button) ✅
+
+**Location**: `ui/resource/`
+
+### 🔵 Task 6: Implement SettingsActivity - NEXT
+**Estimated Effort**: 2-3 hours
+
+Create basic SettingsActivity with preferences:
+
+1. `SettingsActivity` with PreferenceFragments
+2. General settings (theme, language)
+3. Media settings (thumbnail size, cache)
+4. Playback settings (autoplay, loop)
+
+**Location**: `ui/settings/`
+
+---
+
+## 🟣 Sprint 2 Preview (Next Week)
+
+1. **Video Player Integration** - ExoPlayer setup
+2. **Audio Player Integration** - With notification service
+3. **SettingsActivity** - Basic settings UI
+4. **Destinations System** - Quick move/copy targets
+5. **File Selection Mode** - Multi-select in BrowseActivity
+
+---
+
+## Architecture Quick Reference
+
+```
+com.sza.fastmediasorter/
+├── FastMediaSorterApp.kt          # Hilt Application
+├── data/
+│   ├── db/
+│   │   ├── AppDatabase.kt         # Room Database
+│   │   ├── dao/                   # DAO interfaces
+│   │   └── entity/                # Room entities
+│   ├── operation/                 # Operation strategies
+│   │   └── LocalOperationStrategy.kt
+│   ├── repository/                # Repository implementations
+│   └── scanner/                   # Media scanners
+├── di/
+│   ├── AppModule.kt               # App-wide DI
+│   ├── DatabaseModule.kt          # DB providers
+│   ├── OperationModule.kt         # Operation providers
+│   └── RepositoryModule.kt        # Repo providers
+├── domain/
+│   ├── model/                     # Domain models
+│   ├── operation/                 # Operation interfaces
+│   │   └── FileOperationStrategy.kt
+│   ├── repository/                # Repository interfaces
+│   └── usecase/                   # Business logic
+│       ├── AddResourceUseCase.kt
+│       ├── DeleteResourceUseCase.kt
+│       ├── GetMediaFilesUseCase.kt
+│       ├── GetResourcesUseCase.kt
+│       └── UpdateResourceUseCase.kt
+├── ui/
+│   ├── base/                      # BaseActivity/Fragment
+│   ├── browse/                    # File browser
+│   ├── main/                      # Resource list
+│   ├── player/                    # [NEW] Media player
+│   │   ├── PlayerActivity.kt
+│   │   ├── PlayerViewModel.kt
+│   │   ├── PlayerUiState.kt
+│   │   └── MediaPagerAdapter.kt
+│   ├── resource/                  # Add/Edit resource
+│   │   ├── AddResourceActivity.kt
+│   │   ├── AddResourceViewModel.kt
+│   │   ├── EditResourceActivity.kt
+│   │   └── EditResourceViewModel.kt
+│   └── welcome/                   # Onboarding
+└── util/                          # Utilities
+```
+
+---
+
+## Critical Rules Reminder
+
+1. **No direct repository access from Activities** - Use ViewModels only
+2. **StateFlow for UI state** - Not LiveData
+3. **Result<T> wrapper** - All operations return Result
+4. **Timber for logging** - No `Log.d()` calls
+5. **ViewBinding only** - No findViewById()
+
+---
+
+## Build Verification
+
+To verify the build:
+```powershell
+cd app
+.\gradlew assembleDebug
+```
+
+**Note**: Requires JAVA_HOME to be set to JDK 17+
+
+---
+
+## References
+
+- [00_strategy.md](00_strategy.md) - Strategic roadmap
+- [00_strategy_epic1_foundation.md](00_strategy_epic1_foundation.md) - Epic 1 details
+- [00_strategy_epic2_local.md](00_strategy_epic2_local.md) - Epic 2 details
+- [17_architecture_patterns.md](17_architecture_patterns.md) - Clean Architecture guide
+- [00_project_rules.md](00_project_rules.md) - Development rules
+
+---
+
+*Last Updated: January 6, 2026*
