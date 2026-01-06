@@ -15,6 +15,7 @@ import com.sza.fastmediasorter.ui.base.BaseActivity
 import com.sza.fastmediasorter.ui.browse.BrowseActivity
 import com.sza.fastmediasorter.ui.resource.AddResourceActivity
 import com.sza.fastmediasorter.ui.resource.EditResourceActivity
+import com.sza.fastmediasorter.ui.settings.SettingsActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -145,11 +146,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             }
             is MainUiEvent.NavigateToSettings -> {
                 Timber.d("Navigate to settings")
-                // TODO: Start SettingsActivity
+                startActivity(Intent(this, SettingsActivity::class.java))
             }
             is MainUiEvent.NavigateToFavorites -> {
                 Timber.d("Navigate to favorites")
                 // TODO: Start FavoritesActivity or show Favorites fragment
+                Snackbar.make(binding.root, getString(R.string.feature_not_yet_implemented, "Favorites"), Snackbar.LENGTH_SHORT).show()
             }
         }
     }
