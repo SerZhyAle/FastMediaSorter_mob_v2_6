@@ -158,9 +158,14 @@ The FastMediaSorter v2 project is being rebuilt from scratch with a clean archit
 | Component | Priority | Description |
 |-----------|----------|-------------|
 | **Network File Operations** | 🔴 HIGH | Full FileOperationStrategy for SMB/SFTP/FTP (delete, rename, upload, mkdir) |
-| **Cloud Integration** | 🔴 HIGH | Google Drive, OneDrive, Dropbox clients |
-| **Search** | 🟡 MEDIUM | No search functionality yet |
-| **File Info Dialog** | 🟢 LOW | Show file details on info click |
+| **Cloud Integration** | 🔴 HIGH | Google Drive, OneDrive, Dropbox clients (requires API key setup) |
+
+### Recently Completed ✅
+
+| Component | Status | Description |
+|-----------|--------|-------------|
+| **File Info Dialog** | ✅ | Show comprehensive file details (EXIF, media metadata) |
+| **Search Functionality** | ✅ | Real-time search with filter by file name |
 
 ---
 
