@@ -139,11 +139,16 @@ class PlayerViewModel @Inject constructor(
     }
 
     /**
-     * Handles long click on media (future: context menu).
+     * Handles long click on media (shows context menu).
      */
     fun onMediaLongClick(): Boolean {
         Timber.d("Media long clicked")
-        // TODO: Show context menu
+        val state = _uiState.value
+        if (state.files.isNotEmpty() && state.currentIndex in state.files.indices) {
+            viewModelScope.launch {
+                _events.emit(PlayerUiEvent.ShowContextMenu(state.files[state.currentIndex]))
+            }
+        }
         return true
     }
 

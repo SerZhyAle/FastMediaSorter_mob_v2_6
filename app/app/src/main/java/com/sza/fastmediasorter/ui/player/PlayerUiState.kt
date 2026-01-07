@@ -48,5 +48,6 @@ sealed class PlayerUiEvent {
     data class ShareFile(val filePath: String) : PlayerUiEvent()
     data class ShowDeleteConfirmation(val filePath: String) : PlayerUiEvent()
     data class ShowFileInfo(val filePath: String) : PlayerUiEvent()
+    data class ShowContextMenu(val filePath: String) : PlayerUiEvent()
     data object NavigateBack : PlayerUiEvent()
 }

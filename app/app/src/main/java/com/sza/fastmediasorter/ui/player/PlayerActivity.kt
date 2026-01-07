@@ -288,9 +288,59 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
             is PlayerUiEvent.ShowFileInfo -> {
                 showFileInfoDialog(event.filePath)
             }
+            is PlayerUiEvent.ShowContextMenu -> {
+                showContextMenu(event.filePath)
+            }
             is PlayerUiEvent.NavigateBack -> {
                 finish()
             }
+        }
+    }
+    
+    private fun showContextMenu(filePath: String) {
+        val menuItems = arrayOf(
+            getString(R.string.share),
+            getString(R.string.file_info),
+            getString(R.string.action_delete),
+            getString(R.string.open_with),
+            getString(R.string.action_cancel)
+        )
+        
+        androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle(java.io.File(filePath).name)
+            .setItems(menuItems) { _, which ->
+                when (which) {
+                    0 -> shareFile(filePath)  // Share
+                    1 -> showFileInfoDialog(filePath)  // File Info
+                    2 -> showDeleteConfirmationDialog(filePath)  // Delete
+                    3 -> openWith(filePath)  // Open With
+                    // Cancel - do nothing
+                }
+            }
+            .show()
+    }
+    
+    private fun openWith(filePath: String) {
+        try {
+            val file = java.io.File(filePath)
+            val uri = androidx.core.content.FileProvider.getUriForFile(
+                this,
+                "${packageName}.fileprovider",
+                file
+            )
+            
+            val mimeType = contentResolver.getType(uri) ?: "*/*"
+            
+            val intent = android.content.Intent(android.content.Intent.ACTION_VIEW).apply {
+                setDataAndType(uri, mimeType)
+                addFlags(android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            }
+            
+            val chooser = android.content.Intent.createChooser(intent, getString(R.string.open_with))
+            startActivity(chooser)
+        } catch (e: Exception) {
+            Timber.e(e, "Error opening with external app")
+            Snackbar.make(binding.root, getString(R.string.error_unknown), Snackbar.LENGTH_SHORT).show()
         }
     }
 
