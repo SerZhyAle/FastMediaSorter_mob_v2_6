@@ -150,8 +150,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             }
             is MainUiEvent.NavigateToFavorites -> {
                 Timber.d("Navigate to favorites")
-                // TODO: Start FavoritesActivity or show Favorites fragment
-                Snackbar.make(binding.root, getString(R.string.feature_not_yet_implemented, "Favorites"), Snackbar.LENGTH_SHORT).show()
+                startActivity(com.sza.fastmediasorter.ui.favorites.FavoritesActivity.createIntent(this))
             }
         }
     }
