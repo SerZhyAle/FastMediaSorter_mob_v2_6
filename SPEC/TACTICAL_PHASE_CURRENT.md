@@ -1,14 +1,14 @@
 # Tactical Development Plan - Current Phase
 
 **Date**: January 8, 2026  
-**Status**: Epic 1 Complete, Epic 2 100% Complete, Epic 3 (Player) Complete, Epic 4 (Network) Complete  
+**Status**: Epic 1 Complete, Epic 2 100% Complete, Epic 3 (Player) Complete, Epic 4 (Network) Complete, Epic 6 (Advanced) Essentially Complete  
 **Project Version**: v2.0.0-dev
 
 ---
 
 ## Executive Summary
 
-The FastMediaSorter v2 project is being rebuilt from scratch with a clean architecture. The foundation (Epic 1) is **complete and solid**. Epic 2 (Local File Management) is **100% complete** with all core infrastructure including UseCases, FileOperationStrategy, PlayerActivity with Video/Audio support, EditResourceActivity, SettingsActivity with DataStore persistence, Destinations System, File Selection Mode, Sorting Dialog, Destination Picker, Undo/Trash System, FavoritesActivity, and Paging3 for large file lists now implemented. Epic 3 (Media Playback) is **complete** with ExoPlayer and MediaSession integration. Epic 4 (Network Layer) is **complete** with credential management, connection testing, network clients (SMB, SFTP, FTP), full file operations, and network resource browsing implemented. Epic 5 (Cloud Integration) is **deferred** pending API key setup. Epic 6 (Advanced Features) is **in progress** with app shortcuts completed.
+The FastMediaSorter v2 project is being rebuilt from scratch with a clean architecture. The foundation (Epic 1) is **complete and solid**. Epic 2 (Local File Management) is **100% complete** with all core infrastructure including UseCases, FileOperationStrategy, PlayerActivity with Video/Audio support, EditResourceActivity, SettingsActivity with DataStore persistence, Destinations System, File Selection Mode, Sorting Dialog, Destination Picker, Undo/Trash System, FavoritesActivity, and Paging3 for large file lists now implemented. Epic 3 (Media Playback) is **complete** with ExoPlayer and MediaSession integration. Epic 4 (Network Layer) is **complete** with credential management, connection testing, network clients (SMB, SFTP, FTP), full file operations, and network resource browsing implemented. Epic 5 (Cloud Integration) is **deferred** pending API key setup. Epic 6 (Advanced Features) is **essentially complete** with static/dynamic app shortcuts, resource launch widget, localization (RU/UK), and global search implemented. Only low-priority ML Kit features (OCR/Translation) remain deferred.
 
 ---
 
@@ -197,12 +197,12 @@ The FastMediaSorter v2 project is being rebuilt from scratch with a clean archit
 | **Resource Launch Widget** | ✅ | `ResourceLaunchWidget`, `ResourceWidgetConfigActivity`, widget layouts |
 | **Dynamic Shortcuts** | ✅ | `ShortcutHelper`, BrowseActivity visit tracking, MainActivity shortcut updates |
 | **Localization (RU/UK)** | ✅ | Complete strings.xml for Russian and Ukrainian |
+| **Global Search** | ✅ NEW | `GlobalSearchUseCase`, `SearchActivity`, filter chips, debounced search (300ms) |
 
 ### Remaining Work ⚠️
 
 | Component | Priority | Description |
 |-----------|----------|-------------|
-| **Global Search** | 🟡 HIGH | Search across all resources with filters (type, date, size) |
 | **OCR Integration** | 🔴 LOW | ML Kit Text Recognition (requires additional setup) |
 | **Translation** | 🔴 LOW | ML Kit Translation (requires additional setup) |
 
@@ -533,6 +533,32 @@ cd app
 
 ## Session Notes
 
+### January 8, 2026 - Global Search Implementation
+**Commit**: `f4b55b3`
+**Features Completed**:
+- Created `GlobalSearchUseCase` for searching across all resources with filtering logic
+- Implemented `SearchFilter` domain model with query, file types, size/date range filtering
+- Created `SearchResult` wrapper combining MediaFile and Resource for context
+- Built `SearchViewModel` with debounced search (300ms) and real-time filter updates
+- Developed `SearchActivity` with SearchView, filter chips (IMAGE/VIDEO/AUDIO/OTHER), and results list
+- Implemented `SearchResultAdapter` with Glide thumbnails and file metadata display
+- Created complete UI layouts (activity_search.xml with CoordinatorLayout, item_search_result.xml)
+- Added search menu item to MainActivity with navigation integration
+- Added complete translations (EN/RU/UK) for 8 search-related strings
+- Results sorted by modification date (newest first)
+
+**Technical Details**:
+- SearchView integration with `Flow<String>` debounce prevents excessive queries
+- Filter chips use `setOnCheckedChangeListener` for real-time filtering
+- FAB toggles filter visibility with smooth ScrollView animations
+- Empty state displays message, initial state shows search icon
+- Integration with existing BrowseActivity for file navigation
+- FileInfoDialog support on long-click
+- Handles cross-resource search with parallel repository queries
+- Supports date range filtering (before/after), file size filtering (min/max bytes)
+
+**Next**: Epic 6 (Advanced Features) is essentially complete except low-priority ML Kit features (OCR/Translation)
+
 ### January 7, 2026 - Dynamic Shortcuts Implementation
 **Commits**: `57e237f`, `998dea8`
 **Features Completed**:
@@ -553,4 +579,4 @@ cd app
 
 ---
 
-*Last Updated: January 7, 2026*
+*Last Updated: January 8, 2026*
