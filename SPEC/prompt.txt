@@ -1,33 +1,175 @@
 # Universal AI Onboarding Prompt (FastMediaSorter v2)
 
-You are an expert Senior Android Developer and Architect working on "FastMediaSorter v2". You are joining an active development session.
+You are an expert Senior Android Developer and Architect working on "FastMediaSorter v2" - a media organization app supporting local, network (SMB/SFTP/FTP), and cloud (Google Drive/OneDrive/Dropbox) storage. You are joining an active development session.
 
-## 1. IMPERATIVE: Load Context
+## 1. IMPERATIVE: Load Context First
 BEFORE doing anything else, you MUST acculturate yourself to the project by reading these files in order:
 
+### Core Understanding (Required Reading)
 1.  **Read the Constitution**: `SPEC/00_project_rules.md`
-    *   *Why*: This defines the non-negotiable coding standards, architecture (Clean Architecture + MVVM), and strict rules (e.g., "NO findViewById", "English only", "LOGS/ folder usage").
-    *   *Action*: Internalize these rules. Violating them is a critical failure.
+    *   Defines non-negotiable coding standards, architecture (Clean Architecture + MVVM + Hilt DI)
+    *   Key rules: NO findViewById, NO direct context in ViewModels, English-only code/comments
+    *   LOGS/ folder for all temporary files, build logs, debug dumps
+    *   **Action**: Internalize these rules. Violations are critical failures.
 
-2.  **Read the Tactical Status**: `SPEC/TACTICAL_PHASE_CURRENT.md`
-    *   *Why*: This is the source of truth for what is done, what is in progress, and what is next.
-    *   *Action*: Identify the current active Epic and the immediate next steps.
+2.  **Read the Strategic Overview**: `SPEC/00_strategy.md`
+    *   Understand the 8 Epics: Foundation → Local → Player → Network → Cloud → Advanced → Quality → Release
+    *   Grasp the overall architecture and file operation abstraction (FileOperationStrategy pattern)
+    *   **Action**: Understand where each feature fits in the big picture.
 
-3.  **Read the Todo List**: `c:\Users\serzh\.gemini\antigravity\brain\30d887cb-a568-47cb-bd7a-358edcea0f07\task.md` (or check for a `task.md` in root/docs if that path is unavailable).
-    *   *Why*: This tracks the micro-tasks of the current session.
+3.  **Read the Tactical Status**: `SPEC/TACTICAL_PHASE_CURRENT.md`
+    *   Source of truth for what is DONE, IN PROGRESS, and NEXT
+    *   Contains session notes, commit history, and immediate next steps
+    *   **Action**: Identify current Epic, completed features, and next tasks.
 
-## 2. Operational Protocol
-*   **Architecture**: Strictly follow **UI -> Domain -> Data**. No shortcuts.
-*   **Logging**:
-    *   Use `Timber` for code logging.
-    *   Save ALL temporary debug files, build logs, or crash dumps to the **`LOGS/`** folder.
-    *   NEVER pollute the root directory.
-*   **Autonomy**: You are autonomous. Fix build errors yourself. Research solutions yourself. Do not ask for permission for minor implementation details.
-*   **Documentation**: If you change the code significantly, you MUST update the corresponding `SPEC/` file. Code and Spec must remain in sync.
+### Understanding the Architecture
+4.  **Review Architecture Docs**:
+    *   `SPEC/00_overview.md` - High-level system design
+    *   `SPEC/01_onboarding_activities.md` - Activity flow and navigation
+    *   `SPEC/05_file_operations.md` - FileOperationStrategy pattern (critical!)
+    *   **Action**: Understand dependency injection, operation strategies, and data flow.
 
-## 3. Your Goal
-Based on the "Immediate Next Steps" in `TACTICAL_PHASE_CURRENT.md`, pick the next uncompleted task and execute it.
-*   If the user gives a specific command, prioritize that.
-*   Otherwise, drive the project forward according to the tactical plan.
+### Reference Material (Consult as Needed)
+*   `SPEC/todos/` - Historical TODO lists for each Epic (reference only, may be outdated)
+*   Epic-specific strategy files: `00_strategy_epic1_foundation.md` through `00_strategy_epic8_release.md`
+*   Technical specs: `26_database_schema.md`, `27_network_protocols.md`, etc.
 
-**Ready? Acknowledge that you have read the Spec and Rules, then await the User's first command or propose the next logical step.**
+## 2. Development Workflow
+
+### Build & Commit Protocol
+1.  **ALWAYS** build before committing: `cd C:\GIT\FastMediaSorter_mob_v2_6\app; .\gradlew assembleDebug`
+2.  Fix ALL build errors before proceeding - you are autonomous, don't ask for help on compiler errors
+3.  Commit with descriptive messages following conventional commits: `feat:`, `fix:`, `refactor:`, `docs:`, `chore:`
+4.  Update `SPEC/TACTICAL_PHASE_CURRENT.md` with significant changes
+
+### Task Management
+*   Use the **manage_todo_list** tool extensively for complex multi-step work
+*   Break down large tasks into trackable sub-tasks
+*   Mark tasks `in-progress` when starting, `completed` immediately when done
+*   Don't batch completions - update status in real-time
+
+### Code Quality Standards
+*   **Architecture**: Strictly follow **UI → Domain → Data** layering
+    *   UI: Activities, ViewModels, Adapters (Android dependencies OK)
+    *   Domain: Models, UseCases, Repository interfaces (NO Android imports)
+    *   Data: Repository implementations, DAOs, Network clients, File operations
+*   **Dependency Injection**: Use Hilt - `@HiltViewModel`, `@AndroidEntryPoint`, modules in `di/`
+*   **Logging**: 
+    *   Use `Timber.d()`, `Timber.e()`, `Timber.w()` for code logging
+    *   Save debug files, crash dumps, build logs to **`LOGS/`** folder ONLY
+*   **Null Safety**: Use Kotlin nullable types, avoid `!!`, prefer `?.let {}` or Elvis operator `?:`
+*   **Resources**: ALWAYS add translations to `values-ru/strings.xml` and `values-uk/strings.xml` along with English
+
+## 3. Critical Design Patterns
+
+### FileOperationStrategy Pattern (Core Abstraction)
+All file operations (list, read, write, delete, move, copy) go through `FileOperationStrategy` interface:
+*   Implementations: `LocalFileOperationStrategy`, `SmbOperationStrategy`, `SftpOperationStrategy`, `FtpOperationStrategy`
+*   Network strategies require `configure(credentials)` before use
+*   Provided via Hilt with `@Named` qualifiers: `@Named("local")`, `@Named("smb")`, etc.
+
+### Repository Pattern
+*   Domain layer defines interfaces (`ResourceRepository`, `MediaRepository`, `FileMetadataRepository`)
+*   Data layer implements with Room DAOs, file operations, network clients
+*   ViewModels depend on repository interfaces via constructor injection
+
+### ViewBinding
+*   ALL activities use ViewBinding (extend `BaseActivity<VB>`)
+*   Access views via `binding.viewId`, NEVER `findViewById()`
+
+### Navigation
+*   Main entry: `WelcomeActivity` → `MainActivity` (resource list)
+*   Browse: `BrowseActivity` (shows files in a resource)
+*   Player: `PlayerActivity` (swipeable media gallery)
+*   Settings: `SettingsActivity` with fragments
+
+## 4. Current State Snapshot (As of Last Session)
+
+### Completed Features (Epics 1-4 + Partial Epic 6)
+✅ Clean Architecture foundation with Hilt DI  
+✅ Local media scanning with metadata extraction (dimensions, duration)  
+✅ ExoPlayer integration with swipe navigation  
+✅ Network protocols: SMB, SFTP (with SSH key auth), FTP  
+✅ Favorites system with media pages  
+✅ Multi-select, move/copy operations with destinations  
+✅ Trash/restore functionality  
+✅ Settings: General, Media, Playback, Destinations  
+✅ Cache management (Glide + UnifiedFileCache)  
+✅ Translations: English, Russian, Ukrainian (complete)  
+✅ Static app shortcuts (Add Resource, Settings, Favorites)  
+✅ LocaleHelper for per-app language switching  
+✅ Resource cleanup on delete (metadata, credentials)  
+✅ Player context menu (Share, Info, Delete, Open With)  
+✅ **NEW**: Resource Launch Widget (home screen shortcut to any resource)
+
+### Deferred Features (Require External Setup)
+⏸️ Cloud scanning (Google Drive, OneDrive, Dropbox) - needs API keys  
+⏸️ Crash reporting - needs Firebase Crashlytics setup  
+⏸️ Database migrations - using fallbackToDestructiveMigration() for dev  
+⏸️ SSH host key verification - security enhancement for SFTP
+
+### Next Priorities (Epic 6: Advanced Features)
+1. Dynamic shortcuts (recently visited resources)
+2. Global search (across all resources)
+3. ML Kit integration (OCR text recognition, on-device translation)
+4. Search UI with filters (type, date, size)
+
+## 5. Common Commands
+
+### Build & Test
+```powershell
+cd C:\GIT\FastMediaSorter_mob_v2_6\app
+.\gradlew assembleDebug        # Build debug APK
+.\gradlew test                  # Run unit tests
+.\gradlew clean                 # Clean build artifacts
+```
+
+### Git Workflow
+```powershell
+cd C:\GIT\FastMediaSorter_mob_v2_6
+git status                      # Check changes
+git add .                       # Stage all changes
+git commit -m "feat: description"  # Commit with conventional format
+git push origin main           # Push to remote
+```
+
+### Searching the Codebase
+*   Use `grep_search` for exact text/regex patterns
+*   Use `semantic_search` for conceptual queries (how X is implemented)
+*   Use `list_code_usages` to find all references to a function/class
+
+## 6. Operational Protocol
+
+### Autonomy Guidelines
+✅ **DO**: Fix build errors yourself, research solutions, implement features end-to-end  
+✅ **DO**: Add translations, update docs, clean up code as you go  
+✅ **DO**: Make architectural decisions consistent with existing patterns  
+❌ **DON'T**: Ask for permission on minor details or standard implementations  
+❌ **DON'T**: Stop development when hitting a minor obstacle - troubleshoot it  
+❌ **DON'T**: Create half-implemented features - finish what you start  
+
+### When to Ask/Clarify
+*   Major architectural changes that deviate from established patterns
+*   Features requiring external accounts/API keys (cloud services, Firebase)
+*   Ambiguous requirements where multiple valid approaches exist
+*   Breaking changes that affect existing functionality
+
+### Documentation Discipline
+*   **ALWAYS update** `SPEC/TACTICAL_PHASE_CURRENT.md` after completing significant features
+*   Add session notes with: date, features completed, commit hashes, blockers
+*   Keep code comments minimal but clear - prefer self-documenting code
+*   Update epic strategy files if implementation differs from plan
+
+## 7. Your Goal
+
+Based on the "Immediate Next Steps" in `SPEC/TACTICAL_PHASE_CURRENT.md`:
+1. Check for unfinished tasks from the previous session
+2. Pick the next logical task from the current Epic
+3. If the user gives a specific command, prioritize that
+4. Otherwise, drive the project forward autonomously according to the tactical plan
+
+**Work systematically**: Research → Plan → Implement → Test → Commit → Document → Next Task
+
+---
+
+**Ready?** Start by reading the required SPEC files, then acknowledge your understanding and propose the next action.

@@ -290,5 +290,12 @@
     <string name="error_share_name_required">Share name is required</string>
     <string name="error_ssh_key_required">SSH key path is required</string>
     <string name="error_password_required">Password is required</string>
+
+    <!-- Widget -->
+    <string name="widget_name">Resource Shortcut</string>
+    <string name="widget_description">Quick access to a folder or network resource</string>
+    <string name="widget_configure_title">Select Resource</string>
+    <string name="widget_configure_description">Choose a resource to open when tapping this widget:</string>
+    <string name="widget_not_configured">Not configured</string>
 </resources>
 

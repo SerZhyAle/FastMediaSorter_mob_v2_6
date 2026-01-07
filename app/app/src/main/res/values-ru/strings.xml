@@ -290,4 +290,11 @@
     <string name="error_share_name_required">Необходимо указать имя общей папки</string>
     <string name="error_ssh_key_required">Необходимо указать путь к SSH-ключу</string>
     <string name="error_password_required">Необходимо указать пароль</string>
+
+    <!-- Widget -->
+    <string name="widget_name">Ярлык ресурса</string>
+    <string name="widget_description">Быстрый доступ к папке или сетевому ресурсу</string>
+    <string name="widget_configure_title">Выберите ресурс</string>
+    <string name="widget_configure_description">Выберите ресурс для открытия при нажатии на виджет:</string>
+    <string name="widget_not_configured">Не настроено</string>
 </resources>

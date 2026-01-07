@@ -290,4 +290,11 @@
     <string name="error_share_name_required">Необхідно вказати ім\'я спільної теки</string>
     <string name="error_ssh_key_required">Необхідно вказати шлях до SSH-ключа</string>
     <string name="error_password_required">Необхідно вказати пароль</string>
+
+    <!-- Widget -->
+    <string name="widget_name">Ярлик ресурсу</string>
+    <string name="widget_description">Швидкий доступ до теки або мережевого ресурсу</string>
+    <string name="widget_configure_title">Виберіть ресурс</string>
+    <string name="widget_configure_description">Виберіть ресурс для відкриття при натисканні на віджет:</string>
+    <string name="widget_not_configured">Не налаштовано</string>
 </resources>
