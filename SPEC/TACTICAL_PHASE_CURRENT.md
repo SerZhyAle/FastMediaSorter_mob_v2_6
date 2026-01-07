@@ -236,28 +236,54 @@ Implemented multi-select functionality in BrowseActivity:
 
 **Location**: `ui/browse/`
 
-### 🔵 Task 12: Sorting Dialog - NEXT
-**Estimated Effort**: 1-2 hours
+### ✅ Task 12: Sorting Dialog - COMPLETE
+**Status**: ✅ Completed January 7, 2026
 
-Implement sort options dialog in BrowseActivity:
+Implemented sort options dialog:
 
-1. Create SortOptionsDialog with sort mode selection
-2. Add sort by: Name, Date, Size, Type options
-3. Add ascending/descending toggle
-4. Connect to BrowseViewModel sort methods
-5. Persist sort preference per resource
+1. ✅ Created SortOptionsDialog with RadioButton selection
+2. ✅ Added all sort modes: Name (A-Z, Z-A), Date (Oldest, Newest), Size (Smallest, Largest)
+3. ✅ Connected to BrowseViewModel.onSortModeSelected()
+4. ✅ Added sortMode field to BrowseUiState
+5. ✅ Implemented sortFiles() for in-memory sorting
 
 **Location**: `ui/browse/`
+
+### ✅ Task 13: Destination Picker - COMPLETE
+**Status**: ✅ Completed January 7, 2026
+
+Implemented destination picker dialog:
+
+1. ✅ Created DestinationPickerDialog with RecyclerView of destinations
+2. ✅ Created DestinationPickerViewModel to load destinations from database
+3. ✅ Added executeFileOperation() method to BrowseViewModel
+4. ✅ Integrated with FileOperationStrategy for move/copy operations
+5. ✅ Added default FileOperationStrategy binding in OperationModule
+6. ✅ Created dialog and item layouts
+
+**Location**: `ui/browse/`
+
+### 🔵 Task 14: Undo/Trash System - NEXT
+**Estimated Effort**: 2-3 hours
+
+Implement soft-delete with recovery:
+
+1. Add trash folder support in LocalOperationStrategy
+2. Create TrashRepository for managing deleted files
+3. Add undo snackbar after delete operations
+4. Implement restore from trash functionality
+5. Add clear trash action in settings
+
+**Location**: `data/operation/`, `domain/repository/`
 
 ---
 
 ## 🟣 Sprint 2 Preview (Next Tasks)
 
-1. **Sorting Dialog** - Sort mode UI in BrowseActivity  
-2. **Destination Picker** - Dialog to select destination in selection mode
-3. **Undo/Trash System** - Soft-delete with recovery
-4. **Pagination** - For large file lists
-5. **FavoritesActivity** - Browse favorited files
+1. **Undo/Trash System** - Soft-delete with recovery
+2. **Pagination** - For large file lists
+3. **FavoritesActivity** - Browse favorited files
+4. **Thumbnail Loading** - Glide/Coil integration for thumbnails
 
 ---
 
