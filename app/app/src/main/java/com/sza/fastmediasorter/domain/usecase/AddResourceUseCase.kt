@@ -24,6 +24,7 @@ class AddResourceUseCase @Inject constructor(
      * @param name Display name for the resource
      * @param path Path or URI to the resource
      * @param type Type of resource (LOCAL, SMB, etc.)
+     * @param credentialsId Reference to network credentials (for network resources)
      * @param sortMode Initial sort mode
      * @param displayMode Initial display mode
      * @param workWithAllFiles Whether to include non-media files
@@ -33,6 +34,7 @@ class AddResourceUseCase @Inject constructor(
         name: String,
         path: String,
         type: ResourceType,
+        credentialsId: String? = null,
         sortMode: SortMode = SortMode.DATE_DESC,
         displayMode: DisplayMode = DisplayMode.GRID,
         workWithAllFiles: Boolean = false
@@ -68,6 +70,7 @@ class AddResourceUseCase @Inject constructor(
                 name = name.trim(),
                 path = path,
                 type = type,
+                credentialsId = credentialsId,
                 sortMode = sortMode,
                 displayMode = displayMode,
                 workWithAllFiles = workWithAllFiles

@@ -13,6 +13,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.snackbar.Snackbar
 import com.sza.fastmediasorter.R
 import com.sza.fastmediasorter.databinding.ActivityAddResourceBinding
+import com.sza.fastmediasorter.domain.model.NetworkType
 import com.sza.fastmediasorter.domain.model.ResourceType
 import com.sza.fastmediasorter.ui.base.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -64,15 +65,15 @@ class AddResourceActivity : BaseActivity<ActivityAddResourceBinding>() {
 
         // Network shares (not yet implemented)
         binding.cardSmb.setOnClickListener {
-            showNotYetImplemented(ResourceType.SMB)
+            showNetworkCredentialsDialog(ResourceType.SMB)
         }
         
         binding.cardSftp.setOnClickListener {
-            showNotYetImplemented(ResourceType.SFTP)
+            showNetworkCredentialsDialog(ResourceType.SFTP)
         }
         
         binding.cardFtp.setOnClickListener {
-            showNotYetImplemented(ResourceType.FTP)
+            showNetworkCredentialsDialog(ResourceType.FTP)
         }
 
         // Cloud storage (not yet implemented)
@@ -101,6 +102,37 @@ class AddResourceActivity : BaseActivity<ActivityAddResourceBinding>() {
     private fun showNotYetImplemented(type: ResourceType) {
         val message = getString(R.string.feature_not_yet_implemented, type.name)
         Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
+    }
+
+    private fun showNetworkCredentialsDialog(resourceType: ResourceType) {
+        val networkType = when (resourceType) {
+            ResourceType.SMB -> NetworkType.SMB
+            ResourceType.SFTP -> NetworkType.SFTP
+            ResourceType.FTP -> NetworkType.FTP
+            else -> return
+        }
+
+        val dialog = NetworkCredentialsDialog.newInstance(networkType)
+        dialog.setOnCredentialsSubmittedListener { credentialId, type, name, server, port, 
+            username, password, domain, shareName, useSshKey, sshKeyPath ->
+            
+            viewModel.onNetworkCredentialsEntered(
+                credentialId = credentialId,
+                type = type,
+                name = name,
+                server = server,
+                port = port,
+                username = username,
+                password = password,
+                domain = domain,
+                shareName = shareName,
+                useSshKey = useSshKey,
+                sshKeyPath = sshKeyPath
+            )
+            
+            dialog.dismiss()
+        }
+        dialog.show(supportFragmentManager, "NetworkCredentialsDialog")
     }
 
     private fun observeEvents() {

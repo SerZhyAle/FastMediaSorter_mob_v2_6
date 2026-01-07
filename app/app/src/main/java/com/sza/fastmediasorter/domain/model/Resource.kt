@@ -17,6 +17,9 @@ data class Resource(
     /** Resource type (local, network, cloud) */
     val type: ResourceType,
     
+    /** Reference to network credentials (for network resources) */
+    val credentialsId: String? = null,
+    
     /** Sorting preference for files in this resource */
     val sortMode: SortMode = SortMode.NAME_ASC,
     
