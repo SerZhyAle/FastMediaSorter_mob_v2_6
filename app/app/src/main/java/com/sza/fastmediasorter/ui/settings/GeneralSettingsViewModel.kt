@@ -1,16 +1,22 @@
 package com.sza.fastmediasorter.ui.settings
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bumptech.glide.Glide
+import com.sza.fastmediasorter.data.cache.UnifiedFileCache
 import com.sza.fastmediasorter.domain.repository.PreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -20,7 +26,9 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class GeneralSettingsViewModel @Inject constructor(
-    private val preferencesRepository: PreferencesRepository
+    private val preferencesRepository: PreferencesRepository,
+    private val unifiedFileCache: UnifiedFileCache,
+    @ApplicationContext private val context: Context
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(GeneralSettingsUiState())
@@ -29,6 +37,7 @@ class GeneralSettingsViewModel @Inject constructor(
     init {
         Timber.d("GeneralSettingsViewModel initialized")
         loadSettings()
+        loadCacheSize()
     }
 
     private fun loadSettings() {
@@ -121,8 +130,34 @@ class GeneralSettingsViewModel @Inject constructor(
 
     fun clearCache() {
         Timber.d("Clearing cache...")
-        // TODO: Implement cache clearing via CacheManager
-        _uiState.update { it.copy(cacheSizeDisplay = "0 MB") }
+        viewModelScope.launch {
+            // Clear Glide cache (disk)
+            withContext(Dispatchers.IO) {
+                Glide.get(context).clearDiskCache()
+            }
+            // Clear Glide memory cache (must be on main thread)
+            withContext(Dispatchers.Main) {
+                Glide.get(context).clearMemory()
+            }
+            // Clear unified file cache
+            unifiedFileCache.clearAll()
+            
+            Timber.d("Cache cleared successfully")
+            _uiState.update { it.copy(cacheSizeDisplay = "0 MB") }
+        }
+    }
+    
+    private fun loadCacheSize() {
+        viewModelScope.launch {
+            val unifiedCacheSize = unifiedFileCache.getCacheSize()
+            val totalSizeMB = unifiedCacheSize / 1024.0 / 1024.0
+            val displaySize = if (totalSizeMB >= 1) {
+                String.format("%.1f MB", totalSizeMB)
+            } else {
+                String.format("%.0f KB", unifiedCacheSize / 1024.0)
+            }
+            _uiState.update { it.copy(cacheSizeDisplay = displaySize) }
+        }
     }
 }
 
