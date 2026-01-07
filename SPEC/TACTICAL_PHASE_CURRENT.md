@@ -242,11 +242,40 @@ The FastMediaSorter v2 project is being rebuilt from scratch with a clean archit
 
 | Component | Priority | Description |
 |-----------|----------|-------------|
-| **Unit Tests** | 🟡 MEDIUM | Add domain layer unit tests (UseCases, models) |
 | **Stress Testing** | 🔴 LOW | Test with 10k+ files, slow network, memory profiling |
 | **Store Assets** | 🟡 MEDIUM | Screenshots, feature graphics, app descriptions |
 | **Privacy Policy** | 🟡 MEDIUM | Host privacy policy page (already exists as PRIVACY_POLICY.html) |
 | **Keystore Generation** | 🔴 LOW | Generate production keystore for release signing |
+
+---
+
+## Session Notes
+
+### January 7, 2026 - Unit Tests Implementation & Epic 8 Progress
+**Commit**: `<pending>`
+**Features Completed**:
+- Created comprehensive unit tests for domain layer UseCases
+- `AddResourceUseCaseTest` - 12 tests covering validation, duplicate handling, credentials
+- `GetResourcesUseCaseTest` - 8 tests for flow/sync retrieval and error handling
+- `UpdateResourceUseCaseTest` - 7 tests for resource updates and mode changes
+- `DeleteResourceUseCaseTest` - 4 tests for deletion and cleanup operations
+- Added test dependencies to libs.versions.toml (JUnit 4.13.2, Mockito 5.8.0, MockitoKotlin 5.2.1, Coroutines Test 1.8.0)
+- All 32 unit tests passing successfully (100% pass rate)
+
+**Technical Details**:
+- Tests use MockitoKotlin for mocking repositories
+- Coroutines Test for runTest blocks
+- Tests cover happy path, validation errors, edge cases, exception handling
+- Verified Result<T> error codes and messages
+- Tests validate proper repository interaction (verify calls)
+
+**Epic 8 Status**: 🟡 In Progress
+- Production hardening: ✅ Complete (R8, ProGuard, signing)
+- Unit tests: ✅ Complete (32 passing tests for UseCases)
+- Documentation: ✅ Reviewed
+- Remaining: Stress testing (optional), store assets, keystore generation
+
+**Next**: Optionally add stress tests, or proceed to store assets preparation for release
 
 ---
 

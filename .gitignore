@@ -36,6 +36,7 @@ captures/
 # IntelliJ
 *.iml
 .idea/
+!.idea/runConfigurations/
 misc.xml
 deploymentTargetDropDown.xml
 render.experimental.xml
