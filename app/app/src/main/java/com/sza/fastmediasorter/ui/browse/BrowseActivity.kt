@@ -188,9 +188,7 @@ class BrowseActivity : BaseActivity<ActivityBrowseBinding>() {
                 finish()
             }
             is BrowseUiEvent.ShowDestinationPicker -> {
-                // TODO: Show destination picker dialog
-                Timber.d("Show destination picker for ${event.selectedFiles.size} files")
-                Snackbar.make(binding.root, "Destination picker coming soon", Snackbar.LENGTH_SHORT).show()
+                showDestinationPicker(event.selectedFiles, event.isMove)
             }
             is BrowseUiEvent.ShowDeleteConfirmation -> {
                 showDeleteConfirmationDialog(event.count)
@@ -207,6 +205,14 @@ class BrowseActivity : BaseActivity<ActivityBrowseBinding>() {
             viewModel.onSortModeSelected(sortMode)
         }
         dialog.show(supportFragmentManager, SortOptionsDialog.TAG)
+    }
+
+    private fun showDestinationPicker(selectedFiles: List<String>, isMove: Boolean) {
+        val dialog = DestinationPickerDialog.newInstance(selectedFiles, isMove)
+        dialog.onDestinationSelected = { resource ->
+            viewModel.executeFileOperation(selectedFiles, resource.path, isMove)
+        }
+        dialog.show(supportFragmentManager, DestinationPickerDialog.TAG)
     }
 
     private fun showDeleteConfirmationDialog(count: Int) {

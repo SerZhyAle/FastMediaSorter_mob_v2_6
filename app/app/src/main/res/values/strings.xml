@@ -19,6 +19,12 @@
     <string name="selected_count">%d selected</string>
     <string name="delete_confirmation_title">Delete Files?</string>
     <string name="delete_confirmation_message">Are you sure you want to delete %d file(s)? This action cannot be undone.</string>
+    <string name="select_destination_move">Move to…</string>
+    <string name="select_destination_copy">Copy to…</string>
+    <string name="no_destinations">No destinations configured.\nAdd destinations in Settings to use quick move/copy.</string>
+    <string name="files_moved">%d file(s) moved</string>
+    <string name="files_copied">%d file(s) copied</string>
+    <string name="operation_in_progress">Operation in progress…</string>
 
     <!-- Welcome/Onboarding -->
     <string name="welcome_title">Welcome to FastMediaSorter</string>
@@ -180,7 +186,6 @@
     <string name="auto_play_videos">Auto-play videos</string>
 
     <!-- Settings - Destinations -->
-    <string name="no_destinations">No destinations</string>
     <string name="no_destinations_description">Add resources as quick move/copy destinations</string>
     <string name="add_destination">Add destination</string>
     <string name="remove_destination">Remove destination</string>

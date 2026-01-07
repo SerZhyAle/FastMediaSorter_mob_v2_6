@@ -35,7 +35,7 @@ sealed class BrowseUiEvent {
     data class ShowSnackbar(val message: String) : BrowseUiEvent()
     data class NavigateToPlayer(val filePath: String, val files: List<String>, val currentIndex: Int) : BrowseUiEvent()
     data object NavigateBack : BrowseUiEvent()
-    data class ShowDestinationPicker(val selectedFiles: List<String>) : BrowseUiEvent()
+    data class ShowDestinationPicker(val selectedFiles: List<String>, val isMove: Boolean) : BrowseUiEvent()
     data class ShowDeleteConfirmation(val count: Int) : BrowseUiEvent()
     data class ShowSortDialog(val currentSortMode: SortMode) : BrowseUiEvent()
 }

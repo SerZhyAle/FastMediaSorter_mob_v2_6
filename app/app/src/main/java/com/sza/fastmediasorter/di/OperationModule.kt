@@ -19,6 +19,14 @@ import javax.inject.Singleton
 object OperationModule {
 
     /**
+     * Provide the default file operation strategy (local).
+     * This is used when no specific protocol is specified.
+     */
+    @Provides
+    @Singleton
+    fun provideDefaultOperationStrategy(): FileOperationStrategy = LocalOperationStrategy()
+
+    /**
      * Provide the local file operation strategy.
      */
     @Provides

@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.sza.fastmediasorter.domain.model.MediaFile
 import com.sza.fastmediasorter.domain.model.Result
 import com.sza.fastmediasorter.domain.model.SortMode
+import com.sza.fastmediasorter.domain.operation.FileOperationStrategy
 import com.sza.fastmediasorter.domain.usecase.GetMediaFilesUseCase
 import com.sza.fastmediasorter.domain.usecase.GetResourcesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,6 +19,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.io.File
 import javax.inject.Inject
 
 /**
@@ -28,7 +30,8 @@ import javax.inject.Inject
 class BrowseViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val getResourcesUseCase: GetResourcesUseCase,
-    private val getMediaFilesUseCase: GetMediaFilesUseCase
+    private val getMediaFilesUseCase: GetMediaFilesUseCase,
+    private val fileOperationStrategy: FileOperationStrategy
 ) : ViewModel() {
 
     companion object {
@@ -181,7 +184,7 @@ class BrowseViewModel @Inject constructor(
         viewModelScope.launch {
             val selectedFiles = _uiState.value.selectedFiles.toList()
             if (selectedFiles.isNotEmpty()) {
-                _events.emit(BrowseUiEvent.ShowDestinationPicker(selectedFiles))
+                _events.emit(BrowseUiEvent.ShowDestinationPicker(selectedFiles, isMove = true))
             }
         }
     }
@@ -190,7 +193,7 @@ class BrowseViewModel @Inject constructor(
         viewModelScope.launch {
             val selectedFiles = _uiState.value.selectedFiles.toList()
             if (selectedFiles.isNotEmpty()) {
-                _events.emit(BrowseUiEvent.ShowDestinationPicker(selectedFiles))
+                _events.emit(BrowseUiEvent.ShowDestinationPicker(selectedFiles, isMove = false))
             }
         }
     }
@@ -251,6 +254,56 @@ class BrowseViewModel @Inject constructor(
             } else {
                 _events.emit(BrowseUiEvent.NavigateBack)
             }
+        }
+    }
+
+    fun executeFileOperation(filePaths: List<String>, destinationDir: String, isMove: Boolean) {
+        viewModelScope.launch {
+            _uiState.update { it.copy(isLoading = true) }
+            
+            var successCount = 0
+            var failCount = 0
+            
+            for (filePath in filePaths) {
+                val fileName = File(filePath).name
+                val destinationPath = "$destinationDir/$fileName"
+                
+                // Create a simple MediaFile for the operation
+                val sourceFile = _uiState.value.files.find { it.path == filePath }
+                if (sourceFile == null) {
+                    failCount++
+                    continue
+                }
+                
+                val result = if (isMove) {
+                    fileOperationStrategy.move(sourceFile, destinationPath)
+                } else {
+                    fileOperationStrategy.copy(sourceFile, destinationPath)
+                }
+                
+                when (result) {
+                    is Result.Success -> successCount++
+                    is Result.Error -> {
+                        failCount++
+                        Timber.e(result.throwable, "Failed to ${if (isMove) "move" else "copy"} $filePath: ${result.message}")
+                    }
+                    is Result.Loading -> { /* Ignore loading state */ }
+                }
+            }
+            
+            // Exit selection mode and refresh
+            exitSelectionMode()
+            refresh()
+            
+            // Show result message
+            val message = if (isMove) {
+                if (failCount == 0) "$successCount file(s) moved"
+                else "$successCount moved, $failCount failed"
+            } else {
+                if (failCount == 0) "$successCount file(s) copied"
+                else "$successCount copied, $failCount failed"
+            }
+            _events.emit(BrowseUiEvent.ShowSnackbar(message))
         }
     }
 }
