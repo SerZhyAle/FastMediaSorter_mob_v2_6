@@ -175,6 +175,9 @@ class BrowseActivity : BaseActivity<ActivityBrowseBinding>() {
             is BrowseUiEvent.ShowSnackbar -> {
                 Snackbar.make(binding.root, event.message, Snackbar.LENGTH_SHORT).show()
             }
+            is BrowseUiEvent.ShowUndoSnackbar -> {
+                showUndoSnackbar(event.message, event.deletedCount)
+            }
             is BrowseUiEvent.NavigateToPlayer -> {
                 Timber.d("Navigate to player: ${event.filePath}")
                 val intent = PlayerActivity.createIntent(
@@ -197,6 +200,14 @@ class BrowseActivity : BaseActivity<ActivityBrowseBinding>() {
                 showSortDialog(event.currentSortMode)
             }
         }
+    }
+
+    private fun showUndoSnackbar(message: String, deletedCount: Int) {
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG)
+            .setAction(R.string.action_undo) {
+                viewModel.undoRecentDeletes(deletedCount)
+            }
+            .show()
     }
 
     private fun showSortDialog(currentSortMode: com.sza.fastmediasorter.domain.model.SortMode) {

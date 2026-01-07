@@ -33,6 +33,7 @@ data class BrowseUiState(
  */
 sealed class BrowseUiEvent {
     data class ShowSnackbar(val message: String) : BrowseUiEvent()
+    data class ShowUndoSnackbar(val message: String, val deletedCount: Int) : BrowseUiEvent()
     data class NavigateToPlayer(val filePath: String, val files: List<String>, val currentIndex: Int) : BrowseUiEvent()
     data object NavigateBack : BrowseUiEvent()
     data class ShowDestinationPicker(val selectedFiles: List<String>, val isMove: Boolean) : BrowseUiEvent()

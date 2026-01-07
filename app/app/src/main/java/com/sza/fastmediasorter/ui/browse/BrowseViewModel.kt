@@ -3,6 +3,7 @@ package com.sza.fastmediasorter.ui.browse
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sza.fastmediasorter.data.operation.TrashManager
 import com.sza.fastmediasorter.domain.model.MediaFile
 import com.sza.fastmediasorter.domain.model.Result
 import com.sza.fastmediasorter.domain.model.SortMode
@@ -31,7 +32,8 @@ class BrowseViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val getResourcesUseCase: GetResourcesUseCase,
     private val getMediaFilesUseCase: GetMediaFilesUseCase,
-    private val fileOperationStrategy: FileOperationStrategy
+    private val fileOperationStrategy: FileOperationStrategy,
+    private val trashManager: TrashManager
 ) : ViewModel() {
 
     companion object {
@@ -209,9 +211,77 @@ class BrowseViewModel @Inject constructor(
 
     fun confirmDelete() {
         viewModelScope.launch {
-            val selectedFiles = _uiState.value.selectedFiles.toList()
-            // TODO: Implement actual file deletion via use case
+            _uiState.update { it.copy(isLoading = true) }
+            
+            val selectedPaths = _uiState.value.selectedFiles.toList()
+            val selectedFiles = _uiState.value.files.filter { it.path in selectedPaths }
+            
+            var successCount = 0
+            var failCount = 0
+            
+            for (file in selectedFiles) {
+                when (trashManager.moveToTrash(file)) {
+                    is Result.Success -> successCount++
+                    is Result.Error -> {
+                        failCount++
+                        Timber.e("Failed to delete: ${file.path}")
+                    }
+                    is Result.Loading -> { /* Ignore */ }
+                }
+            }
+            
             exitSelectionMode()
+            refresh()
+            
+            // Show undo snackbar
+            if (successCount > 0) {
+                val message = if (failCount == 0) {
+                    "$successCount file(s) deleted"
+                } else {
+                    "$successCount deleted, $failCount failed"
+                }
+                _events.emit(BrowseUiEvent.ShowUndoSnackbar(message, successCount))
+            } else if (failCount > 0) {
+                _events.emit(BrowseUiEvent.ShowSnackbar("Failed to delete files"))
+            }
+        }
+    }
+
+    fun undoLastDelete() {
+        viewModelScope.launch {
+            val lastDeleted = trashManager.getLastDeleted()
+            if (lastDeleted != null) {
+                when (val result = trashManager.restoreFromTrash(lastDeleted)) {
+                    is Result.Success -> {
+                        refresh()
+                        _events.emit(BrowseUiEvent.ShowSnackbar("File restored"))
+                    }
+                    is Result.Error -> {
+                        _events.emit(BrowseUiEvent.ShowSnackbar("Failed to restore: ${result.message}"))
+                    }
+                    is Result.Loading -> { /* Ignore */ }
+                }
+            }
+        }
+    }
+
+    fun undoRecentDeletes(count: Int) {
+        viewModelScope.launch {
+            val recentlyDeleted = trashManager.getRecentlyDeleted().take(count)
+            var restoredCount = 0
+            
+            for (trashedFile in recentlyDeleted) {
+                when (trashManager.restoreFromTrash(trashedFile)) {
+                    is Result.Success -> restoredCount++
+                    is Result.Error -> Timber.e("Failed to restore: ${trashedFile.originalPath}")
+                    is Result.Loading -> { /* Ignore */ }
+                }
+            }
+            
+            if (restoredCount > 0) {
+                refresh()
+                _events.emit(BrowseUiEvent.ShowSnackbar("$restoredCount file(s) restored"))
+            }
         }
     }
 
