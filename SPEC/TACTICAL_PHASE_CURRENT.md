@@ -1,14 +1,14 @@
 # Tactical Development Plan - Current Phase
 
 **Date**: January 7, 2026  
-**Status**: Epic 1 Complete, Epic 2 ~98% Complete, Epic 3 Started  
+**Status**: Epic 1 Complete, Epic 2 ~100% Complete, Epic 3 Started  
 **Project Version**: v2.0.0-dev
 
 ---
 
 ## Executive Summary
 
-The FastMediaSorter v2 project is being rebuilt from scratch with a clean architecture. The foundation (Epic 1) is **complete and solid**. Epic 2 (Local File Management) is approximately **98% complete** with all core infrastructure including UseCases, FileOperationStrategy, PlayerActivity with Video/Audio support, EditResourceActivity, SettingsActivity with DataStore persistence, Destinations System, and File Selection Mode now implemented. Epic 3 (Media Playback) is well underway with ExoPlayer and MediaSession integration.
+The FastMediaSorter v2 project is being rebuilt from scratch with a clean architecture. The foundation (Epic 1) is **complete and solid**. Epic 2 (Local File Management) is **100% complete** with all core infrastructure including UseCases, FileOperationStrategy, PlayerActivity with Video/Audio support, EditResourceActivity, SettingsActivity with DataStore persistence, Destinations System, File Selection Mode, Sorting Dialog, Destination Picker, Undo/Trash System, and FavoritesActivity now implemented. Epic 3 (Media Playback) is well underway with ExoPlayer and MediaSession integration.
 
 ---
 
@@ -82,16 +82,22 @@ The FastMediaSorter v2 project is being rebuilt from scratch with a clean archit
 | **DestinationsSettingsViewModel** | ✅ NEW | `ui/settings/DestinationsSettingsViewModel.kt` |
 | **DestinationAdapter** | ✅ NEW | `ui/settings/DestinationAdapter.kt` |
 | **File Selection Mode** | ✅ NEW | Selection in BrowseActivity with Move/Copy/Delete |
+| **SortOptionsDialog** | ✅ NEW | `ui/browse/SortOptionsDialog.kt` |
+| **DestinationPickerDialog** | ✅ NEW | `ui/browse/DestinationPickerDialog.kt` |
+| **TrashManager** | ✅ NEW | `data/operation/TrashManager.kt` |
+| **FileMetadataRepositoryImpl** | ✅ NEW | `data/repository/FileMetadataRepositoryImpl.kt` |
+| **GetFavoriteFilesUseCase** | ✅ NEW | `domain/usecase/GetFavoriteFilesUseCase.kt` |
+| **FavoritesActivity** | ✅ NEW | `ui/favorites/FavoritesActivity.kt` |
+| **FavoritesViewModel** | ✅ NEW | `ui/favorites/FavoritesViewModel.kt` |
+| **Glide Thumbnail Loading** | ✅ NEW | `ui/browse/MediaFileAdapter.kt` |
 
 ### Missing - REMAINING WORK ⚠️
 
 | Component | Priority | Description |
 |-----------|----------|-------------|
-| **FavoritesActivity** | 🟡 MEDIUM | No favorites browsing yet |
-| **Undo/Trash System** | 🟡 MEDIUM | Soft-delete not implemented |
 | **Pagination** | 🟡 MEDIUM | No pagination for large file lists |
-| **Sorting Dialog** | 🟢 LOW | Sort mode UI not implemented |
-| **Destination Picker** | 🟡 MEDIUM | Dialog to pick destination for move/copy |
+| **Search** | 🟡 MEDIUM | No search functionality yet |
+| **File Info Dialog** | 🟢 LOW | Show file details on info click |
 
 ---
 
@@ -263,27 +269,56 @@ Implemented destination picker dialog:
 
 **Location**: `ui/browse/`
 
-### 🔵 Task 14: Undo/Trash System - NEXT
+### ✅ Task 14: Undo/Trash System - COMPLETE
+**Status**: ✅ Completed January 7, 2026
+
+Implemented soft-delete with recovery:
+
+1. ✅ Created TrashManager with .trash folder support
+2. ✅ Added moveToTrash() method with timestamp-prefixed names
+3. ✅ Implemented restoreFromTrash() for undo operations
+4. ✅ Added ShowUndoSnackbar event to BrowseUiEvent
+5. ✅ Updated BrowseViewModel.confirmDelete() to use TrashManager
+6. ✅ Added undoRecentDeletes() for multi-file restore
+7. ✅ Updated delete confirmation message for soft-delete
+
+**Location**: `data/operation/`, `ui/browse/`
+
+### ✅ Task 15: FavoritesActivity - COMPLETE
+**Status**: ✅ Completed January 7, 2026
+
+Implemented favorites browsing:
+
+1. ✅ Created FileMetadataRepositoryImpl for favorites persistence
+2. ✅ Added GetFavoriteFilesUseCase for loading favorite files
+3. ✅ Created FavoritesActivity with grid view
+4. ✅ Created FavoritesViewModel for state management
+5. ✅ Connected to PlayerActivity for playback
+6. ✅ Wired up navigation from MainActivity menu
+7. ✅ Added empty state with hint
+
+**Location**: `ui/favorites/`, `domain/usecase/`, `data/repository/`
+
+### 🔵 Task 16: Pagination - NEXT
 **Estimated Effort**: 2-3 hours
 
-Implement soft-delete with recovery:
+Implement Paging3 for large file lists:
 
-1. Add trash folder support in LocalOperationStrategy
-2. Create TrashRepository for managing deleted files
-3. Add undo snackbar after delete operations
-4. Implement restore from trash functionality
-5. Add clear trash action in settings
+1. Add paging3 dependency
+2. Create MediaFilePagingSource
+3. Update GetMediaFilesUseCase with Flow<PagingData>
+4. Update adapters to use PagingDataAdapter
 
-**Location**: `data/operation/`, `domain/repository/`
+**Location**: `data/paging/`, `ui/browse/`
 
 ---
 
 ## 🟣 Sprint 2 Preview (Next Tasks)
 
-1. **Undo/Trash System** - Soft-delete with recovery
-2. **Pagination** - For large file lists
-3. **FavoritesActivity** - Browse favorited files
-4. **Thumbnail Loading** - Glide/Coil integration for thumbnails
+1. **Pagination** - For large file lists using Paging3
+2. **Thumbnail Loading Enhancement** - Better caching and placeholders
+3. **Search Functionality** - Search within resources
+4. **File Info Dialog** - Show file details (size, date, dimensions)
 
 ---
 
