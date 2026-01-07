@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.Glide
 import com.sza.fastmediasorter.data.cache.UnifiedFileCache
 import com.sza.fastmediasorter.domain.repository.PreferencesRepository
+import com.sza.fastmediasorter.util.LocaleHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
@@ -72,7 +73,8 @@ class GeneralSettingsViewModel @Inject constructor(
         viewModelScope.launch {
             preferencesRepository.setLanguage(langCode)
         }
-        // TODO: Apply locale change via LocaleHelper and recreate activities
+        // Apply locale change - this will automatically recreate activities
+        LocaleHelper.setLocale(langCode)
     }
 
     fun setTheme(theme: String) {
