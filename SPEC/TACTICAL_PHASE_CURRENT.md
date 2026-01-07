@@ -175,13 +175,15 @@ The FastMediaSorter v2 project is being rebuilt from scratch with a clean archit
 | **Network File Operations** | ✅ | Full FileOperationStrategy for SMB/SFTP/FTP (delete, rename, upload, mkdir) |
 | **File Info Dialog** | ✅ | Show comprehensive file details (EXIF, media metadata) |
 | **Search Functionality** | ✅ | Real-time search with filter by file name |
-| **Network Strategy DI** | ✅ NEW | OperationModule provides SmbOperationStrategy, SftpOperationStrategy, FtpOperationStrategy |
-| **Protocol Icons** | ✅ NEW | ic_smb.xml, ic_sftp.xml - ResourceAdapter uses protocol-specific icons |
-| **SSH Key Auth** | ✅ NEW | MediaRepositoryImpl reads SSH key from file for SFTP auth |
-| **Media Metadata** | ✅ NEW | LocalMediaScanner extracts image dimensions and video/audio duration |
-| **Full Translations** | ✅ NEW | Complete Russian and Ukrainian translations (270+ strings each) |
-| **Cache Management** | ✅ NEW | GeneralSettingsViewModel clears Glide and UnifiedFileCache |
-| **App Shortcuts** | ✅ NEW | Static shortcuts: Add Resource, Settings, Favorites (shortcuts.xml) |
+| **Network Strategy DI** | ✅ | OperationModule provides SmbOperationStrategy, SftpOperationStrategy, FtpOperationStrategy |
+| **Protocol Icons** | ✅ | ic_smb.xml, ic_sftp.xml - ResourceAdapter uses protocol-specific icons |
+| **SSH Key Auth** | ✅ | MediaRepositoryImpl reads SSH key from file for SFTP auth |
+| **Media Metadata** | ✅ | LocalMediaScanner extracts image dimensions and video/audio duration |
+| **Full Translations** | ✅ | Complete Russian and Ukrainian translations (270+ strings each) |
+| **Cache Management** | ✅ | GeneralSettingsViewModel clears Glide and UnifiedFileCache |
+| **App Shortcuts** | ✅ | Static shortcuts: Add Resource, Settings, Favorites (shortcuts.xml) |
+| **Resource Launch Widget** | ✅ NEW | Home screen widget for quick resource access (Epic 6) |
+| **Dynamic Shortcuts** | ✅ NEW | Recently visited resources appear as app shortcuts (Epic 6) |
 
 ---
 
@@ -192,14 +194,15 @@ The FastMediaSorter v2 project is being rebuilt from scratch with a clean archit
 | Component | Status | Files |
 |-----------|--------|-------|
 | **Static App Shortcuts** | ✅ | `res/xml/shortcuts.xml`, AndroidManifest update, MainActivity handler |
+| **Resource Launch Widget** | ✅ | `ResourceLaunchWidget`, `ResourceWidgetConfigActivity`, widget layouts |
+| **Dynamic Shortcuts** | ✅ | `ShortcutHelper`, BrowseActivity visit tracking, MainActivity shortcut updates |
 | **Localization (RU/UK)** | ✅ | Complete strings.xml for Russian and Ukrainian |
 
 ### Remaining Work ⚠️
 
 | Component | Priority | Description |
 |-----------|----------|-------------|
-| **App Widgets** | 🟡 Medium | ResourceLaunchWidget for home screen |
-| **Dynamic Shortcuts** | 🟡 Medium | Pinned folder shortcuts using ShortcutManager |
+| **Global Search** | 🟡 HIGH | Search across all resources with filters (type, date, size) |
 | **OCR Integration** | 🔴 LOW | ML Kit Text Recognition (requires additional setup) |
 | **Translation** | 🔴 LOW | ML Kit Translation (requires additional setup) |
 
@@ -528,4 +531,26 @@ cd app
 
 ---
 
-*Last Updated: January 6, 2026*
+## Session Notes
+
+### January 7, 2026 - Dynamic Shortcuts Implementation
+**Commits**: `57e237f`, `998dea8`
+**Features Completed**:
+- Created `ShortcutHelper` utility class for managing ShortcutManager API (Android 7.1+)
+- Implemented resource visit tracking in `BrowseViewModel` with `RecordResourceVisit` event
+- Updated `MainActivity` to refresh dynamic shortcuts when resources load
+- Up to 4 recently visited resources appear as app shortcuts with protocol-specific icons
+- Fixed ResourceAdapter constructor call in widget config
+- Removed duplicate string resource (`resource_icon`)
+
+**Technical Details**:
+- SharedPreferences stores recent resource IDs (max 4, LRU order)
+- Shortcuts use resource type icons (folder, SMB, SFTP, FTP, cloud services)
+- Integration with existing widget infrastructure
+- Full support for all resource types (Local, SMB, SFTP, FTP, Google Drive, OneDrive, Dropbox)
+
+**Next**: Implement Global Search (Epic 6 remaining priority)
+
+---
+
+*Last Updated: January 7, 2026*
