@@ -67,6 +67,9 @@ class BrowseViewModel @Inject constructor(
                 is Result.Success -> {
                     val resource = resourceResult.data
                     
+                    // Emit event to record resource visit (for shortcuts)
+                    _events.emit(BrowseUiEvent.RecordResourceVisit(resource))
+                    
                     // Load files from the resource
                     when (val filesResult = getMediaFilesUseCase(resourceId)) {
                         is Result.Success -> {

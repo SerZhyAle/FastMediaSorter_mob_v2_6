@@ -1,6 +1,7 @@
 package com.sza.fastmediasorter.ui.browse
 
 import com.sza.fastmediasorter.domain.model.MediaFile
+import com.sza.fastmediasorter.domain.model.Resource
 import com.sza.fastmediasorter.domain.model.SortMode
 
 /**
@@ -54,4 +55,5 @@ sealed class BrowseUiEvent {
     data class ShowDeleteConfirmation(val count: Int) : BrowseUiEvent()
     data class ShowSortDialog(val currentSortMode: SortMode) : BrowseUiEvent()
     data class ShowFileInfo(val filePath: String) : BrowseUiEvent()
+    data class RecordResourceVisit(val resource: Resource) : BrowseUiEvent()
 }

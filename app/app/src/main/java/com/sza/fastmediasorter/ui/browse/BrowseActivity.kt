@@ -17,6 +17,7 @@ import com.sza.fastmediasorter.databinding.ActivityBrowseBinding
 import com.sza.fastmediasorter.ui.base.BaseActivity
 import com.sza.fastmediasorter.ui.dialog.FileInfoDialog
 import com.sza.fastmediasorter.ui.player.PlayerActivity
+import com.sza.fastmediasorter.util.ShortcutHelper
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -235,6 +236,10 @@ class BrowseActivity : BaseActivity<ActivityBrowseBinding>() {
             }
             is BrowseUiEvent.ShowFileInfo -> {
                 showFileInfoDialog(event.filePath)
+            }
+            is BrowseUiEvent.RecordResourceVisit -> {
+                // Record resource visit for dynamic shortcuts
+                ShortcutHelper.recordResourceVisit(this, event.resource)
             }
         }
     }

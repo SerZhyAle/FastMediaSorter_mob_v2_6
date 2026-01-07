@@ -16,6 +16,7 @@ import com.sza.fastmediasorter.ui.browse.BrowseActivity
 import com.sza.fastmediasorter.ui.resource.AddResourceActivity
 import com.sza.fastmediasorter.ui.resource.EditResourceActivity
 import com.sza.fastmediasorter.ui.settings.SettingsActivity
+import com.sza.fastmediasorter.util.ShortcutHelper
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -126,6 +127,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
         // Update adapter
         resourceAdapter.submitList(state.resources)
+        
+        // Update dynamic shortcuts with current resources
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N_MR1) {
+            ShortcutHelper.updateDynamicShortcuts(this, state.resources)
+        }
 
         // Error state
         state.errorMessage?.let { message ->
