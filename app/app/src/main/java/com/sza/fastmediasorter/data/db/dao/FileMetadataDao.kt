@@ -47,4 +47,7 @@ interface FileMetadataDao {
 
     @Query("UPDATE file_metadata SET viewCount = viewCount + 1, lastViewedDate = :timestamp WHERE path = :path")
     suspend fun incrementViewCount(path: String, timestamp: Long = System.currentTimeMillis())
+    
+    @Query("DELETE FROM file_metadata WHERE path LIKE :pathPrefix || '%'")
+    suspend fun deleteByPathPrefix(pathPrefix: String)
 }

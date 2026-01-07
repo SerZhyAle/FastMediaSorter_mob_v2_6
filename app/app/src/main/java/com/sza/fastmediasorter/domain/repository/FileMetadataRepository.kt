@@ -55,4 +55,11 @@ interface FileMetadataRepository {
      * @param path The file path
      */
     suspend fun recordView(path: String)
+    
+    /**
+     * Deletes all metadata for files within a resource path.
+     * Used when a resource is deleted.
+     * @param resourcePath The resource base path
+     */
+    suspend fun deleteMetadataByResourcePath(resourcePath: String)
 }

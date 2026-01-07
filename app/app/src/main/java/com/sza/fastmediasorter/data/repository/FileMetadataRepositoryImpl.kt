@@ -74,4 +74,9 @@ class FileMetadataRepositoryImpl @Inject constructor(
     override suspend fun recordView(path: String) {
         fileMetadataDao.incrementViewCount(path)
     }
+    
+    override suspend fun deleteMetadataByResourcePath(resourcePath: String) {
+        // Delete all metadata entries where the path starts with the resource path
+        fileMetadataDao.deleteByPathPrefix(resourcePath)
+    }
 }
