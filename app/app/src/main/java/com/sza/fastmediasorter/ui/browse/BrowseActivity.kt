@@ -196,11 +196,17 @@ class BrowseActivity : BaseActivity<ActivityBrowseBinding>() {
                 showDeleteConfirmationDialog(event.count)
             }
             is BrowseUiEvent.ShowSortDialog -> {
-                // TODO: Show sort options dialog
-                Timber.d("Show sort dialog")
-                Snackbar.make(binding.root, "Sort options coming soon", Snackbar.LENGTH_SHORT).show()
+                showSortDialog(event.currentSortMode)
             }
         }
+    }
+
+    private fun showSortDialog(currentSortMode: com.sza.fastmediasorter.domain.model.SortMode) {
+        val dialog = SortOptionsDialog.newInstance(currentSortMode)
+        dialog.onSortModeSelected = { sortMode ->
+            viewModel.onSortModeSelected(sortMode)
+        }
+        dialog.show(supportFragmentManager, SortOptionsDialog.TAG)
     }
 
     private fun showDeleteConfirmationDialog(count: Int) {

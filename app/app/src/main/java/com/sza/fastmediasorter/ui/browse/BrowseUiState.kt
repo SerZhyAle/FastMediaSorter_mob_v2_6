@@ -1,6 +1,7 @@
 package com.sza.fastmediasorter.ui.browse
 
 import com.sza.fastmediasorter.domain.model.MediaFile
+import com.sza.fastmediasorter.domain.model.SortMode
 
 /**
  * UI State for BrowseActivity.
@@ -13,6 +14,7 @@ data class BrowseUiState(
     val showEmptyState: Boolean = false,
     val isGridView: Boolean = true,
     val errorMessage: String? = null,
+    val sortMode: SortMode = SortMode.NAME_ASC,
     
     // Selection mode state
     val isSelectionMode: Boolean = false,
@@ -35,5 +37,5 @@ sealed class BrowseUiEvent {
     data object NavigateBack : BrowseUiEvent()
     data class ShowDestinationPicker(val selectedFiles: List<String>) : BrowseUiEvent()
     data class ShowDeleteConfirmation(val count: Int) : BrowseUiEvent()
-    data object ShowSortDialog : BrowseUiEvent()
+    data class ShowSortDialog(val currentSortMode: SortMode) : BrowseUiEvent()
 }

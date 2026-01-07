@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sza.fastmediasorter.domain.model.MediaFile
 import com.sza.fastmediasorter.domain.model.Result
+import com.sza.fastmediasorter.domain.model.SortMode
 import com.sza.fastmediasorter.domain.usecase.GetMediaFilesUseCase
 import com.sza.fastmediasorter.domain.usecase.GetResourcesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -213,13 +214,30 @@ class BrowseViewModel @Inject constructor(
 
     fun onSortClick() {
         viewModelScope.launch {
-            _events.emit(BrowseUiEvent.ShowSortDialog)
+            _events.emit(BrowseUiEvent.ShowSortDialog(_uiState.value.sortMode))
         }
     }
 
-    fun onSortSelected(sortType: String) {
-        // TODO: Update sort order and refresh file list
-        _uiState.update { it.copy(/* sortOrder = sortType */) }
+    fun onSortModeSelected(sortMode: SortMode) {
+        val currentFiles = _uiState.value.files
+        val sortedFiles = sortFiles(currentFiles, sortMode)
+        _uiState.update { 
+            it.copy(
+                sortMode = sortMode,
+                files = sortedFiles
+            )
+        }
+    }
+
+    private fun sortFiles(files: List<MediaFile>, sortMode: SortMode): List<MediaFile> {
+        return when (sortMode) {
+            SortMode.NAME_ASC -> files.sortedBy { it.name.lowercase() }
+            SortMode.NAME_DESC -> files.sortedByDescending { it.name.lowercase() }
+            SortMode.DATE_ASC -> files.sortedBy { it.date }
+            SortMode.DATE_DESC -> files.sortedByDescending { it.date }
+            SortMode.SIZE_ASC -> files.sortedBy { it.size }
+            SortMode.SIZE_DESC -> files.sortedByDescending { it.size }
+        }
     }
 
     fun onViewModeClick() {
