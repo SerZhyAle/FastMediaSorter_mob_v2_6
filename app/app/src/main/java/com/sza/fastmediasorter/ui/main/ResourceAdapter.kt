@@ -69,12 +69,12 @@ class ResourceAdapter(
         private fun getIconForType(type: ResourceType): Int {
             return when (type) {
                 ResourceType.LOCAL -> R.drawable.ic_folder
-                ResourceType.SMB -> R.drawable.ic_folder // TODO: ic_smb
-                ResourceType.SFTP -> R.drawable.ic_folder // TODO: ic_sftp
-                ResourceType.FTP -> R.drawable.ic_folder // TODO: ic_ftp
-                ResourceType.GOOGLE_DRIVE -> R.drawable.ic_folder // TODO: ic_google_drive
-                ResourceType.ONEDRIVE -> R.drawable.ic_folder // TODO: ic_onedrive
-                ResourceType.DROPBOX -> R.drawable.ic_folder // TODO: ic_dropbox
+                ResourceType.SMB -> R.drawable.ic_smb
+                ResourceType.SFTP -> R.drawable.ic_sftp
+                ResourceType.FTP -> R.drawable.ic_ftp
+                ResourceType.GOOGLE_DRIVE -> R.drawable.ic_google_drive
+                ResourceType.ONEDRIVE -> R.drawable.ic_onedrive
+                ResourceType.DROPBOX -> R.drawable.ic_dropbox
             }
         }
     }
