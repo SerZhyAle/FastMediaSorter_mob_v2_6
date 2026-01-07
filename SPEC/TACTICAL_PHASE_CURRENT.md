@@ -1,14 +1,14 @@
 # Tactical Development Plan - Current Phase
 
 **Date**: January 7, 2026  
-**Status**: Epic 1 Complete, Epic 2 100% Complete, Epic 3 (Player) Complete, Epic 4 (Network) Started  
+**Status**: Epic 1 Complete, Epic 2 100% Complete, Epic 3 (Player) Complete, Epic 4 (Network) Foundation Complete  
 **Project Version**: v2.0.0-dev
 
 ---
 
 ## Executive Summary
 
-The FastMediaSorter v2 project is being rebuilt from scratch with a clean architecture. The foundation (Epic 1) is **complete and solid**. Epic 2 (Local File Management) is **100% complete** with all core infrastructure including UseCases, FileOperationStrategy, PlayerActivity with Video/Audio support, EditResourceActivity, SettingsActivity with DataStore persistence, Destinations System, File Selection Mode, Sorting Dialog, Destination Picker, Undo/Trash System, FavoritesActivity, and Paging3 for large file lists now implemented. Epic 3 (Media Playback) is **complete** with ExoPlayer and MediaSession integration. Epic 4 (Network Layer) has **started** with SMB, SFTP, and FTP client implementations.
+The FastMediaSorter v2 project is being rebuilt from scratch with a clean architecture. The foundation (Epic 1) is **complete and solid**. Epic 2 (Local File Management) is **100% complete** with all core infrastructure including UseCases, FileOperationStrategy, PlayerActivity with Video/Audio support, EditResourceActivity, SettingsActivity with DataStore persistence, Destinations System, File Selection Mode, Sorting Dialog, Destination Picker, Undo/Trash System, FavoritesActivity, and Paging3 for large file lists now implemented. Epic 3 (Media Playback) is **complete** with ExoPlayer and MediaSession integration. Epic 4 (Network Layer) foundation is **complete** with credential management, connection testing, and network clients (SMB, SFTP, FTP) implemented.
 
 ---
 
@@ -94,15 +94,70 @@ The FastMediaSorter v2 project is being rebuilt from scratch with a clean archit
 | **GetPaginatedMediaFilesUseCase** | ✅ NEW | `domain/usecase/GetPaginatedMediaFilesUseCase.kt` |
 | **Network Clients** | ✅ NEW | `data/network/SmbClient.kt`, `SftpClient.kt`, `FtpClient.kt` |
 | **Network Scanners** | ✅ NEW | `data/scanner/SmbMediaScanner.kt`, `SftpMediaScanner.kt`, `FtpMediaScanner.kt` |
-| **Network Strategies** | ✅ NEW | `data/operation/SmbOperationStrategy.kt`, `SftpOperationStrategy.kt`, `FtpOperationStrategy.kt` |
 | **NetworkModule** | ✅ UPDATED | `di/NetworkModule.kt` - provides network clients |
 | **Credential Management** | ✅ NEW | `NetworkCredentialsRepository`, `NetworkTypeMonitor`, UseCases |
 | **Credential UI** | ✅ NEW | `NetworkCredentialsDialog.kt` with connection testing |
+| **UnifiedFileCache** | ✅ NEW | `data/cache/UnifiedFileCache.kt` - 500MB LRU cache |
+| **Build Automation** | ✅ NEW | `quick-build.ps1` - Java/SDK auto-detection |
+
+### Epic 4 Progress: Network Layer Foundation ✅
+
+**Completed Components:**
+
+1. **Secure Credential Storage** ✅
+   - `NetworkCredentialsRepository` interface with save/get/delete/test methods
+   - `NetworkCredentialsRepositoryImpl` with EncryptedSharedPreferences (AES-256)
+   - `NetworkCredentials` domain model with 7 network types (LOCAL, SMB, SFTP, FTP, GOOGLE_DRIVE, ONEDRIVE, DROPBOX)
+   - Password encryption with androidx.security:security-crypto
+
+2. **Network Clients** ✅
+   - `SmbClient` (SMBJ 0.12.1) - SMB/CIFS protocol support
+   - `SftpClient` (SSHJ 0.37.0) - SSH/SFTP protocol support  
+   - `FtpClient` (Apache Commons Net 3.10.0) - FTP protocol support
+   - All clients provide: testConnection(), listFiles(), downloadFile(), getFileSize()
+
+3. **Network Monitoring** ✅
+   - `NetworkTypeMonitor` singleton utility
+   - Detects connection type: WiFi, Ethernet, Mobile, Other
+   - Warns users on mobile data connections
+   - Checks network availability before operations
+
+4. **Credential UseCases** ✅
+   - `SaveNetworkCredentialsUseCase` - Save encrypted credentials
+   - `GetNetworkCredentialsUseCase` - Retrieve credentials by ID
+   - `TestNetworkConnectionUseCase` - Test connection before saving
+   - `DeleteNetworkCredentialsUseCase` - Remove credentials
+
+5. **Network Credential UI** ✅
+   - `NetworkCredentialsDialog` - DialogFragment for credential entry
+   - Protocol-specific fields (SMB: domain/share, SFTP: SSH key toggle, FTP: basic auth)
+   - Auto-port detection (SMB: 445, SFTP: 22, FTP: 21)
+   - Connection testing before save
+   - Integration with AddResourceActivity/ViewModel
+
+6. **File Caching System** ✅
+   - `UnifiedFileCache` with 500MB max size
+   - LRU eviction (to 80% when full)
+   - SHA-256 hashing for cache keys
+   - 24-hour expiration TTL
+   - Cache statistics (file count, size, usage%)
+
+7. **Build Infrastructure** ✅
+   - `quick-build.ps1` - PowerShell build automation
+   - Auto-detects Java (7 locations including Android Studio JBR)
+   - Auto-detects Android SDK (4 common locations)
+   - Shows APK size and location on success
+
+**Architecture Notes:**
+- Operation strategies (SmbOperationStrategy, SftpOperationStrategy, FtpOperationStrategy) intentionally removed - will be implemented when full network file operations are needed
+- Current focus: connection testing and credential management
+- Full file operations (delete, rename, upload, mkdir) deferred to next iteration
 
 ### Missing - REMAINING WORK ⚠️
 
 | Component | Priority | Description |
 |-----------|----------|-------------|
+| **Network File Operations** | 🔴 HIGH | Full FileOperationStrategy for SMB/SFTP/FTP (delete, rename, upload, mkdir) |
 | **Cloud Integration** | 🔴 HIGH | Google Drive, OneDrive, Dropbox clients |
 | **Search** | 🟡 MEDIUM | No search functionality yet |
 | **File Info Dialog** | 🟢 LOW | Show file details on info click |
@@ -336,11 +391,11 @@ Implemented Paging3 for large file lists:
 
 ## 🟣 Sprint 2 Preview (Next Tasks)
 
-1. **Search Functionality** - Search within resources
-2. **File Info Dialog** - Show file details on info click
-3. **Cloud Integration** - Google Drive/OneDrive/Dropbox (Epic 5)
-4. **Advanced Features** - OCR, Translation (Epic 6)
-4. **File Info Dialog** - Show file details (size, date, dimensions)
+1. **Network File Operations** - Implement full FileOperationStrategy for network protocols
+2. **Search Functionality** - Search within resources
+3. **File Info Dialog** - Show file details on info click
+4. **Cloud Integration** - Google Drive/OneDrive/Dropbox (Epic 5)
+5. **Advanced Features** - OCR, Translation (Epic 6)
 
 ---
 
