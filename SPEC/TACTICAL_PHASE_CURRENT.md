@@ -1,14 +1,14 @@
 # Tactical Development Plan - Current Phase
 
 **Date**: January 7, 2026  
-**Status**: Epic 1 Complete, Epic 2 100% Complete, Epic 3 (Player) Complete, Epic 4 (Network) Foundation Complete  
+**Status**: Epic 1 Complete, Epic 2 100% Complete, Epic 3 (Player) Complete, Epic 4 (Network) Complete  
 **Project Version**: v2.0.0-dev
 
 ---
 
 ## Executive Summary
 
-The FastMediaSorter v2 project is being rebuilt from scratch with a clean architecture. The foundation (Epic 1) is **complete and solid**. Epic 2 (Local File Management) is **100% complete** with all core infrastructure including UseCases, FileOperationStrategy, PlayerActivity with Video/Audio support, EditResourceActivity, SettingsActivity with DataStore persistence, Destinations System, File Selection Mode, Sorting Dialog, Destination Picker, Undo/Trash System, FavoritesActivity, and Paging3 for large file lists now implemented. Epic 3 (Media Playback) is **complete** with ExoPlayer and MediaSession integration. Epic 4 (Network Layer) foundation is **complete** with credential management, connection testing, and network clients (SMB, SFTP, FTP) implemented.
+The FastMediaSorter v2 project is being rebuilt from scratch with a clean architecture. The foundation (Epic 1) is **complete and solid**. Epic 2 (Local File Management) is **100% complete** with all core infrastructure including UseCases, FileOperationStrategy, PlayerActivity with Video/Audio support, EditResourceActivity, SettingsActivity with DataStore persistence, Destinations System, File Selection Mode, Sorting Dialog, Destination Picker, Undo/Trash System, FavoritesActivity, and Paging3 for large file lists now implemented. Epic 3 (Media Playback) is **complete** with ExoPlayer and MediaSession integration. Epic 4 (Network Layer) is **complete** with credential management, connection testing, network clients (SMB, SFTP, FTP), full file operations, and network resource browsing implemented. Epic 5 (Cloud Integration) is **deferred** pending API key setup.
 
 ---
 
@@ -165,13 +165,13 @@ The FastMediaSorter v2 project is being rebuilt from scratch with a clean archit
 
 | Component | Priority | Description |
 |-----------|----------|-------------|
-| **Cloud Integration** | 🔴 HIGH | Google Drive, OneDrive, Dropbox clients (requires API key setup) |
-| **Network Resource Browsing** | 🟡 MED | Integration with BrowseActivity for network resources |
+| **Cloud Integration** | 🔴 DEFERRED | Google Drive, OneDrive, Dropbox clients (requires API key setup in developer consoles) |
 
 ### Recently Completed ✅
 
 | Component | Status | Description |
 |-----------|--------|-------------|
+| **Network Resource Browsing** | ✅ | MediaRepository integration with SMB/SFTP/FTP scanners |
 | **Network File Operations** | ✅ | Full FileOperationStrategy for SMB/SFTP/FTP (delete, rename, upload, mkdir) |
 | **File Info Dialog** | ✅ | Show comprehensive file details (EXIF, media metadata) |
 | **Search Functionality** | ✅ | Real-time search with filter by file name |
@@ -408,9 +408,11 @@ Implemented Paging3 for large file lists:
 1. ✅ **Network File Operations** - Full FileOperationStrategy for SMB/SFTP/FTP *(COMPLETE)*
 2. ✅ **Search Functionality** - Real-time search in BrowseActivity *(COMPLETE)*  
 3. ✅ **File Info Dialog** - Comprehensive file details via Info button *(COMPLETE)*
-4. **Network Resource Browsing** - Integrate network scanning with BrowseActivity
-5. **Cloud Integration** - Google Drive/OneDrive/Dropbox (Epic 5, requires API keys)
+4. ✅ **Network Resource Browsing** - MediaRepository integration with network scanners *(COMPLETE)*
+5. ⏸️ **Cloud Integration** - Google Drive/OneDrive/Dropbox (Epic 5, DEFERRED - requires API keys)
 6. **Advanced Features** - OCR, Translation (Epic 6)
+7. **Quality & Testing** - Unit tests, UI tests, performance optimization (Epic 7)
+8. **Release Preparation** - Store assets, documentation (Epic 8)
 
 ---
 
