@@ -118,16 +118,26 @@ class MediaRepositoryImpl @Inject constructor(
         return when (val result = credentialsRepository.getCredentials(credentialsId)) {
             is Result.Success -> {
                 val creds = result.data
-                // Note: If SSH key is used, we would need to read the key file.
-                // For now, password auth only.
+                // Read SSH key if configured
+                val privateKey: String? = if (creds.useSshKey && !creds.sshKeyPath.isNullOrEmpty()) {
+                    try {
+                        java.io.File(creds.sshKeyPath).readText()
+                    } catch (e: Exception) {
+                        Timber.e(e, "Failed to read SSH key from ${creds.sshKeyPath}")
+                        null
+                    }
+                } else {
+                    null
+                }
+                
                 sftpMediaScanner.scanFolder(
                     host = creds.server,
                     port = creds.port,
                     path = resource.path,
                     username = creds.username,
-                    password = creds.password,
-                    privateKey = null, // TODO: Read from sshKeyPath if useSshKey
-                    passphrase = null
+                    password = if (creds.useSshKey) "" else creds.password,
+                    privateKey = privateKey,
+                    passphrase = null // Passphrase for key not yet supported in credentials model
                 )
             }
             is Result.Error -> {
