@@ -2,6 +2,7 @@ package com.sza.fastmediasorter.ui.player
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sza.fastmediasorter.domain.repository.FileMetadataRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,7 +20,9 @@ import javax.inject.Inject
  * Manages media viewing state and user interactions.
  */
 @HiltViewModel
-class PlayerViewModel @Inject constructor() : ViewModel() {
+class PlayerViewModel @Inject constructor(
+    private val fileMetadataRepository: FileMetadataRepository
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(PlayerUiState.Initial)
     val uiState: StateFlow<PlayerUiState> = _uiState.asStateFlow()
@@ -54,6 +57,9 @@ class PlayerViewModel @Inject constructor() : ViewModel() {
             )
         }
 
+        // Load favorite status for initial file
+        loadFavoriteStatus(filePaths[safeIndex])
+
         Timber.d("Loaded ${filePaths.size} files, starting at index $safeIndex")
     }
 
@@ -72,12 +78,25 @@ class PlayerViewModel @Inject constructor() : ViewModel() {
                 currentFileName = currentFile.name,
                 hasPrevious = position > 0,
                 hasNext = position < files.size - 1,
-                // Reset favorite status for new file (would be loaded from DB in full impl)
-                isFavorite = false
+                isFavorite = false // Reset until loaded
             )
         }
 
+        // Load favorite status for new file
+        loadFavoriteStatus(files[position])
+
         Timber.d("Page selected: $position - ${currentFile.name}")
+    }
+
+    private fun loadFavoriteStatus(filePath: String) {
+        viewModelScope.launch {
+            try {
+                val isFavorite = fileMetadataRepository.isFavorite(filePath)
+                _uiState.update { it.copy(isFavorite = isFavorite) }
+            } catch (e: Exception) {
+                Timber.e(e, "Failed to load favorite status")
+            }
+        }
     }
 
     /**
@@ -127,19 +146,25 @@ class PlayerViewModel @Inject constructor() : ViewModel() {
      */
     fun onFavoriteClick() {
         val state = _uiState.value
-        val newFavoriteState = !state.isFavorite
+        val currentPath = state.files.getOrNull(state.currentIndex) ?: return
 
-        _uiState.update {
-            it.copy(isFavorite = newFavoriteState)
-        }
-
-        // TODO: Persist favorite status to database
         viewModelScope.launch {
-            val message = if (newFavoriteState) "Added to favorites" else "Removed from favorites"
-            _events.emit(PlayerUiEvent.ShowSnackbar(message))
-        }
+            try {
+                // Toggle in database (resourceId 0 for now, will be updated when known)
+                val newFavoriteState = fileMetadataRepository.toggleFavorite(currentPath, 0)
 
-        Timber.d("Favorite toggled: $newFavoriteState")
+                _uiState.update {
+                    it.copy(isFavorite = newFavoriteState)
+                }
+
+                val message = if (newFavoriteState) "Added to favorites" else "Removed from favorites"
+                _events.emit(PlayerUiEvent.ShowSnackbar(message))
+                Timber.d("Favorite toggled: $newFavoriteState for $currentPath")
+            } catch (e: Exception) {
+                Timber.e(e, "Failed to toggle favorite")
+                _events.emit(PlayerUiEvent.ShowSnackbar("Failed to update favorite"))
+            }
+        }
     }
 
     /**
