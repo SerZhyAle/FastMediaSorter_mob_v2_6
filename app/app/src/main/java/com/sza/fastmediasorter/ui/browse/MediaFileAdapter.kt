@@ -6,14 +6,19 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.sza.fastmediasorter.R
 import com.sza.fastmediasorter.databinding.ItemMediaFileBinding
 import com.sza.fastmediasorter.domain.model.MediaFile
 import com.sza.fastmediasorter.domain.model.MediaType
+import java.io.File
 
 /**
  * Adapter for displaying media files in a grid or list.
  * Supports selection mode with checkboxes.
+ * Uses Glide for thumbnail loading.
  */
 class MediaFileAdapter(
     private val onItemClick: (MediaFile) -> Unit,
@@ -52,15 +57,47 @@ class MediaFileAdapter(
         fun bind(mediaFile: MediaFile, isSelectionMode: Boolean, selectedPaths: Set<String>) {
             binding.textFileName.text = mediaFile.name
 
-            // Set placeholder icon based on media type
-            val iconRes = when (mediaFile.type) {
+            // Get placeholder icon based on media type
+            val placeholderRes = when (mediaFile.type) {
                 MediaType.IMAGE -> R.drawable.ic_image
                 MediaType.VIDEO -> R.drawable.ic_video
                 MediaType.AUDIO -> R.drawable.ic_audio
                 MediaType.GIF -> R.drawable.ic_gif
                 else -> R.drawable.ic_file
             }
-            binding.thumbnail.setImageResource(iconRes)
+
+            // Load thumbnail using Glide
+            when (mediaFile.type) {
+                MediaType.IMAGE, MediaType.GIF -> {
+                    // Load image/GIF thumbnail directly
+                    Glide.with(binding.root.context)
+                        .load(File(mediaFile.path))
+                        .placeholder(placeholderRes)
+                        .error(placeholderRes)
+                        .centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .transition(DrawableTransitionOptions.withCrossFade())
+                        .into(binding.thumbnail)
+                }
+                MediaType.VIDEO -> {
+                    // Load video thumbnail (frame from video)
+                    Glide.with(binding.root.context)
+                        .load(File(mediaFile.path))
+                        .placeholder(placeholderRes)
+                        .error(placeholderRes)
+                        .centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .transition(DrawableTransitionOptions.withCrossFade())
+                        .into(binding.thumbnail)
+                }
+                MediaType.AUDIO -> {
+                    // For audio, just show placeholder icon
+                    binding.thumbnail.setImageResource(placeholderRes)
+                }
+                else -> {
+                    binding.thumbnail.setImageResource(placeholderRes)
+                }
+            }
 
             // Show duration for video/audio
             if (mediaFile.type == MediaType.VIDEO || mediaFile.type == MediaType.AUDIO) {
@@ -73,8 +110,6 @@ class MediaFileAdapter(
             // Selection mode checkbox
             binding.checkbox.visibility = if (isSelectionMode) View.VISIBLE else View.GONE
             binding.checkbox.isChecked = selectedPaths.contains(mediaFile.path)
-
-            // TODO: Load actual thumbnail using Coil/Glide
 
             binding.root.setOnClickListener { onItemClick(mediaFile) }
             binding.root.setOnLongClickListener { onItemLongClick(mediaFile) }
