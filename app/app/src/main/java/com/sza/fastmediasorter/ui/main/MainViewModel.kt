@@ -106,6 +106,15 @@ class MainViewModel @Inject constructor(
     }
 
     /**
+     * Handle search menu click.
+     */
+    fun onSearchClick() {
+        viewModelScope.launch {
+            _events.send(MainUiEvent.NavigateToSearch)
+        }
+    }
+
+    /**
      * Handle favorites menu click.
      */
     fun onFavoritesClick() {

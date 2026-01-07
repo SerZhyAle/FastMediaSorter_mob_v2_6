@@ -191,8 +191,7 @@ Graphical resources copied from application for development reference:
 
 ## Version & Build Information
 
-**Current Build**: v2.25.1212.0158 (December 12, 2025)
-**Version Format**: `Y.YM.MDDH.Hmm`
+**Version Format**: `Y.YM.MDDH.Hmm` (e.g., `2.60.1071.422`)
 **Build Command**: `.\build-with-version.ps1`
 **Database Schema**: Room 2.6.1 (version 1 schema - feature complete)
 
@@ -201,7 +200,7 @@ Graphical resources copied from application for development reference:
 ## Getting Started with Development
 
 ### Prerequisites
-1. Android Studio Hedgehog (2023.1.1)+
+1. Android Studio Hedgehog (2025.2.2)+
 2. JDK 17+
 3. Android SDK 34
 4. Minimum test device: Android 9.0 (API 28)

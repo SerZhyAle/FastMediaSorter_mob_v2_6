@@ -34,4 +34,5 @@ sealed class MainUiEvent {
     data object NavigateToAddResource : MainUiEvent()
     data object NavigateToSettings : MainUiEvent()
     data object NavigateToFavorites : MainUiEvent()
+    data object NavigateToSearch : MainUiEvent()
 }

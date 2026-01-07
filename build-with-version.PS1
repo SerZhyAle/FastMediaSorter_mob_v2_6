@@ -53,15 +53,40 @@ if (-not $env:ANDROID_HOME) {
 }
 
 # Generate version from current date/time: Y.YM.MDDH.Hmm
-$now = Get-Date
-$year = $now.ToString("yy")
-$month = $now.ToString("MM")
-$day = $now.ToString("dd")
-$hour = $now.ToString("HH")
-$minute = $now.ToString("mm")
+# Interpretation adjusted for 2.60.1071.422 example (2026-01-07 14:22):
+# Y  (2)  = Decade (2 of 26)
+# YM (60) = Year Unit (6) + Month Tens (0)
+# MDDH (1071) = Month Unit (1) + Day (07) + Hour Tens (1)
+# Hmm (422) = Hour Unit (4) + Minute (22)
 
-$versionName = "2.$($year.Substring(1))$month.$($day)$($hour.Substring(0,1)).$($hour.Substring(1))$minute"
-$versionCode = [int]("$year$month$day$hour")
+$now = Get-Date
+
+# Extract components
+$yearFull = $now.ToString("yy") # "26"
+$monthFull = $now.ToString("MM") # "01"
+$dayFull = $now.ToString("dd")   # "07"
+$hourFull = $now.ToString("HH")  # "14"
+$minuteFull = $now.ToString("mm") # "22"
+
+# Split components
+$y1 = $yearFull.Substring(0, 1)  # "2"
+$y2 = $yearFull.Substring(1, 1)  # "6"
+
+$m1 = $monthFull.Substring(0, 1) # "0"
+$m2 = $monthFull.Substring(1, 1) # "1"
+
+$h1 = $hourFull.Substring(0, 1)  # "1"
+$h2 = $hourFull.Substring(1, 1)  # "4"
+
+# Format: Y.YM.MDDH.Hmm
+# Group 1: Y1
+# Group 2: Y2 + M1
+# Group 3: M2 + DD + H1
+# Group 4: H2 + mm
+$versionName = "$y1.$y2$m1.$m2$dayFull$h1.$h2$minuteFull"
+
+# VersionCode: YYMMDDHHmm
+$versionCode = [int]("$yearFull$monthFull$dayFull$hourFull$minuteFull")
 
 Write-Host "Building FastMediaSorter v$versionName (code: $versionCode)" -ForegroundColor Cyan
 
@@ -98,7 +123,8 @@ Write-Host "Starting Gradle build..." -ForegroundColor Yellow
 # Check build result
 if ($LASTEXITCODE -eq 0) {
     Write-Host "Build successful!" -ForegroundColor Green
-} else {
+}
+else {
     Write-Host "Build failed with exit code $LASTEXITCODE" -ForegroundColor Red
 }
 

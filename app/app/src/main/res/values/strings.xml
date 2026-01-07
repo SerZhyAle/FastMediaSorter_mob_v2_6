@@ -297,5 +297,16 @@
     <string name="widget_configure_title">Select Resource</string>
     <string name="widget_configure_description">Choose a resource to open when tapping this widget:</string>
     <string name="widget_not_configured">Not configured</string>
+
+    <!-- Search -->
+    <string name="search_title">Search</string>
+    <string name="search_initial_message">Search across all resources.\nEnter at least 2 characters to begin.</string>
+    <string name="search_no_results">No files found matching your criteria.</string>
+    <string name="search_result_info">%1$s • %2$s</string>
+    <string name="filter_images">Images</string>
+    <string name="filter_videos">Videos</string>
+    <string name="filter_audio">Audio</string>
+    <string name="filter_other">Other</string>
 </resources>
+
 

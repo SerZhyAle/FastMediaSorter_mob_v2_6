@@ -15,6 +15,7 @@ import com.sza.fastmediasorter.ui.base.BaseActivity
 import com.sza.fastmediasorter.ui.browse.BrowseActivity
 import com.sza.fastmediasorter.ui.resource.AddResourceActivity
 import com.sza.fastmediasorter.ui.resource.EditResourceActivity
+import com.sza.fastmediasorter.ui.search.SearchActivity
 import com.sza.fastmediasorter.ui.settings.SettingsActivity
 import com.sza.fastmediasorter.util.ShortcutHelper
 import dagger.hilt.android.AndroidEntryPoint
@@ -71,6 +72,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     private fun setupToolbar() {
         binding.toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
+                R.id.action_search -> {
+                    viewModel.onSearchClick()
+                    true
+                }
                 R.id.action_favorites -> {
                     viewModel.onFavoritesClick()
                     true
@@ -178,6 +183,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             is MainUiEvent.NavigateToFavorites -> {
                 Timber.d("Navigate to favorites")
                 startActivity(com.sza.fastmediasorter.ui.favorites.FavoritesActivity.createIntent(this))
+            }
+            is MainUiEvent.NavigateToSearch -> {
+                Timber.d("Navigate to search")
+                startActivity(SearchActivity.createIntent(this))
             }
         }
     }

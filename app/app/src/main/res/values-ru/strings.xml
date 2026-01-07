@@ -297,4 +297,15 @@
     <string name="widget_configure_title">Выберите ресурс</string>
     <string name="widget_configure_description">Выберите ресурс для открытия при нажатии на виджет:</string>
     <string name="widget_not_configured">Не настроено</string>
+
+    <!-- Search -->
+    <string name="search_title">Поиск</string>
+    <string name="search_initial_message">Поиск по всем ресурсам.\nВведите минимум 2 символа для начала.</string>
+    <string name="search_no_results">Файлы, соответствующие критериям, не найдены.</string>
+    <string name="search_result_info">%1$s • %2$s</string>
+    <string name="filter_images">Изображения</string>
+    <string name="filter_videos">Видео</string>
+    <string name="filter_audio">Аудио</string>
+    <string name="filter_other">Другое</string>
 </resources>
+
