@@ -151,6 +151,58 @@
     <string name="info_type">Type</string>
     <string name="info_modified">Modified</string>
     <string name="open_with">Open with…</string>
+
+    <!-- File Info - Sections -->
+    <string name="info_section_basic">Basic Information</string>
+    <string name="info_section_image">Image Details</string>
+    <string name="info_section_gif">GIF Details</string>
+    <string name="info_section_video">Video Details</string>
+    <string name="info_section_audio">Audio Details</string>
+    <string name="info_section_audio_track">Audio Track</string>
+    <string name="info_section_document">Document Details</string>
+
+    <!-- File Info - Image Metadata -->
+    <string name="info_resolution">Resolution</string>
+    <string name="info_megapixels">Megapixels</string>
+    <string name="info_camera">Camera</string>
+    <string name="info_date_taken">Date Taken</string>
+    <string name="info_aperture">Aperture</string>
+    <string name="info_exposure">Exposure</string>
+    <string name="info_iso">ISO</string>
+    <string name="info_focal_length">Focal Length</string>
+    <string name="info_location">Location</string>
+    <string name="info_flash">Flash</string>
+    <string name="info_flash_fired">Fired</string>
+    <string name="info_flash_not_fired">Did not fire</string>
+    <string name="info_white_balance">White Balance</string>
+
+    <!-- File Info - Video Metadata -->
+    <string name="info_duration">Duration</string>
+    <string name="info_quality">Quality</string>
+    <string name="info_bitrate">Bitrate</string>
+    <string name="info_framerate">Frame Rate</string>
+    <string name="info_rotation">Rotation</string>
+    <string name="info_codec">Codec</string>
+    <string name="info_date_recorded">Date Recorded</string>
+
+    <!-- File Info - Audio Metadata -->
+    <string name="info_title">Title</string>
+    <string name="info_artist">Artist</string>
+    <string name="info_album">Album</string>
+    <string name="info_album_artist">Album Artist</string>
+    <string name="info_year">Year</string>
+    <string name="info_track">Track</string>
+    <string name="info_genre">Genre</string>
+    <string name="info_composer">Composer</string>
+    <string name="info_sample_rate">Sample Rate</string>
+    <string name="info_bit_depth">Bit Depth</string>
+    <string name="info_format">Format</string>
+
+    <!-- File Info - Document Metadata -->
+    <string name="info_pages">Pages</string>
+    <string name="info_lines">Lines</string>
+    <string name="info_words">Words</string>
+    <string name="info_characters">Characters</string>
     <string name="media_content">Media content</string>
     <string name="player">Player</string>
     <string name="error_loading_media">Error loading media</string>
