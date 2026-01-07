@@ -108,6 +108,11 @@ dependencies {
     implementation(libs.exoplayer.ui)
     implementation(libs.media3.session)
 
+    // Network Protocols (Epic 4)
+    implementation(libs.smbj)
+    implementation(libs.sshj)
+    implementation(libs.commons.net)
+
     // Security
     implementation(libs.security.crypto)
 }

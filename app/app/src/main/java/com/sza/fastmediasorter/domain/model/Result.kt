@@ -102,5 +102,6 @@ enum class ErrorCode {
     TIMEOUT,
     CANCELLED,
     INVALID_INPUT,
+    INVALID_OPERATION,
     DATABASE_ERROR
 }
