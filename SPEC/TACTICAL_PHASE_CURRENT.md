@@ -180,27 +180,53 @@ Created PreferencesRepository with:
 
 **Location**: `domain/repository/`, `data/repository/`
 
-### 🔵 Task 8: Video Player Integration - NEXT
-**Estimated Effort**: 2-3 hours
+### ✅ Task 8: Video Player Integration - COMPLETE
+**Status**: ✅ Completed January 7, 2026
 
-Integrate ExoPlayer for video playback:
-
-1. Update PlayerActivity to handle video files
-2. Create VideoPlayerManager for ExoPlayer lifecycle
-3. Add playback controls (play/pause, seek, fullscreen)
-4. Handle audio focus and background playback
+Created Video Player with ExoPlayer:
+- `VideoPlayerManager` for ExoPlayer lifecycle management ✅
+- `MediaPagerAdapter` updated with video ViewHolder ✅
+- Video page layout with play overlay and controls ✅
+- ExoPlayer control styles and gradient backgrounds ✅
+- Automatic video detection by file extension ✅
 
 **Location**: `ui/player/`
+
+### ✅ Task 9: Audio Player Integration - COMPLETE
+**Status**: ✅ Completed January 7, 2026
+
+Created Audio Player with MediaSession:
+- `AudioPlayerManager` with ExoPlayer and MediaSession ✅
+- Audio page layout with playback controls ✅
+- Progress slider with time display ✅
+- Prev/Next, Rewind/Forward buttons ✅
+- Support for mp3, wav, flac, aac, ogg, m4a, wma, opus ✅
+- `media3-session` dependency for notification controls ✅
+
+**Location**: `ui/player/`
+
+### 🔵 Task 10: Destinations System - NEXT
+**Estimated Effort**: 2-3 hours
+
+Implement quick move/copy destination targets:
+
+1. Create DestinationsRepository for destination management
+2. Add DestinationEntity to Room database
+3. Implement DestinationsSettingsFragment UI
+4. Add destination selection dialog in BrowseActivity
+5. Integrate with FileOperationStrategy for move/copy
+
+**Location**: `ui/settings/`, `domain/repository/`, `data/entity/`
 
 ---
 
 ## 🟣 Sprint 2 Preview (Next Week)
 
-1. **Video Player Integration** - ExoPlayer setup
-2. **Audio Player Integration** - With notification service
-3. **Destinations System** - Quick move/copy targets
-4. **File Selection Mode** - Multi-select in BrowseActivity
-5. **Sorting Dialog** - Sort mode UI in BrowseActivity
+1. **Destinations System** - Quick move/copy targets
+2. **File Selection Mode** - Multi-select in BrowseActivity
+3. **Sorting Dialog** - Sort mode UI in BrowseActivity
+4. **Undo/Trash System** - Soft-delete with recovery
+5. **Pagination** - For large file lists
 
 ---
 

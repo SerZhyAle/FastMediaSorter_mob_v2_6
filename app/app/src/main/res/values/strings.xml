@@ -173,4 +173,16 @@
     <string name="resume_playback">Resume from last position</string>
     <string name="resume_playback_description">Continue video playback from where you left off</string>
     <string name="auto_play_videos">Auto-play videos</string>
+
+    <!-- Settings - Destinations -->
+    <string name="no_destinations">No destinations</string>
+    <string name="no_destinations_description">Add resources as quick move/copy destinations</string>
+    <string name="add_destination">Add destination</string>
+    <string name="remove_destination">Remove destination</string>
+    <string name="confirm_remove_destination">Remove \"%1$s\" from destinations?</string>
+    <string name="destination_added">Added \"%1$s\" as destination</string>
+    <string name="destination_removed">Removed \"%1$s\" from destinations</string>
+    <string name="no_resources_to_add">No resources available to add</string>
+    <string name="drag_to_reorder">Drag to reorder</string>
+    <string name="select_color">Select color</string>
 </resources>
