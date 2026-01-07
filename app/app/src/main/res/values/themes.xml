@@ -84,4 +84,27 @@
         <item name="android:windowTranslucentNavigation">true</item>
     </style>
 
+    <!-- ExoPlayer Control Styles -->
+    <style name="ExoMediaButton" parent="Widget.AppCompat.ImageButton">
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:scaleType">fitCenter</item>
+        <item name="tint">@android:color/white</item>
+    </style>
+
+    <style name="ExoMediaButton.Play">
+        <item name="android:src">@drawable/ic_play_circle</item>
+    </style>
+
+    <style name="ExoMediaButton.Pause">
+        <item name="android:src">@drawable/ic_play_circle</item>
+    </style>
+
+    <style name="ExoMediaButton.Next">
+        <item name="android:src">@drawable/ic_skip_next</item>
+    </style>
+
+    <style name="ExoMediaButton.Previous">
+        <item name="android:src">@drawable/ic_skip_previous</item>
+    </style>
+
 </resources>

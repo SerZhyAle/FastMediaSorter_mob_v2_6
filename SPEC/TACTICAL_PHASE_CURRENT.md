@@ -166,27 +166,41 @@ Created SettingsActivity with:
 
 **Location**: `ui/settings/`
 
-### 🔵 Task 7: Implement PreferencesRepository - NEXT
-**Estimated Effort**: 1-2 hours
+### ✅ Task 7: Implement PreferencesRepository - COMPLETE
+**Status**: ✅ Completed January 7, 2026
 
-Create PreferencesRepository for settings persistence:
+Created PreferencesRepository with:
+- `PreferencesRepository` interface in domain layer ✅
+- `PreferencesRepositoryImpl` using AndroidX DataStore ✅
+- Registered in RepositoryModule for Hilt DI ✅
+- `GeneralSettingsViewModel` connected to repository ✅
+- `PlaybackSettingsViewModel` connected to repository ✅
+- Theme application via AppCompatDelegate ✅
+- All settings persist across app restarts ✅
 
-1. `PreferencesRepository` interface in domain layer
-2. `PreferencesRepositoryImpl` using DataStore/SharedPreferences
-3. Connect ViewModels to persist and load settings
-4. Apply theme changes via AppCompatDelegate
+**Location**: `domain/repository/`, `data/repository/`
 
-**Location**: `data/repository/`, `domain/repository/`
+### 🔵 Task 8: Video Player Integration - NEXT
+**Estimated Effort**: 2-3 hours
+
+Integrate ExoPlayer for video playback:
+
+1. Update PlayerActivity to handle video files
+2. Create VideoPlayerManager for ExoPlayer lifecycle
+3. Add playback controls (play/pause, seek, fullscreen)
+4. Handle audio focus and background playback
+
+**Location**: `ui/player/`
 
 ---
 
 ## 🟣 Sprint 2 Preview (Next Week)
 
-1. **PreferencesRepository** - Settings persistence
-2. **Video Player Integration** - ExoPlayer setup
-3. **Audio Player Integration** - With notification service
-4. **Destinations System** - Quick move/copy targets
-5. **File Selection Mode** - Multi-select in BrowseActivity
+1. **Video Player Integration** - ExoPlayer setup
+2. **Audio Player Integration** - With notification service
+3. **Destinations System** - Quick move/copy targets
+4. **File Selection Mode** - Multi-select in BrowseActivity
+5. **Sorting Dialog** - Sort mode UI in BrowseActivity
 
 ---
 

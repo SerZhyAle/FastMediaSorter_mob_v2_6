@@ -20,14 +20,16 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import javax.inject.Inject
 
 /**
  * Activity for displaying and navigating through media files.
  * Uses ViewPager2 for horizontal swiping between files.
  * 
- * Phase 1: Image viewing with Glide
- * Phase 2: Video playback with ExoPlayer (future)
- * Phase 3: Audio playback (future)
+ * Supports:
+ * - Image viewing with Glide
+ * - Video playback with ExoPlayer
+ * - Audio playback (future)
  */
 @AndroidEntryPoint
 class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
@@ -57,6 +59,9 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
 
     private val viewModel: PlayerViewModel by viewModels()
     private lateinit var pagerAdapter: MediaPagerAdapter
+    
+    @Inject
+    lateinit var videoPlayerManager: VideoPlayerManager
 
     override fun getViewBinding() = ActivityPlayerBinding.inflate(layoutInflater)
 
@@ -64,6 +69,7 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
         super.onCreate(savedInstanceState)
 
         setupFullscreen()
+        initializeVideoPlayer()
         setupViewPager()
         setupToolbar()
         setupControls()
@@ -78,14 +84,19 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
         }
     }
 
+    private fun initializeVideoPlayer() {
+        videoPlayerManager.initialize(this)
+    }
+
     private fun setupFullscreen() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
     }
 
     private fun setupViewPager() {
         pagerAdapter = MediaPagerAdapter(
-            onImageClick = { viewModel.onMediaClick() },
-            onImageLongClick = { viewModel.onMediaLongClick() }
+            onMediaClick = { viewModel.onMediaClick() },
+            onMediaLongClick = { viewModel.onMediaLongClick() },
+            videoPlayerManager = videoPlayerManager
         )
 
         binding.viewPager.apply {
@@ -95,9 +106,30 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
                     viewModel.onPageSelected(position)
+                    // Notify adapter about page change to manage video playback
+                    pagerAdapter.onPageSelected(position)
                 }
             })
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Resume video playback if any
+        videoPlayerManager.play()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        // Pause video playback when activity goes to background
+        videoPlayerManager.pause()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // Release video player resources
+        pagerAdapter.releaseVideo()
+        videoPlayerManager.release()
     }
 
     private fun setupToolbar() {
