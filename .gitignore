@@ -93,3 +93,6 @@ docs/
 dev/
 spec/
 OLD_CODE_for_information_only/
+
+# Temporary Logs & Debug Output
+LOGS/

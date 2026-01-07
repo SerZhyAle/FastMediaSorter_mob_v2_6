@@ -96,6 +96,8 @@ The FastMediaSorter v2 project is being rebuilt from scratch with a clean archit
 | **Network Scanners** | ✅ NEW | `data/scanner/SmbMediaScanner.kt`, `SftpMediaScanner.kt`, `FtpMediaScanner.kt` |
 | **Network Strategies** | ✅ NEW | `data/operation/SmbOperationStrategy.kt`, `SftpOperationStrategy.kt`, `FtpOperationStrategy.kt` |
 | **NetworkModule** | ✅ UPDATED | `di/NetworkModule.kt` - provides network clients |
+| **Credential Management** | ✅ NEW | `NetworkCredentialsRepository`, `NetworkTypeMonitor`, UseCases |
+| **Credential UI** | ✅ NEW | `NetworkCredentialsDialog.kt` with connection testing |
 
 ### Missing - REMAINING WORK ⚠️
 

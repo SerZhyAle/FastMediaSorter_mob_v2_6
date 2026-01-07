@@ -158,6 +158,15 @@ class AddResourceActivity : BaseActivity<ActivityAddResourceBinding>() {
             is AddResourceEvent.ShowSnackbar -> {
                 Snackbar.make(binding.root, event.message, Snackbar.LENGTH_SHORT).show()
             }
+            is AddResourceEvent.ConnectionTesting -> {
+                Snackbar.make(binding.root, event.message, Snackbar.LENGTH_SHORT).show()
+            }
+            is AddResourceEvent.ConnectionSuccess -> {
+                Snackbar.make(binding.root, event.message, Snackbar.LENGTH_SHORT).show()
+            }
+            is AddResourceEvent.ConnectionFailed -> {
+                Snackbar.make(binding.root, event.message, Snackbar.LENGTH_LONG).show()
+            }
         }
     }
 }

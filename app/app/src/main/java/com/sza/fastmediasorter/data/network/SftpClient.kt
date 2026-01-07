@@ -1,9 +1,9 @@
 package com.sza.fastmediasorter.data.network
 
-import com.hierynomus.sshj.SSHClient
-import com.hierynomus.sshj.sftp.SFTPClient
-import com.hierynomus.sshj.transport.verification.PromiscuousVerifier
-import com.hierynomus.sshj.xfer.InMemoryDestFile
+import net.schmizz.sshj.SSHClient
+import net.schmizz.sshj.sftp.SFTPClient
+import net.schmizz.sshj.transport.verification.PromiscuousVerifier
+import net.schmizz.sshj.xfer.InMemoryDestFile
 import timber.log.Timber
 import java.io.IOException
 import java.io.OutputStream
@@ -60,7 +60,7 @@ class SftpClient @Inject constructor() {
                 val keyProvider = if (passphrase != null) {
                     ssh.loadKeys(privateKey, passphrase)
                 } else {
-                    ssh.loadKeys(privateKey, null)
+                    ssh.loadKeys(privateKey, null as String?)
                 }
                 ssh.authPublickey(username, keyProvider)
             } else {
@@ -114,7 +114,7 @@ class SftpClient @Inject constructor() {
                 val keyProvider = if (passphrase != null) {
                     ssh.loadKeys(privateKey, passphrase)
                 } else {
-                    ssh.loadKeys(privateKey, null)
+                    ssh.loadKeys(privateKey, null as String?)
                 }
                 ssh.authPublickey(username, keyProvider)
             } else {
@@ -172,7 +172,7 @@ class SftpClient @Inject constructor() {
                 val keyProvider = if (passphrase != null) {
                     ssh.loadKeys(privateKey, passphrase)
                 } else {
-                    ssh.loadKeys(privateKey, null)
+                    ssh.loadKeys(privateKey, null as String?)
                 }
                 ssh.authPublickey(username, keyProvider)
             } else {
@@ -181,12 +181,24 @@ class SftpClient @Inject constructor() {
             
             val sftp = ssh.newSFTPClient()
             
+            var bytesWritten = 0L
             val dest = object : InMemoryDestFile() {
-                override fun getOutputStream(): OutputStream = outputStream
+                override fun getOutputStream(): OutputStream = object : OutputStream() {
+                    override fun write(b: Int) {
+                        outputStream.write(b)
+                        bytesWritten++
+                    }
+                    override fun write(b: ByteArray, off: Int, len: Int) {
+                        outputStream.write(b, off, len)
+                        bytesWritten += len
+                    }
+                }
+                override fun getOutputStream(append: Boolean): OutputStream = getOutputStream()
+                override fun getLength(): Long = bytesWritten
             }
             
             sftp.get(remotePath, dest)
-            val bytesTransferred = dest.length ?: 0L
+            val bytesTransferred = dest.length
             
             sftp.close()
             ssh.disconnect()
@@ -232,7 +244,7 @@ class SftpClient @Inject constructor() {
                 val keyProvider = if (passphrase != null) {
                     ssh.loadKeys(privateKey, passphrase)
                 } else {
-                    ssh.loadKeys(privateKey, null)
+                    ssh.loadKeys(privateKey, null as String?)
                 }
                 ssh.authPublickey(username, keyProvider)
             } else {

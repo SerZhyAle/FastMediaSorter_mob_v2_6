@@ -142,7 +142,7 @@ class NetworkCredentialsRepositoryImpl @Inject constructor(
                                 host = credentials.server,
                                 port = credentials.port,
                                 username = credentials.username,
-                                keyPath = credentials.sshKeyPath ?: ""
+                                privateKey = credentials.sshKeyPath ?: ""
                             )
                         } else {
                             sftpClient.testConnection(

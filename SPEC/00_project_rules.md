@@ -165,10 +165,11 @@
 - **Goal**: Maintain a Single Source of Truth. Avoid scattered `README.md` files or orphaned Google Docs.
 - **Reference**: External developer docs should be copied into `spec_v2/external_docs/` for self-contained distribution.
 
-### Build Log Retention
-- **Rule**: All logs from build processes, compilation errors, and CI/CD runs must be stored in a dedicated logs folder (e.g., `docs/logs/builds/` or `.logs/`).
-- **Standard**: Filenames should include timestamps: `build_YYYY-MM-DD_HH-mm.log`.
-- **Reasoning**: Facilitates debugging regarding regression issues or environment changes over time.
+### Logging & Temporary Output (`LOGS/`)
+- **Rule**: All temporary debug output, build logs, crash reports, and ad-hoc analysis files must be saved to the **`LOGS/`** folder in the project root.
+- **Constraint**: NEVER clutter the root directory with `temp.txt`, `debug.json`, or generic `.log` files.
+- **Standard**: Filenames should include timestamps where possible: `LOGS/debug_2026-01-07.txt`.
+- **Reasoning**: Keeps the workspace clean and prevents accidental verification of garbage files.
 
 ### Development Backups
 - **Rule**: Before any major manual refactoring or destructive operation, create a snapshot of the affected files in a special **backups subfolder** (e.g., `.backups/PreRefactor_Name/`).

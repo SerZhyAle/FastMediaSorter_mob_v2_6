@@ -264,4 +264,27 @@
     <string name="no_resources_to_add">No resources available to add</string>
     <string name="drag_to_reorder">Drag to reorder</string>
     <string name="select_color">Select color</string>
+
+    <!-- Network Credentials -->
+    <string name="add_smb_connection">Add SMB Connection</string>
+    <string name="add_sftp_connection">Add SFTP Connection</string>
+    <string name="add_ftp_connection">Add FTP Connection</string>
+    <string name="add_network_connection">Add Network Connection</string>
+    <string name="server_address">Server address</string>
+    <string name="port">Port</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="use_ssh_key">Use SSH key authentication</string>
+    <string name="ssh_key_path">SSH private key path</string>
+    <string name="domain_optional">Domain (optional)</string>
+    <string name="share_name">Share name</string>
+    <string name="test_connection">Test Connection</string>
+    <string name="error_name_required">Name is required</string>
+    <string name="error_server_required">Server address is required</string>
+    <string name="error_invalid_port">Invalid port number (1-65535)</string>
+    <string name="error_username_required">Username is required</string>
+    <string name="error_share_name_required">Share name is required</string>
+    <string name="error_ssh_key_required">SSH key path is required</string>
+    <string name="error_password_required">Password is required</string>
 </resources>
+

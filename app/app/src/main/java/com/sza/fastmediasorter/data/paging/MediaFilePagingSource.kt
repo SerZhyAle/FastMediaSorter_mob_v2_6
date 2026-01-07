@@ -117,7 +117,7 @@ class MediaFilePagingSource(
             }
             in SUPPORTED_VIDEO_EXTENSIONS -> MediaType.VIDEO
             in SUPPORTED_AUDIO_EXTENSIONS -> MediaType.AUDIO
-            else -> MediaType.UNKNOWN
+            else -> MediaType.OTHER
         }
     }
 
