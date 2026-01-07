@@ -288,13 +288,17 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
                 Timber.d("Delete confirmation for: ${event.filePath}")
             }
             is PlayerUiEvent.ShowFileInfo -> {
-                // TODO: Show file info dialog
-                Timber.d("Show info for: ${event.filePath}")
+                showFileInfoDialog(event.filePath)
             }
             is PlayerUiEvent.NavigateBack -> {
                 finish()
             }
         }
+    }
+
+    private fun showFileInfoDialog(filePath: String) {
+        val dialog = com.sza.fastmediasorter.ui.dialog.FileInfoDialog(this, filePath)
+        dialog.show()
     }
 
     @Deprecated("Deprecated in Java")

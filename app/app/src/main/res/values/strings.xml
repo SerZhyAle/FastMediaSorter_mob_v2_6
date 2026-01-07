@@ -141,6 +141,12 @@
     <string name="action_rewind">Rewind 10 seconds</string>
     <string name="action_forward">Forward 10 seconds</string>
     <string name="file_info">File Info</string>
+    <string name="info_name">Name</string>
+    <string name="info_path">Location</string>
+    <string name="info_size">Size</string>
+    <string name="info_type">Type</string>
+    <string name="info_modified">Modified</string>
+    <string name="open_with">Open with…</string>
     <string name="media_content">Media content</string>
     <string name="player">Player</string>
     <string name="error_loading_media">Error loading media</string>
