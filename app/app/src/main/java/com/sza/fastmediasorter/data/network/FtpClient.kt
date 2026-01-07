@@ -201,6 +201,198 @@ class FtpClient @Inject constructor() {
         }
     }
 
+    /**
+     * Delete a file.
+     * 
+     * @param host Server hostname or IP
+     * @param port Server port
+     * @param remotePath Remote file path
+     * @param username Username
+     * @param password Password
+     * @return Result with success message or error
+     */
+    suspend fun deleteFile(
+        host: String,
+        port: Int,
+        remotePath: String,
+        username: String,
+        password: String
+    ): Result<Unit> = withContext(Dispatchers.IO) {
+        synchronized(mutex) {
+            try {
+                val client = getOrCreateClient(host, port, username, password)
+                    ?: return@withContext Result.failure(IOException("Failed to connect"))
+                
+                val success = client.deleteFile(remotePath)
+                if (!success) {
+                    return@withContext Result.failure(
+                        IOException("FTP delete failed: ${client.replyString}")
+                    )
+                }
+                
+                Timber.d("FTP deleted file: $remotePath")
+                Result.success(Unit)
+            } catch (e: Exception) {
+                Timber.e(e, "FTP delete failed: $remotePath")
+                disconnect()
+                Result.failure(e)
+            }
+        }
+    }
+
+    /**
+     * Rename a file.
+     * 
+     * @param host Server hostname or IP
+     * @param port Server port
+     * @param fromPath Source file path
+     * @param toPath Destination file path
+     * @param username Username
+     * @param password Password
+     * @return Result with success or error
+     */
+    suspend fun rename(
+        host: String,
+        port: Int,
+        fromPath: String,
+        toPath: String,
+        username: String,
+        password: String
+    ): Result<Unit> = withContext(Dispatchers.IO) {
+        synchronized(mutex) {
+            try {
+                val client = getOrCreateClient(host, port, username, password)
+                    ?: return@withContext Result.failure(IOException("Failed to connect"))
+                
+                val success = client.rename(fromPath, toPath)
+                if (!success) {
+                    return@withContext Result.failure(
+                        IOException("FTP rename failed: ${client.replyString}")
+                    )
+                }
+                
+                Timber.d("FTP renamed $fromPath to $toPath")
+                Result.success(Unit)
+            } catch (e: Exception) {
+                Timber.e(e, "FTP rename failed: $fromPath -> $toPath")
+                disconnect()
+                Result.failure(e)
+            }
+        }
+    }
+
+    /**
+     * Create a directory.
+     * 
+     * @param host Server hostname or IP
+     * @param port Server port
+     * @param remotePath Remote directory path
+     * @param username Username
+     * @param password Password
+     * @return Result with success or error
+     */
+    suspend fun createDirectory(
+        host: String,
+        port: Int,
+        remotePath: String,
+        username: String,
+        password: String
+    ): Result<Unit> = withContext(Dispatchers.IO) {
+        synchronized(mutex) {
+            try {
+                val client = getOrCreateClient(host, port, username, password)
+                    ?: return@withContext Result.failure(IOException("Failed to connect"))
+                
+                val success = client.makeDirectory(remotePath)
+                if (!success) {
+                    return@withContext Result.failure(
+                        IOException("FTP mkdir failed: ${client.replyString}")
+                    )
+                }
+                
+                Timber.d("FTP created directory: $remotePath")
+                Result.success(Unit)
+            } catch (e: Exception) {
+                Timber.e(e, "FTP mkdir failed: $remotePath")
+                disconnect()
+                Result.failure(e)
+            }
+        }
+    }
+
+    /**
+     * Upload a file.
+     * 
+     * @param host Server hostname or IP
+     * @param port Server port
+     * @param remotePath Remote file path
+     * @param inputStream Input stream to read from
+     * @param username Username
+     * @param password Password
+     * @return Result with success or error
+     */
+    suspend fun uploadFile(
+        host: String,
+        port: Int,
+        remotePath: String,
+        inputStream: java.io.InputStream,
+        username: String,
+        password: String
+    ): Result<Unit> = withContext(Dispatchers.IO) {
+        synchronized(mutex) {
+            try {
+                val client = getOrCreateClient(host, port, username, password)
+                    ?: return@withContext Result.failure(IOException("Failed to connect"))
+                
+                val success = client.storeFile(remotePath, inputStream)
+                if (!success) {
+                    return@withContext Result.failure(
+                        IOException("FTP upload failed: ${client.replyString}")
+                    )
+                }
+                
+                Timber.d("FTP uploaded file to $remotePath")
+                Result.success(Unit)
+            } catch (e: Exception) {
+                Timber.e(e, "FTP upload failed: $remotePath")
+                disconnect()
+                Result.failure(e)
+            }
+        }
+    }
+
+    /**
+     * Check if a file exists.
+     * 
+     * @param host Server hostname or IP
+     * @param port Server port
+     * @param remotePath Remote file path
+     * @param username Username
+     * @param password Password
+     * @return Result with true if exists, false otherwise
+     */
+    suspend fun exists(
+        host: String,
+        port: Int,
+        remotePath: String,
+        username: String,
+        password: String
+    ): Result<Boolean> = withContext(Dispatchers.IO) {
+        synchronized(mutex) {
+            try {
+                val client = getOrCreateClient(host, port, username, password)
+                    ?: return@withContext Result.failure(IOException("Failed to connect"))
+                
+                val ftpFile = client.mlistFile(remotePath)
+                Result.success(ftpFile != null)
+            } catch (e: Exception) {
+                Timber.e(e, "FTP exists check failed: $remotePath")
+                disconnect()
+                Result.failure(e)
+            }
+        }
+    }
+
     private fun getOrCreateClient(
         host: String,
         port: Int,

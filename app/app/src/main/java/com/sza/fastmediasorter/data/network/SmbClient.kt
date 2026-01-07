@@ -238,6 +238,245 @@ class SmbClient @Inject constructor() {
     }
 
     /**
+     * Delete a file.
+     * 
+     * @param server Server hostname or IP
+     * @param port Server port
+     * @param shareName Share name
+     * @param remotePath Remote file path
+     * @param username Username
+     * @param password Password
+     * @param domain Domain (optional)
+     * @return Result with success or error
+     */
+    suspend fun deleteFile(
+        server: String,
+        port: Int,
+        shareName: String,
+        remotePath: String,
+        username: String,
+        password: String,
+        domain: String = ""
+    ): Result<Unit> {
+        return try {
+            val connection = getClient().connect(server, port)
+            val authContext = AuthenticationContext(username, password.toCharArray(), domain)
+            val session = connection.authenticate(authContext)
+            val share = session.connectShare(shareName) as DiskShare
+            
+            val cleanPath = remotePath.trimStart('/')
+            share.rm(cleanPath)
+            
+            share.close()
+            session.close()
+            connection.close()
+            
+            Timber.d("SMB deleted file: $cleanPath")
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Timber.e(e, "SMB delete failed: $remotePath")
+            Result.failure(e)
+        }
+    }
+
+    /**
+     * Rename/move a file.
+     * 
+     * @param server Server hostname or IP
+     * @param port Server port
+     * @param shareName Share name
+     * @param fromPath Source file path
+     * @param toPath Destination file path
+     * @param username Username
+     * @param password Password
+     * @param domain Domain (optional)
+     * @return Result with success or error
+     */
+    suspend fun rename(
+        server: String,
+        port: Int,
+        shareName: String,
+        fromPath: String,
+        toPath: String,
+        username: String,
+        password: String,
+        domain: String = ""
+    ): Result<Unit> {
+        return try {
+            val connection = getClient().connect(server, port)
+            val authContext = AuthenticationContext(username, password.toCharArray(), domain)
+            val session = connection.authenticate(authContext)
+            val share = session.connectShare(shareName) as DiskShare
+            
+            val cleanFromPath = fromPath.trimStart('/')
+            val cleanToPath = toPath.trimStart('/')
+            
+            // Open file for rename
+            val file = share.openFile(
+                cleanFromPath,
+                EnumSet.of(AccessMask.DELETE, AccessMask.GENERIC_WRITE),
+                null,
+                SMB2ShareAccess.ALL,
+                SMB2CreateDisposition.FILE_OPEN,
+                null
+            )
+            
+            // SMB rename using file renaming
+            file.rename(cleanToPath)
+            
+            file.close()
+            share.close()
+            session.close()
+            connection.close()
+            
+            Timber.d("SMB renamed $cleanFromPath to $cleanToPath")
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Timber.e(e, "SMB rename failed: $fromPath -> $toPath")
+            Result.failure(e)
+        }
+    }
+
+    /**
+     * Create a directory.
+     * 
+     * @param server Server hostname or IP
+     * @param port Server port
+     * @param shareName Share name
+     * @param remotePath Remote directory path
+     * @param username Username
+     * @param password Password
+     * @param domain Domain (optional)
+     * @return Result with success or error
+     */
+    suspend fun createDirectory(
+        server: String,
+        port: Int,
+        shareName: String,
+        remotePath: String,
+        username: String,
+        password: String,
+        domain: String = ""
+    ): Result<Unit> {
+        return try {
+            val connection = getClient().connect(server, port)
+            val authContext = AuthenticationContext(username, password.toCharArray(), domain)
+            val session = connection.authenticate(authContext)
+            val share = session.connectShare(shareName) as DiskShare
+            
+            val cleanPath = remotePath.trimStart('/')
+            share.mkdir(cleanPath)
+            
+            share.close()
+            session.close()
+            connection.close()
+            
+            Timber.d("SMB created directory: $cleanPath")
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Timber.e(e, "SMB mkdir failed: $remotePath")
+            Result.failure(e)
+        }
+    }
+
+    /**
+     * Upload a file.
+     * 
+     * @param server Server hostname or IP
+     * @param port Server port
+     * @param shareName Share name
+     * @param remotePath Remote file path
+     * @param inputStream Input stream to read from
+     * @param username Username
+     * @param password Password
+     * @param domain Domain (optional)
+     * @return Result with success or error
+     */
+    suspend fun uploadFile(
+        server: String,
+        port: Int,
+        shareName: String,
+        remotePath: String,
+        inputStream: InputStream,
+        username: String,
+        password: String,
+        domain: String = ""
+    ): Result<Unit> {
+        return try {
+            val connection = getClient().connect(server, port)
+            val authContext = AuthenticationContext(username, password.toCharArray(), domain)
+            val session = connection.authenticate(authContext)
+            val share = session.connectShare(shareName) as DiskShare
+            
+            val cleanPath = remotePath.trimStart('/')
+            val file: File = share.openFile(
+                cleanPath,
+                EnumSet.of(AccessMask.GENERIC_WRITE),
+                null,
+                SMB2ShareAccess.ALL,
+                SMB2CreateDisposition.FILE_OVERWRITE_IF,
+                null
+            )
+            
+            val outputStream: OutputStream = file.outputStream
+            inputStream.copyTo(outputStream)
+            
+            outputStream.close()
+            file.close()
+            share.close()
+            session.close()
+            connection.close()
+            
+            Timber.d("SMB uploaded file to $cleanPath")
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Timber.e(e, "SMB upload failed: $remotePath")
+            Result.failure(e)
+        }
+    }
+
+    /**
+     * Check if a file or directory exists.
+     * 
+     * @param server Server hostname or IP
+     * @param port Server port
+     * @param shareName Share name
+     * @param remotePath Remote file path
+     * @param username Username
+     * @param password Password
+     * @param domain Domain (optional)
+     * @return Result with true if exists, false otherwise
+     */
+    suspend fun exists(
+        server: String,
+        port: Int,
+        shareName: String,
+        remotePath: String,
+        username: String,
+        password: String,
+        domain: String = ""
+    ): Result<Boolean> {
+        return try {
+            val connection = getClient().connect(server, port)
+            val authContext = AuthenticationContext(username, password.toCharArray(), domain)
+            val session = connection.authenticate(authContext)
+            val share = session.connectShare(shareName) as DiskShare
+            
+            val cleanPath = remotePath.trimStart('/')
+            val exists = share.fileExists(cleanPath)
+            
+            share.close()
+            session.close()
+            connection.close()
+            
+            Result.success(exists)
+        } catch (e: Exception) {
+            Timber.e(e, "SMB exists check failed: $remotePath")
+            Result.failure(e)
+        }
+    }
+
+    /**
      * Release resources.
      */
     fun release() {
