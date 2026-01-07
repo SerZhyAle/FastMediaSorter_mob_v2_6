@@ -97,6 +97,10 @@ dependencies {
     // DataStore
     implementation(libs.datastore.preferences)
 
+    // Paging
+    implementation(libs.paging.runtime)
+    implementation(libs.paging.common)
+
     // Logging
     implementation(libs.timber)
 
