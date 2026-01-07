@@ -1,7 +1,7 @@
 package com.sza.fastmediasorter.data.operation
 
 import android.content.Context
-import com.sza.fastmediasorter.data.network.ftp.FtpClient
+import com.sza.fastmediasorter.data.network.FtpClient
 import com.sza.fastmediasorter.domain.model.ErrorCode
 import com.sza.fastmediasorter.domain.model.MediaFile
 import com.sza.fastmediasorter.domain.model.MediaType

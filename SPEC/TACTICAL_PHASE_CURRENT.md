@@ -1,14 +1,14 @@
 # Tactical Development Plan - Current Phase
 
 **Date**: January 7, 2026  
-**Status**: Epic 1 Complete, Epic 2 ~100% Complete, Epic 3 Started  
+**Status**: Epic 1 Complete, Epic 2 100% Complete, Epic 3 (Player) Complete, Epic 4 (Network) Started  
 **Project Version**: v2.0.0-dev
 
 ---
 
 ## Executive Summary
 
-The FastMediaSorter v2 project is being rebuilt from scratch with a clean architecture. The foundation (Epic 1) is **complete and solid**. Epic 2 (Local File Management) is **100% complete** with all core infrastructure including UseCases, FileOperationStrategy, PlayerActivity with Video/Audio support, EditResourceActivity, SettingsActivity with DataStore persistence, Destinations System, File Selection Mode, Sorting Dialog, Destination Picker, Undo/Trash System, and FavoritesActivity now implemented. Epic 3 (Media Playback) is well underway with ExoPlayer and MediaSession integration.
+The FastMediaSorter v2 project is being rebuilt from scratch with a clean architecture. The foundation (Epic 1) is **complete and solid**. Epic 2 (Local File Management) is **100% complete** with all core infrastructure including UseCases, FileOperationStrategy, PlayerActivity with Video/Audio support, EditResourceActivity, SettingsActivity with DataStore persistence, Destinations System, File Selection Mode, Sorting Dialog, Destination Picker, Undo/Trash System, FavoritesActivity, and Paging3 for large file lists now implemented. Epic 3 (Media Playback) is **complete** with ExoPlayer and MediaSession integration. Epic 4 (Network Layer) has **started** with SMB, SFTP, and FTP client implementations.
 
 ---
 
@@ -92,11 +92,16 @@ The FastMediaSorter v2 project is being rebuilt from scratch with a clean archit
 | **Glide Thumbnail Loading** | ✅ NEW | `ui/browse/MediaFileAdapter.kt` |
 | **Paging3 Integration** | ✅ NEW | `data/paging/MediaFilePagingSource.kt`, `MediaFilePagingAdapter.kt` |
 | **GetPaginatedMediaFilesUseCase** | ✅ NEW | `domain/usecase/GetPaginatedMediaFilesUseCase.kt` |
+| **Network Clients** | ✅ NEW | `data/network/SmbClient.kt`, `SftpClient.kt`, `FtpClient.kt` |
+| **Network Scanners** | ✅ NEW | `data/scanner/SmbMediaScanner.kt`, `SftpMediaScanner.kt`, `FtpMediaScanner.kt` |
+| **Network Strategies** | ✅ NEW | `data/operation/SmbOperationStrategy.kt`, `SftpOperationStrategy.kt`, `FtpOperationStrategy.kt` |
+| **NetworkModule** | ✅ UPDATED | `di/NetworkModule.kt` - provides network clients |
 
 ### Missing - REMAINING WORK ⚠️
 
 | Component | Priority | Description |
 |-----------|----------|-------------|
+| **Cloud Integration** | 🔴 HIGH | Google Drive, OneDrive, Dropbox clients |
 | **Search** | 🟡 MEDIUM | No search functionality yet |
 | **File Info Dialog** | 🟢 LOW | Show file details on info click |
 
@@ -330,6 +335,9 @@ Implemented Paging3 for large file lists:
 ## 🟣 Sprint 2 Preview (Next Tasks)
 
 1. **Search Functionality** - Search within resources
+2. **File Info Dialog** - Show file details on info click
+3. **Cloud Integration** - Google Drive/OneDrive/Dropbox (Epic 5)
+4. **Advanced Features** - OCR, Translation (Epic 6)
 4. **File Info Dialog** - Show file details (size, date, dimensions)
 
 ---

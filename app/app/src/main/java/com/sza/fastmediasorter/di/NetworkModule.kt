@@ -1,8 +1,8 @@
 package com.sza.fastmediasorter.di
 
-import com.sza.fastmediasorter.data.network.ftp.FtpClient
-import com.sza.fastmediasorter.data.network.sftp.SftpClient
-import com.sza.fastmediasorter.data.network.smb.SmbClient
+import com.sza.fastmediasorter.data.network.FtpClient
+import com.sza.fastmediasorter.data.network.SftpClient
+import com.sza.fastmediasorter.data.network.SmbClient
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

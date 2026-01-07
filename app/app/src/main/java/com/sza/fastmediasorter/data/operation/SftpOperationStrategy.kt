@@ -1,7 +1,7 @@
 package com.sza.fastmediasorter.data.operation
 
 import android.content.Context
-import com.sza.fastmediasorter.data.network.sftp.SftpClient
+import com.sza.fastmediasorter.data.network.SftpClient
 import com.sza.fastmediasorter.domain.model.ErrorCode
 import com.sza.fastmediasorter.domain.model.MediaFile
 import com.sza.fastmediasorter.domain.model.MediaType
