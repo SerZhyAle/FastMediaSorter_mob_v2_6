@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Static shortcut: Add new resource -->
+    <shortcut
+        android:shortcutId="add_resource"
+        android:enabled="true"
+        android:icon="@drawable/ic_folder_add"
+        android:shortcutShortLabel="@string/add_resource"
+        android:shortcutLongLabel="@string/add_resource"
+        android:shortcutDisabledMessage="@string/error_permission">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.sza.fastmediasorter"
+            android:targetClass="com.sza.fastmediasorter.ui.main.MainActivity">
+            <extra android:name="action" android:value="add_resource" />
+        </intent>
+        <categories android:name="android.shortcut.conversation" />
+    </shortcut>
+
+    <!-- Static shortcut: Open settings -->
+    <shortcut
+        android:shortcutId="settings"
+        android:enabled="true"
+        android:icon="@drawable/ic_settings"
+        android:shortcutShortLabel="@string/settings"
+        android:shortcutLongLabel="@string/action_settings"
+        android:shortcutDisabledMessage="@string/error_permission">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.sza.fastmediasorter"
+            android:targetClass="com.sza.fastmediasorter.ui.settings.SettingsActivity" />
+        <categories android:name="android.shortcut.conversation" />
+    </shortcut>
+
+    <!-- Static shortcut: Open favorites -->
+    <shortcut
+        android:shortcutId="favorites"
+        android:enabled="true"
+        android:icon="@drawable/ic_favorite"
+        android:shortcutShortLabel="@string/favorites"
+        android:shortcutLongLabel="@string/favorites"
+        android:shortcutDisabledMessage="@string/error_permission">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.sza.fastmediasorter"
+            android:targetClass="com.sza.fastmediasorter.ui.main.MainActivity">
+            <extra android:name="action" android:value="favorites" />
+        </intent>
+        <categories android:name="android.shortcut.conversation" />
+    </shortcut>
+
+</shortcuts>

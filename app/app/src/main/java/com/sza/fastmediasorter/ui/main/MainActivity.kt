@@ -44,6 +44,27 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         setupFab()
         observeUiState()
         observeEvents()
+        
+        // Handle shortcut actions
+        handleShortcutAction(intent)
+    }
+    
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        intent?.let { handleShortcutAction(it) }
+    }
+    
+    private fun handleShortcutAction(intent: Intent) {
+        when (intent.getStringExtra("action")) {
+            "add_resource" -> {
+                Timber.d("Shortcut: add_resource")
+                viewModel.onAddResourceClick()
+            }
+            "favorites" -> {
+                Timber.d("Shortcut: favorites")
+                viewModel.onFavoritesClick()
+            }
+        }
     }
 
     private fun setupToolbar() {
