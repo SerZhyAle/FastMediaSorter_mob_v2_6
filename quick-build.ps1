@@ -59,19 +59,17 @@ if (-not $env:ANDROID_HOME) {
     }
 }
 
-# Navigate to app directory
-Set-Location -Path "$PSScriptRoot\app"
-
+# Stay in root directory
 Write-Host "Building debug APK..." -ForegroundColor Yellow
 
 # Run Gradle build
-& .\gradlew.bat assembleDebug --console=plain
+& .\gradlew.bat :app:app:assembleDebug --console=plain
 
 if ($LASTEXITCODE -eq 0) {
     Write-Host "`nBuild successful!" -ForegroundColor Green
     
     # Find APK
-    $apk = Get-ChildItem -Path "app\build\outputs\apk\debug" -Filter "*.apk" -ErrorAction SilentlyContinue | Select-Object -First 1
+    $apk = Get-ChildItem -Path "app\app\build\outputs\apk\debug" -Filter "*.apk" -ErrorAction SilentlyContinue | Select-Object -First 1
     if ($apk) {
         $size = [math]::Round($apk.Length / 1MB, 2)
         Write-Host "APK: $($apk.Name) ($size MB)" -ForegroundColor Cyan
