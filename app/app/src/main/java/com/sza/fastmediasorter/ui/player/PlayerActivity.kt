@@ -62,6 +62,9 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
     
     @Inject
     lateinit var videoPlayerManager: VideoPlayerManager
+    
+    @Inject
+    lateinit var audioPlayerManager: AudioPlayerManager
 
     override fun getViewBinding() = ActivityPlayerBinding.inflate(layoutInflater)
 
@@ -86,6 +89,21 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
 
     private fun initializeVideoPlayer() {
         videoPlayerManager.initialize(this)
+        audioPlayerManager.initialize(this)
+    }
+
+    private fun navigateToPrevious() {
+        val currentItem = binding.viewPager.currentItem
+        if (currentItem > 0) {
+            binding.viewPager.currentItem = currentItem - 1
+        }
+    }
+
+    private fun navigateToNext() {
+        val currentItem = binding.viewPager.currentItem
+        if (currentItem < pagerAdapter.itemCount - 1) {
+            binding.viewPager.currentItem = currentItem + 1
+        }
     }
 
     private fun setupFullscreen() {
@@ -96,7 +114,10 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
         pagerAdapter = MediaPagerAdapter(
             onMediaClick = { viewModel.onMediaClick() },
             onMediaLongClick = { viewModel.onMediaLongClick() },
-            videoPlayerManager = videoPlayerManager
+            videoPlayerManager = videoPlayerManager,
+            audioPlayerManager = audioPlayerManager,
+            onPreviousClick = { navigateToPrevious() },
+            onNextClick = { navigateToNext() }
         )
 
         binding.viewPager.apply {
@@ -127,9 +148,11 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
 
     override fun onDestroy() {
         super.onDestroy()
-        // Release video player resources
+        // Release player resources
         pagerAdapter.releaseVideo()
+        pagerAdapter.releaseAudio()
         videoPlayerManager.release()
+        audioPlayerManager.release()
     }
 
     private fun setupToolbar() {

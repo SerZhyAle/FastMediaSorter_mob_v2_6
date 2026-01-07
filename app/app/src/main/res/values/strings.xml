@@ -119,10 +119,14 @@
     <string name="action_next">Next</string>
     <string name="action_share">Share</string>
     <string name="action_play">Play</string>
+    <string name="action_pause">Pause</string>
+    <string name="action_rewind">Rewind 10 seconds</string>
+    <string name="action_forward">Forward 10 seconds</string>
     <string name="file_info">File Info</string>
     <string name="media_content">Media content</string>
     <string name="player">Player</string>
     <string name="error_loading_media">Error loading media</string>
+    <string name="album_art">Album art</string>
 
     <!-- Edit Resource -->
     <string name="edit_resource">Edit Resource</string>

@@ -106,6 +106,7 @@ dependencies {
     // Media Player (for later epics)
     implementation(libs.exoplayer)
     implementation(libs.exoplayer.ui)
+    implementation(libs.media3.session)
 
     // Security
     implementation(libs.security.crypto)

@@ -1,10 +1,10 @@
 package com.sza.fastmediasorter.ui.player
 
-import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.media3.ui.PlayerView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -13,31 +13,41 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.sza.fastmediasorter.R
 import com.sza.fastmediasorter.databinding.ItemMediaPageBinding
 import com.sza.fastmediasorter.databinding.ItemMediaPageVideoBinding
+import com.sza.fastmediasorter.databinding.ItemMediaPageAudioBinding
 import timber.log.Timber
 import java.io.File
 
 /**
  * Adapter for ViewPager2 to display media files.
- * Supports images and videos with ExoPlayer integration.
+ * Supports images, videos with ExoPlayer, and audio with controls.
  */
 class MediaPagerAdapter(
     private val onMediaClick: () -> Unit,
     private val onMediaLongClick: () -> Boolean,
-    private val videoPlayerManager: VideoPlayerManager? = null
+    private val videoPlayerManager: VideoPlayerManager? = null,
+    private val audioPlayerManager: AudioPlayerManager? = null,
+    private val onPreviousClick: (() -> Unit)? = null,
+    private val onNextClick: (() -> Unit)? = null
 ) : ListAdapter<String, RecyclerView.ViewHolder>(MediaDiffCallback()) {
 
     companion object {
         private const val VIEW_TYPE_IMAGE = 0
         private const val VIEW_TYPE_VIDEO = 1
+        private const val VIEW_TYPE_AUDIO = 2
     }
 
     private var currentVideoHolder: VideoViewHolder? = null
+    private var currentAudioHolder: AudioViewHolder? = null
     private var currentVisiblePosition = -1
 
     override fun getItemViewType(position: Int): Int {
         val filePath = getItem(position)
         val file = File(filePath)
-        return if (isVideo(file)) VIEW_TYPE_VIDEO else VIEW_TYPE_IMAGE
+        return when {
+            isVideo(file) -> VIEW_TYPE_VIDEO
+            isAudio(file) -> VIEW_TYPE_AUDIO
+            else -> VIEW_TYPE_IMAGE
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -49,6 +59,14 @@ class MediaPagerAdapter(
                     false
                 )
                 VideoViewHolder(binding)
+            }
+            VIEW_TYPE_AUDIO -> {
+                val binding = ItemMediaPageAudioBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+                AudioViewHolder(binding)
             }
             else -> {
                 val binding = ItemMediaPageBinding.inflate(
@@ -66,19 +84,21 @@ class MediaPagerAdapter(
         when (holder) {
             is ImageViewHolder -> holder.bind(filePath)
             is VideoViewHolder -> holder.bind(filePath)
+            is AudioViewHolder -> holder.bind(filePath)
         }
     }
 
     override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
         super.onViewRecycled(holder)
-        if (holder is VideoViewHolder) {
-            holder.stopPlayback()
+        when (holder) {
+            is VideoViewHolder -> holder.stopPlayback()
+            is AudioViewHolder -> holder.stopPlayback()
         }
     }
 
     /**
      * Called when a page becomes visible.
-     * Starts video playback if it's a video.
+     * Manages video and audio playback.
      */
     fun onPageSelected(position: Int) {
         currentVisiblePosition = position
@@ -86,6 +106,10 @@ class MediaPagerAdapter(
         // Stop previous video if any
         currentVideoHolder?.stopPlayback()
         currentVideoHolder = null
+        
+        // Stop previous audio if any
+        currentAudioHolder?.stopPlayback()
+        currentAudioHolder = null
     }
 
     /**
@@ -98,11 +122,28 @@ class MediaPagerAdapter(
     }
 
     /**
+     * Called to notify that an audio holder is visible and ready.
+     */
+    fun onAudioHolderVisible(holder: AudioViewHolder, position: Int) {
+        if (position == currentVisiblePosition) {
+            currentAudioHolder = holder
+        }
+    }
+
+    /**
      * Release all video resources.
      */
     fun releaseVideo() {
         currentVideoHolder?.stopPlayback()
         currentVideoHolder = null
+    }
+
+    /**
+     * Release all audio resources.
+     */
+    fun releaseAudio() {
+        currentAudioHolder?.stopPlayback()
+        currentAudioHolder = null
     }
 
     inner class ImageViewHolder(
@@ -264,6 +305,186 @@ class MediaPagerAdapter(
         }
     }
 
+    inner class AudioViewHolder(
+        private val binding: ItemMediaPageAudioBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
+
+        private var currentFilePath: String? = null
+        private var isPlaying = false
+        private val progressHandler = Handler(Looper.getMainLooper())
+        private var progressRunnable: Runnable? = null
+
+        fun bind(filePath: String) {
+            currentFilePath = filePath
+            val file = File(filePath)
+            
+            // Set title
+            binding.textTitle.text = file.nameWithoutExtension
+            
+            // Reset UI
+            binding.progressBar.visibility = View.GONE
+            binding.errorContainer.visibility = View.GONE
+            binding.controlsContainer.visibility = View.VISIBLE
+            binding.infoContainer.visibility = View.VISIBLE
+            updatePlayPauseButton(false)
+            
+            // Setup click listeners
+            binding.btnPlayPause.setOnClickListener {
+                if (isPlaying) {
+                    pausePlayback()
+                } else {
+                    startPlayback()
+                }
+            }
+            
+            binding.btnPrevious.setOnClickListener {
+                onPreviousClick?.invoke()
+            }
+            
+            binding.btnNext.setOnClickListener {
+                onNextClick?.invoke()
+            }
+            
+            binding.btnRewind.setOnClickListener {
+                audioPlayerManager?.seekBackward(10_000)
+            }
+            
+            binding.btnForward.setOnClickListener {
+                audioPlayerManager?.seekForward(10_000)
+            }
+            
+            binding.progressSlider.addOnChangeListener { _, value, fromUser ->
+                if (fromUser) {
+                    val duration = audioPlayerManager?.getDuration() ?: 0
+                    val position = (value / 100f * duration).toLong()
+                    audioPlayerManager?.seekTo(position)
+                }
+            }
+            
+            binding.root.setOnLongClickListener {
+                onMediaLongClick()
+            }
+            
+            binding.btnRetry.setOnClickListener {
+                startPlayback()
+            }
+
+            // Notify adapter that this audio holder is ready
+            onAudioHolderVisible(this, bindingAdapterPosition)
+        }
+
+        private fun startPlayback() {
+            val filePath = currentFilePath ?: return
+            val manager = audioPlayerManager ?: return
+
+            Timber.d("Starting audio playback: $filePath")
+
+            // Show loading
+            binding.progressBar.visibility = View.VISIBLE
+
+            // Load and play audio
+            manager.loadAudio(filePath)
+            manager.play()
+
+            // Setup playback listener
+            manager.setPlaybackListener(object : AudioPlayerManager.PlaybackListener {
+                override fun onPlaybackStateChanged(isPlaying: Boolean) {
+                    this@AudioViewHolder.isPlaying = isPlaying
+                    updatePlayPauseButton(isPlaying)
+                    if (isPlaying) {
+                        binding.progressBar.visibility = View.GONE
+                        startProgressUpdates()
+                    } else {
+                        stopProgressUpdates()
+                    }
+                }
+
+                override fun onError(message: String) {
+                    Timber.e("Audio playback error: $message")
+                    binding.progressBar.visibility = View.GONE
+                    binding.errorContainer.visibility = View.VISIBLE
+                    binding.textError.text = message
+                }
+
+                override fun onBuffering() {
+                    binding.progressBar.visibility = View.VISIBLE
+                }
+
+                override fun onReady() {
+                    binding.progressBar.visibility = View.GONE
+                    updateDuration()
+                }
+
+                override fun onEnded() {
+                    isPlaying = false
+                    updatePlayPauseButton(false)
+                    stopProgressUpdates()
+                    binding.progressSlider.value = 0f
+                    binding.textCurrentTime.text = formatTime(0)
+                }
+
+                override fun onProgressUpdate(position: Long, duration: Long) {
+                    // Not used - we handle our own progress updates
+                }
+            })
+        }
+
+        private fun pausePlayback() {
+            audioPlayerManager?.pause()
+            isPlaying = false
+            updatePlayPauseButton(false)
+            stopProgressUpdates()
+        }
+
+        fun stopPlayback() {
+            audioPlayerManager?.pause()
+            isPlaying = false
+            updatePlayPauseButton(false)
+            stopProgressUpdates()
+        }
+
+        private fun updatePlayPauseButton(playing: Boolean) {
+            val iconRes = if (playing) R.drawable.ic_pause_circle else R.drawable.ic_play_circle
+            binding.btnPlayPause.setImageResource(iconRes)
+        }
+
+        private fun startProgressUpdates() {
+            stopProgressUpdates()
+            progressRunnable = object : Runnable {
+                override fun run() {
+                    val position = audioPlayerManager?.getCurrentPosition() ?: 0
+                    val duration = audioPlayerManager?.getDuration() ?: 1
+                    
+                    if (duration > 0) {
+                        val progress = (position.toFloat() / duration * 100f).coerceIn(0f, 100f)
+                        binding.progressSlider.value = progress
+                        binding.textCurrentTime.text = formatTime(position)
+                    }
+                    
+                    progressHandler.postDelayed(this, 500)
+                }
+            }
+            progressHandler.post(progressRunnable!!)
+        }
+
+        private fun stopProgressUpdates() {
+            progressRunnable?.let { progressHandler.removeCallbacks(it) }
+            progressRunnable = null
+        }
+
+        private fun updateDuration() {
+            val duration = audioPlayerManager?.getDuration() ?: 0
+            binding.textDuration.text = formatTime(duration)
+        }
+
+        private fun formatTime(ms: Long): String {
+            val totalSeconds = ms / 1000
+            val minutes = totalSeconds / 60
+            val seconds = totalSeconds % 60
+            return String.format("%d:%02d", minutes, seconds)
+        }
+    }
+
     private fun isImage(file: File): Boolean {
         val extension = file.extension.lowercase()
         return extension in listOf("jpg", "jpeg", "png", "webp", "bmp", "gif", "heic", "heif")
@@ -272,6 +493,11 @@ class MediaPagerAdapter(
     private fun isVideo(file: File): Boolean {
         val extension = file.extension.lowercase()
         return extension in listOf("mp4", "mkv", "avi", "mov", "webm", "3gp", "m4v")
+    }
+
+    private fun isAudio(file: File): Boolean {
+        val extension = file.extension.lowercase()
+        return extension in listOf("mp3", "wav", "flac", "aac", "ogg", "m4a", "wma", "opus")
     }
 
     class MediaDiffCallback : DiffUtil.ItemCallback<String>() {
