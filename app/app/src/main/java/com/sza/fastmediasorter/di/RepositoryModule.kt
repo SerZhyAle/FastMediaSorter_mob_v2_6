@@ -2,10 +2,12 @@ package com.sza.fastmediasorter.di
 
 import com.sza.fastmediasorter.data.repository.FileMetadataRepositoryImpl
 import com.sza.fastmediasorter.data.repository.MediaRepositoryImpl
+import com.sza.fastmediasorter.data.repository.NetworkCredentialsRepositoryImpl
 import com.sza.fastmediasorter.data.repository.PreferencesRepositoryImpl
 import com.sza.fastmediasorter.data.repository.ResourceRepositoryImpl
 import com.sza.fastmediasorter.domain.repository.FileMetadataRepository
 import com.sza.fastmediasorter.domain.repository.MediaRepository
+import com.sza.fastmediasorter.domain.repository.NetworkCredentialsRepository
 import com.sza.fastmediasorter.domain.repository.PreferencesRepository
 import com.sza.fastmediasorter.domain.repository.ResourceRepository
 import dagger.Binds
@@ -44,4 +46,10 @@ abstract class RepositoryModule {
     abstract fun bindFileMetadataRepository(
         impl: FileMetadataRepositoryImpl
     ): FileMetadataRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindNetworkCredentialsRepository(
+        impl: NetworkCredentialsRepositoryImpl
+    ): NetworkCredentialsRepository
 }
