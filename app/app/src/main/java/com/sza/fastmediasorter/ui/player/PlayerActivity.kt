@@ -71,7 +71,9 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // Enable fullscreen mode for player only
         setupFullscreen()
+        
         initializeVideoPlayer()
         setupViewPager()
         setupToolbar()
@@ -106,6 +108,10 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
         }
     }
 
+    /**
+     * Enable fullscreen edge-to-edge mode for the player.
+     * This makes the content extend behind system bars.
+     */
     private fun setupFullscreen() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
     }

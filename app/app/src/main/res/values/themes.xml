@@ -32,6 +32,11 @@
         <!-- Status Bar -->
         <item name="android:statusBarColor">@color/green_700</item>
         <item name="android:navigationBarColor">@color/white</item>
+        
+        <!-- Ensure window fits system windows (not edge-to-edge) -->
+        <item name="android:windowLayoutInDisplayCutoutMode">default</item>
+        <item name="android:enforceStatusBarContrast">true</item>
+        <item name="android:enforceNavigationBarContrast">true</item>
     </style>
 
     <!-- Toolbar Style -->
