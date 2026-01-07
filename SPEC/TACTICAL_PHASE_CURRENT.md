@@ -1,14 +1,14 @@
 # Tactical Development Plan - Current Phase
 
 **Date**: January 8, 2026  
-**Status**: Epic 1-4 Complete, Epic 6 Essentially Complete, Epic 7 Complete  
+**Status**: Epic 1-4 Complete, Epic 6 Essentially Complete, Epic 7 Complete, Epic 8 In Progress  
 **Project Version**: v2.0.0-dev
 
 ---
 
 ## Executive Summary
 
-The FastMediaSorter v2 project is being rebuilt from scratch with a clean architecture. The foundation (Epic 1) is **complete and solid**. Epic 2 (Local File Management) is **100% complete** with all core infrastructure including UseCases, FileOperationStrategy, PlayerActivity with Video/Audio support, EditResourceActivity, SettingsActivity with DataStore persistence, Destinations System, File Selection Mode, Sorting Dialog, Destination Picker, Undo/Trash System, FavoritesActivity, and Paging3 for large file lists now implemented. Epic 3 (Media Playback) is **complete** with ExoPlayer and MediaSession integration. Epic 4 (Network Layer) is **complete** with credential management, connection testing, network clients (SMB, SFTP, FTP), full file operations, and network resource browsing implemented. Epic 5 (Cloud Integration) is **deferred** pending API key setup. Epic 6 (Advanced Features) is **essentially complete** with static/dynamic app shortcuts, resource launch widget, localization (RU/UK), and global search implemented. Only low-priority ML Kit features (OCR/Translation) remain deferred. Epic 7 (Polish & User Experience) is **complete** with settings ecosystem, theme engine, full localization, and accessibility compliance verified.
+The FastMediaSorter v2 project is being rebuilt from scratch with a clean architecture. The foundation (Epic 1) is **complete and solid**. Epic 2 (Local File Management) is **100% complete** with all core infrastructure including UseCases, FileOperationStrategy, PlayerActivity with Video/Audio support, EditResourceActivity, SettingsActivity with DataStore persistence, Destinations System, File Selection Mode, Sorting Dialog, Destination Picker, Undo/Trash System, FavoritesActivity, and Paging3 for large file lists now implemented. Epic 3 (Media Playback) is **complete** with ExoPlayer and MediaSession integration. Epic 4 (Network Layer) is **complete** with credential management, connection testing, network clients (SMB, SFTP, FTP), full file operations, and network resource browsing implemented. Epic 5 (Cloud Integration) is **deferred** pending API key setup. Epic 6 (Advanced Features) is **essentially complete** with static/dynamic app shortcuts, resource launch widget, localization (RU/UK), and global search implemented. Only low-priority ML Kit features (OCR/Translation) remain deferred. Epic 7 (Polish & User Experience) is **complete** with settings ecosystem, theme engine, full localization, and accessibility compliance verified. Epic 8 (Release Engineering) is **in progress** with production hardening complete - R8 obfuscation configured, release builds tested, documentation verified. Ready for store preparation phase.
 
 ---
 
@@ -224,6 +224,29 @@ The FastMediaSorter v2 project is being rebuilt from scratch with a clean archit
 - Touch targets verified - all interactive elements use `@dimen/touch_target_min` (48dp)
 - FABs and action buttons properly labeled for TalkBack
 - Manual TalkBack testing recommended for final QA
+
+---
+
+## 🟡 Epic 8: Release Engineering - IN PROGRESS
+
+### Completed ✅
+
+| Component | Status | Files |
+|-----------|--------|-------|
+| **ProGuard/R8 Configuration** | ✅ NEW | Comprehensive rules for all dependencies, strip debug logs in release |
+| **Release Signing** | ✅ NEW | Optional keystore configuration, template file created |
+| **Release Build Testing** | ✅ NEW | Successful R8 minification, resource shrinking verified |
+| **Documentation Review** | ✅ | README, QUICK_START, TROUBLESHOOTING verified complete |
+
+### Remaining Work ⚠️
+
+| Component | Priority | Description |
+|-----------|----------|-------------|
+| **Unit Tests** | 🟡 MEDIUM | Add domain layer unit tests (UseCases, models) |
+| **Stress Testing** | 🔴 LOW | Test with 10k+ files, slow network, memory profiling |
+| **Store Assets** | 🟡 MEDIUM | Screenshots, feature graphics, app descriptions |
+| **Privacy Policy** | 🟡 MEDIUM | Host privacy policy page (already exists as PRIVACY_POLICY.html) |
+| **Keystore Generation** | 🔴 LOW | Generate production keystore for release signing |
 
 ---
 
@@ -551,6 +574,33 @@ cd app
 ---
 
 ## Session Notes
+
+### January 8, 2026 - Production Hardening & Epic 8 Start
+**Commit**: `8883b1d`
+**Features Completed**:
+- Enhanced ProGuard/R8 rules with comprehensive configuration for all dependencies
+- Added keep rules for Hilt, Room, Glide, ExoPlayer, network libraries (SMBJ, SSHJ, FTP)
+- Added keep rules for domain models, ViewBinding, Kotlin coroutines, DataStore
+- Configured debug log stripping in release builds (Log.d/v/i, Timber.d/v/i removed)
+- Implemented optional release signing configuration with keystore detection
+- Added dontwarn rules for optional dependencies (javax.el, sun.security, EdDSA)
+- Created keystore.properties.template for production setup
+- Successfully tested release build with R8 minification and resource shrinking
+- Verified documentation (README, QUICK_START, TROUBLESHOOTING) is complete
+
+**Technical Details**:
+- R8 minification: isMinifyEnabled = true, isShrinkResources = true
+- ProGuard rules cover 10+ categories: Hilt/Dagger, Room, Glide, ExoPlayer, network libs, security
+- Signing config gracefully handles missing keystore for dev builds
+- Release APK builds without errors, full obfuscation applied
+- Debug symbols and line numbers preserved with -keepattributes SourceFile,LineNumberTable
+
+**Epic 8 Status**: 🟡 In Progress
+- Production hardening: ✅ Complete
+- Documentation: ✅ Reviewed
+- Remaining: Unit tests (optional), store assets, keystore generation
+
+**Next**: Optionally add unit tests, or proceed to finalize for release
 
 ### January 8, 2026 - Accessibility Audit & Epic 7 Completion
 **Commit**: `c703fc0`
