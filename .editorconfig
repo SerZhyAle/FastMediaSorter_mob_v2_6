@@ -1,0 +1,52 @@
+# EditorConfig for FastMediaSorter
+# Kotlin official style guide: https://kotlinlang.org/docs/coding-conventions.html
+
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.{kt,kts}]
+indent_size = 4
+indent_style = space
+max_line_length = 120
+ij_kotlin_allow_trailing_comma = true
+ij_kotlin_allow_trailing_comma_on_call_site = true
+
+# Imports
+ij_kotlin_name_count_to_use_star_import = 999
+ij_kotlin_name_count_to_use_star_import_for_members = 999
+ij_kotlin_packages_to_use_import_on_demand = unset
+
+# Blank lines
+ij_kotlin_blank_lines_after_class_header = 0
+ij_kotlin_blank_lines_around_block_when_branches = 0
+
+# Wrapping
+ij_kotlin_line_break_after_multiline_when_entry = true
+ij_kotlin_continuation_indent_for_chained_calls = true
+ij_kotlin_continuation_indent_in_parameter_lists = true
+
+[*.xml]
+indent_size = 4
+indent_style = space
+
+[*.gradle.kts]
+indent_size = 4
+indent_style = space
+
+[*.properties]
+indent_size = 4
+indent_style = space
+
+[*.md]
+indent_size = 2
+indent_style = space
+trim_trailing_whitespace = false
+
+[*.{yml,yaml}]
+indent_size = 2
+indent_style = space

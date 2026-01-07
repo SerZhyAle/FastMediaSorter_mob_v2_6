@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
+    alias(libs.plugins.ktlint)
     id("org.jetbrains.kotlin.plugin.parcelize")
 }
 
@@ -122,6 +123,7 @@ dependencies {
 
     // Coroutines
     implementation(libs.kotlinx.coroutines)
+    implementation(libs.kotlinx.coroutines.play.services)
 
     // DataStore
     implementation(libs.datastore.preferences)
@@ -145,7 +147,50 @@ dependencies {
     implementation(libs.smbj)
     implementation(libs.sshj)
     implementation(libs.commons.net)
+    implementation(libs.okhttp)
+    implementation(libs.gson)
 
     // Security
     implementation(libs.security.crypto)
+
+    // ML Kit - OCR and Translation
+    implementation(libs.mlkit.text.recognition)
+    implementation(libs.mlkit.translate)
+    implementation(libs.mlkit.language.id)
+    
+    // Tesseract OCR (offline, better Cyrillic support)
+    implementation(libs.tesseract4android) {
+        exclude(group = "cz.adaptech.tesseract4android", module = "tesseract4android-openmp")
+    }
+
+    // Cloud Storage - Google Drive
+    implementation(libs.play.services.auth)
+    implementation(libs.google.api.client.android) {
+        exclude(group = "org.apache.httpcomponents")
+        exclude(group = "com.google.guava", module = "listenablefuture")
+    }
+    implementation(libs.google.api.services.drive) {
+        exclude(group = "org.apache.httpcomponents")
+        exclude(group = "com.google.guava", module = "listenablefuture")
+    }
+
+    // Cloud Storage - OneDrive
+    implementation(libs.msal)
+
+    // Cloud Storage - Dropbox
+    implementation(libs.dropbox.core.sdk)
+    implementation(libs.dropbox.android.sdk)
+}
+
+// ktlint configuration
+ktlint {
+    version.set("1.0.1")
+    android.set(true)
+    outputColorName.set("RED")
+    ignoreFailures.set(false)
+    
+    filter {
+        exclude("**/generated/**")
+        exclude("**/build/**")
+    }
 }
