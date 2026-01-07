@@ -280,12 +280,10 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
                 binding.viewPager.setCurrentItem(event.index, true)
             }
             is PlayerUiEvent.ShareFile -> {
-                // TODO: Implement file sharing
-                Timber.d("Share file: ${event.filePath}")
+                shareFile(event.filePath)
             }
             is PlayerUiEvent.ShowDeleteConfirmation -> {
-                // TODO: Show delete confirmation dialog
-                Timber.d("Delete confirmation for: ${event.filePath}")
+                showDeleteConfirmationDialog(event.filePath)
             }
             is PlayerUiEvent.ShowFileInfo -> {
                 showFileInfoDialog(event.filePath)
@@ -299,6 +297,66 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
     private fun showFileInfoDialog(filePath: String) {
         val dialog = com.sza.fastmediasorter.ui.dialog.FileInfoDialog(this, filePath)
         dialog.show()
+    }
+
+    private fun shareFile(filePath: String) {
+        try {
+            val file = java.io.File(filePath)
+            val uri = androidx.core.content.FileProvider.getUriForFile(
+                this,
+                "${packageName}.fileprovider",
+                file
+            )
+            
+            val mimeType = getMimeType(file.extension.lowercase())
+            
+            val intent = Intent(Intent.ACTION_SEND).apply {
+                type = mimeType
+                putExtra(Intent.EXTRA_STREAM, uri)
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            }
+            
+            startActivity(Intent.createChooser(intent, getString(R.string.share)))
+        } catch (e: Exception) {
+            Timber.e(e, "Failed to share file")
+            Snackbar.make(binding.root, R.string.error_sharing_file, Snackbar.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun getMimeType(extension: String): String {
+        return when (extension) {
+            "jpg", "jpeg" -> "image/jpeg"
+            "png" -> "image/png"
+            "gif" -> "image/gif"
+            "webp" -> "image/webp"
+            "bmp" -> "image/bmp"
+            "heic", "heif" -> "image/heif"
+            "mp4" -> "video/mp4"
+            "mkv" -> "video/x-matroska"
+            "mov" -> "video/quicktime"
+            "avi" -> "video/x-msvideo"
+            "webm" -> "video/webm"
+            "mp3" -> "audio/mpeg"
+            "wav" -> "audio/wav"
+            "flac" -> "audio/flac"
+            "m4a" -> "audio/mp4"
+            "aac" -> "audio/aac"
+            "ogg" -> "audio/ogg"
+            else -> "*/*"
+        }
+    }
+
+    private fun showDeleteConfirmationDialog(filePath: String) {
+        val fileName = java.io.File(filePath).name
+        
+        androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle(R.string.delete_confirmation_title)
+            .setMessage(getString(R.string.delete_single_file_message, fileName))
+            .setPositiveButton(R.string.action_delete) { _, _ ->
+                viewModel.confirmDeleteCurrentFile()
+            }
+            .setNegativeButton(R.string.action_cancel, null)
+            .show()
     }
 
     @Deprecated("Deprecated in Java")

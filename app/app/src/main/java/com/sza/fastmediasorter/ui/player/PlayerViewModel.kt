@@ -2,6 +2,10 @@ package com.sza.fastmediasorter.ui.player
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sza.fastmediasorter.data.operation.TrashManager
+import com.sza.fastmediasorter.domain.model.MediaFile
+import com.sza.fastmediasorter.domain.model.MediaType
+import com.sza.fastmediasorter.domain.model.Result
 import com.sza.fastmediasorter.domain.repository.FileMetadataRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -13,6 +17,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.File
+import java.util.Date
 import javax.inject.Inject
 
 /**
@@ -21,7 +26,8 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class PlayerViewModel @Inject constructor(
-    private val fileMetadataRepository: FileMetadataRepository
+    private val fileMetadataRepository: FileMetadataRepository,
+    private val trashManager: TrashManager
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(PlayerUiState.Initial)
@@ -188,6 +194,69 @@ class PlayerViewModel @Inject constructor(
             viewModelScope.launch {
                 _events.emit(PlayerUiEvent.ShowDeleteConfirmation(state.files[state.currentIndex]))
             }
+        }
+    }
+
+    /**
+     * Confirms deletion of the current file.
+     */
+    fun confirmDeleteCurrentFile() {
+        viewModelScope.launch {
+            val state = _uiState.value
+            val currentPath = state.files.getOrNull(state.currentIndex) ?: return@launch
+            
+            // Create a MediaFile for the trash manager
+            val file = File(currentPath)
+            val mediaFile = MediaFile(
+                path = currentPath,
+                name = file.name,
+                size = file.length(),
+                date = Date(file.lastModified()),
+                type = getMediaType(file.extension)
+            )
+            
+            when (trashManager.moveToTrash(mediaFile)) {
+                is Result.Success -> {
+                    _events.emit(PlayerUiEvent.ShowSnackbar("File deleted"))
+                    
+                    // Remove file from list and navigate
+                    val newFiles = state.files.toMutableList().apply { removeAt(state.currentIndex) }
+                    
+                    if (newFiles.isEmpty()) {
+                        // No more files, close player
+                        _events.emit(PlayerUiEvent.NavigateBack)
+                    } else {
+                        // Update state with remaining files
+                        val newIndex = state.currentIndex.coerceAtMost(newFiles.size - 1)
+                        val newFile = File(newFiles[newIndex])
+                        _uiState.update {
+                            it.copy(
+                                files = newFiles,
+                                currentIndex = newIndex,
+                                currentFileName = newFile.name,
+                                totalCount = newFiles.size,
+                                hasPrevious = newIndex > 0,
+                                hasNext = newIndex < newFiles.size - 1
+                            )
+                        }
+                        _events.emit(PlayerUiEvent.NavigateToPage(newIndex))
+                    }
+                }
+                is Result.Error -> {
+                    _events.emit(PlayerUiEvent.ShowSnackbar("Failed to delete file"))
+                    Timber.e("Failed to delete: $currentPath")
+                }
+                is Result.Loading -> { /* Ignore */ }
+            }
+        }
+    }
+
+    private fun getMediaType(extension: String): MediaType {
+        return when (extension.lowercase()) {
+            "jpg", "jpeg", "png", "gif", "webp", "bmp", "heic", "heif" -> MediaType.IMAGE
+            "mp4", "mkv", "mov", "avi", "webm", "m4v", "3gp", "wmv", "flv" -> MediaType.VIDEO
+            "mp3", "wav", "flac", "m4a", "aac", "ogg", "wma", "opus" -> MediaType.AUDIO
+            else -> MediaType.OTHER
         }
     }
 

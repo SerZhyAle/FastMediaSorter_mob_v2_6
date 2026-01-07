@@ -19,14 +19,18 @@
     <string name="selected_count">%d selected</string>
     <string name="delete_confirmation_title">Delete Files?</string>
     <string name="delete_confirmation_message">Delete %d file(s)? Files will be moved to trash and can be restored.</string>
+    <string name="delete_single_file_message">Delete \"%1$s\"? The file will be moved to trash.</string>
     <string name="select_destination_move">Move to…</string>
     <string name="select_destination_copy">Copy to…</string>
     <string name="no_destinations">No destinations configured.\nAdd destinations in Settings to use quick move/copy.</string>
     <string name="files_moved">%d file(s) moved</string>
     <string name="files_copied">%d file(s) copied</string>
     <string name="files_deleted">%d file(s) deleted</string>
+    <string name="file_deleted">File deleted</string>
     <string name="file_restored">File restored</string>
     <string name="files_restored">%d file(s) restored</string>
+    <string name="share">Share</string>
+    <string name="error_sharing_file">Error sharing file</string>
     <string name="operation_in_progress">Operation in progress…</string>
 
     <!-- Welcome/Onboarding -->
