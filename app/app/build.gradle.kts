@@ -94,6 +94,9 @@ dependencies {
     // Coroutines
     implementation(libs.kotlinx.coroutines)
 
+    // DataStore
+    implementation(libs.datastore.preferences)
+
     // Logging
     implementation(libs.timber)
 

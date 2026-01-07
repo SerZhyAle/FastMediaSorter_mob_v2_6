@@ -1,11 +1,16 @@
 package com.sza.fastmediasorter.ui.settings
 
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.sza.fastmediasorter.domain.repository.PreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -14,7 +19,9 @@ import javax.inject.Inject
  * Handles language, theme, display mode, and cache management.
  */
 @HiltViewModel
-class GeneralSettingsViewModel @Inject constructor() : ViewModel() {
+class GeneralSettingsViewModel @Inject constructor(
+    private val preferencesRepository: PreferencesRepository
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(GeneralSettingsUiState())
     val uiState: StateFlow<GeneralSettingsUiState> = _uiState.asStateFlow()
@@ -25,61 +32,91 @@ class GeneralSettingsViewModel @Inject constructor() : ViewModel() {
     }
 
     private fun loadSettings() {
-        // TODO: Load from PreferencesRepository
-        _uiState.update { 
-            it.copy(
-                language = "en",
-                theme = "system",
-                displayMode = "grid",
-                showHiddenFiles = false,
-                confirmDelete = true,
-                confirmMove = false,
-                preventSleepDuringPlayback = true,
-                cacheSizeDisplay = "Calculating..."
-            )
+        viewModelScope.launch {
+            combine(
+                preferencesRepository.language,
+                preferencesRepository.theme,
+                preferencesRepository.displayMode,
+                preferencesRepository.showHiddenFiles,
+                preferencesRepository.confirmDelete,
+                preferencesRepository.confirmMove,
+                preferencesRepository.preventSleepDuringPlayback
+            ) { values ->
+                GeneralSettingsUiState(
+                    language = values[0] as String,
+                    theme = values[1] as String,
+                    displayMode = values[2] as String,
+                    showHiddenFiles = values[3] as Boolean,
+                    confirmDelete = values[4] as Boolean,
+                    confirmMove = values[5] as Boolean,
+                    preventSleepDuringPlayback = values[6] as Boolean,
+                    cacheSizeDisplay = "Calculating..."
+                )
+            }.collect { state ->
+                _uiState.value = state
+            }
         }
     }
 
     fun setLanguage(langCode: String) {
         Timber.d("Setting language to: $langCode")
-        _uiState.update { it.copy(language = langCode) }
+        viewModelScope.launch {
+            preferencesRepository.setLanguage(langCode)
+        }
         // TODO: Apply locale change via LocaleHelper and recreate activities
     }
 
     fun setTheme(theme: String) {
         Timber.d("Setting theme to: $theme")
-        _uiState.update { it.copy(theme = theme) }
-        // TODO: Apply theme via AppCompatDelegate
+        viewModelScope.launch {
+            preferencesRepository.setTheme(theme)
+        }
+        // Apply theme immediately
+        applyTheme(theme)
+    }
+
+    private fun applyTheme(theme: String) {
+        val mode = when (theme) {
+            "light" -> AppCompatDelegate.MODE_NIGHT_NO
+            "dark" -> AppCompatDelegate.MODE_NIGHT_YES
+            else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+        }
+        AppCompatDelegate.setDefaultNightMode(mode)
     }
 
     fun setDisplayMode(mode: String) {
         Timber.d("Setting display mode to: $mode")
-        _uiState.update { it.copy(displayMode = mode) }
-        // TODO: Save to preferences
+        viewModelScope.launch {
+            preferencesRepository.setDisplayMode(mode)
+        }
     }
 
     fun setShowHiddenFiles(show: Boolean) {
         Timber.d("Setting show hidden files: $show")
-        _uiState.update { it.copy(showHiddenFiles = show) }
-        // TODO: Save to preferences
+        viewModelScope.launch {
+            preferencesRepository.setShowHiddenFiles(show)
+        }
     }
 
     fun setConfirmDelete(confirm: Boolean) {
         Timber.d("Setting confirm delete: $confirm")
-        _uiState.update { it.copy(confirmDelete = confirm) }
-        // TODO: Save to preferences
+        viewModelScope.launch {
+            preferencesRepository.setConfirmDelete(confirm)
+        }
     }
 
     fun setConfirmMove(confirm: Boolean) {
         Timber.d("Setting confirm move: $confirm")
-        _uiState.update { it.copy(confirmMove = confirm) }
-        // TODO: Save to preferences
+        viewModelScope.launch {
+            preferencesRepository.setConfirmMove(confirm)
+        }
     }
 
     fun setPreventSleepDuringPlayback(prevent: Boolean) {
         Timber.d("Setting prevent sleep during playback: $prevent")
-        _uiState.update { it.copy(preventSleepDuringPlayback = prevent) }
-        // TODO: Save to preferences
+        viewModelScope.launch {
+            preferencesRepository.setPreventSleepDuringPlayback(prevent)
+        }
     }
 
     fun clearCache() {
