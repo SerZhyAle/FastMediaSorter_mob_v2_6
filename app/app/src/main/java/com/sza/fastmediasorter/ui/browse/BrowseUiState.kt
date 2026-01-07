@@ -9,12 +9,14 @@ import com.sza.fastmediasorter.domain.model.SortMode
 data class BrowseUiState(
     val isLoading: Boolean = false,
     val files: List<MediaFile> = emptyList(),
+    val filteredFiles: List<MediaFile> = emptyList(),
     val resourceName: String = "",
     val currentPath: String = "",
     val showEmptyState: Boolean = false,
     val isGridView: Boolean = true,
     val errorMessage: String? = null,
     val sortMode: SortMode = SortMode.NAME_ASC,
+    val searchQuery: String = "",
     
     // Selection mode state
     val isSelectionMode: Boolean = false,
@@ -25,7 +27,19 @@ data class BrowseUiState(
     }
 
     val selectedCount: Int get() = selectedFiles.size
-    val allSelected: Boolean get() = selectedFiles.size == files.size && files.isNotEmpty()
+    val allSelected: Boolean get() = selectedFiles.size == displayedFiles.size && displayedFiles.isNotEmpty()
+    
+    /**
+     * Files to display (filtered if search active, otherwise all files).
+     */
+    val displayedFiles: List<MediaFile> get() = 
+        if (searchQuery.isBlank()) files else filteredFiles
+    
+    /**
+     * True if search is active but no results found.
+     */
+    val showNoSearchResults: Boolean get() = 
+        searchQuery.isNotBlank() && filteredFiles.isEmpty() && files.isNotEmpty()
 }
 
 /**

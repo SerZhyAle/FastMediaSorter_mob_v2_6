@@ -5,6 +5,7 @@ import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -57,6 +58,27 @@ class BrowseActivity : BaseActivity<ActivityBrowseBinding>() {
     private fun setupToolbar() {
         binding.toolbar.setNavigationOnClickListener {
             viewModel.onBackPressed()
+        }
+
+        // Setup SearchView
+        val searchItem = binding.toolbar.menu.findItem(R.id.action_search)
+        val searchView = searchItem?.actionView as? SearchView
+        searchView?.apply {
+            queryHint = getString(R.string.search_hint)
+            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    return true
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    viewModel.onSearchQueryChanged(newText ?: "")
+                    return true
+                }
+            })
+            setOnCloseListener {
+                viewModel.clearSearch()
+                false
+            }
         }
 
         binding.toolbar.setOnMenuItemClickListener { menuItem ->
@@ -154,9 +176,15 @@ class BrowseActivity : BaseActivity<ActivityBrowseBinding>() {
             binding.fileList.layoutManager = layoutManager
         }
 
-        // Update adapter with selection state
+        // Update adapter with selection state and displayed files (filtered if search active)
         adapter.setSelectionMode(state.isSelectionMode, state.selectedFiles)
-        adapter.submitList(state.files)
+        adapter.submitList(state.displayedFiles)
+        
+        // Show "no search results" message when search is active but no matches
+        if (state.showNoSearchResults) {
+            binding.emptyStateLayout.visibility = View.VISIBLE
+            binding.fileList.visibility = View.GONE
+        }
 
         // Error state
         state.errorMessage?.let { message ->

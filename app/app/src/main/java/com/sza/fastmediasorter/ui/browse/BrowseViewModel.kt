@@ -119,7 +119,8 @@ class BrowseViewModel @Inject constructor(
             if (state.isSelectionMode) {
                 toggleSelection(mediaFile)
             } else {
-                val files = state.files.map { it.path }
+                // Use displayedFiles (filtered if search active) for navigation
+                val files = state.displayedFiles.map { it.path }
                 val currentIndex = files.indexOf(mediaFile.path)
                 _events.emit(BrowseUiEvent.NavigateToPlayer(mediaFile.path, files, currentIndex))
             }
@@ -301,6 +302,37 @@ class BrowseViewModel @Inject constructor(
             if (selectedFiles.size == 1) {
                 _events.emit(BrowseUiEvent.ShowFileInfo(selectedFiles.first()))
             }
+        }
+    }
+
+    /**
+     * Handle search query changes.
+     * Filters the file list by name (case-insensitive).
+     */
+    fun onSearchQueryChanged(query: String) {
+        val currentFiles = _uiState.value.files
+        val filteredFiles = if (query.isBlank()) {
+            emptyList()
+        } else {
+            currentFiles.filter { file ->
+                file.name.contains(query, ignoreCase = true)
+            }
+        }
+        
+        _uiState.update { 
+            it.copy(
+                searchQuery = query,
+                filteredFiles = filteredFiles
+            )
+        }
+    }
+
+    /**
+     * Clear search query.
+     */
+    fun clearSearch() {
+        _uiState.update { 
+            it.copy(searchQuery = "", filteredFiles = emptyList())
         }
     }
 
