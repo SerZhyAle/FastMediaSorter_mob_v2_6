@@ -1,6 +1,6 @@
 # Tactical Development Plan - Current Phase
 
-**Date**: January 7, 2026  
+**Date**: January 8, 2026  
 **Status**: Epic 1 Complete, Epic 2 100% Complete, Epic 3 (Player) Complete, Epic 4 (Network) Complete  
 **Project Version**: v2.0.0-dev
 
@@ -8,7 +8,7 @@
 
 ## Executive Summary
 
-The FastMediaSorter v2 project is being rebuilt from scratch with a clean architecture. The foundation (Epic 1) is **complete and solid**. Epic 2 (Local File Management) is **100% complete** with all core infrastructure including UseCases, FileOperationStrategy, PlayerActivity with Video/Audio support, EditResourceActivity, SettingsActivity with DataStore persistence, Destinations System, File Selection Mode, Sorting Dialog, Destination Picker, Undo/Trash System, FavoritesActivity, and Paging3 for large file lists now implemented. Epic 3 (Media Playback) is **complete** with ExoPlayer and MediaSession integration. Epic 4 (Network Layer) is **complete** with credential management, connection testing, network clients (SMB, SFTP, FTP), full file operations, and network resource browsing implemented. Epic 5 (Cloud Integration) is **deferred** pending API key setup.
+The FastMediaSorter v2 project is being rebuilt from scratch with a clean architecture. The foundation (Epic 1) is **complete and solid**. Epic 2 (Local File Management) is **100% complete** with all core infrastructure including UseCases, FileOperationStrategy, PlayerActivity with Video/Audio support, EditResourceActivity, SettingsActivity with DataStore persistence, Destinations System, File Selection Mode, Sorting Dialog, Destination Picker, Undo/Trash System, FavoritesActivity, and Paging3 for large file lists now implemented. Epic 3 (Media Playback) is **complete** with ExoPlayer and MediaSession integration. Epic 4 (Network Layer) is **complete** with credential management, connection testing, network clients (SMB, SFTP, FTP), full file operations, and network resource browsing implemented. Epic 5 (Cloud Integration) is **deferred** pending API key setup. Epic 6 (Advanced Features) is **in progress** with app shortcuts completed.
 
 ---
 
@@ -175,6 +175,33 @@ The FastMediaSorter v2 project is being rebuilt from scratch with a clean archit
 | **Network File Operations** | ✅ | Full FileOperationStrategy for SMB/SFTP/FTP (delete, rename, upload, mkdir) |
 | **File Info Dialog** | ✅ | Show comprehensive file details (EXIF, media metadata) |
 | **Search Functionality** | ✅ | Real-time search with filter by file name |
+| **Network Strategy DI** | ✅ NEW | OperationModule provides SmbOperationStrategy, SftpOperationStrategy, FtpOperationStrategy |
+| **Protocol Icons** | ✅ NEW | ic_smb.xml, ic_sftp.xml - ResourceAdapter uses protocol-specific icons |
+| **SSH Key Auth** | ✅ NEW | MediaRepositoryImpl reads SSH key from file for SFTP auth |
+| **Media Metadata** | ✅ NEW | LocalMediaScanner extracts image dimensions and video/audio duration |
+| **Full Translations** | ✅ NEW | Complete Russian and Ukrainian translations (270+ strings each) |
+| **Cache Management** | ✅ NEW | GeneralSettingsViewModel clears Glide and UnifiedFileCache |
+| **App Shortcuts** | ✅ NEW | Static shortcuts: Add Resource, Settings, Favorites (shortcuts.xml) |
+
+---
+
+## 🟡 Epic 6: Advanced Features - IN PROGRESS
+
+### Completed ✅
+
+| Component | Status | Files |
+|-----------|--------|-------|
+| **Static App Shortcuts** | ✅ | `res/xml/shortcuts.xml`, AndroidManifest update, MainActivity handler |
+| **Localization (RU/UK)** | ✅ | Complete strings.xml for Russian and Ukrainian |
+
+### Remaining Work ⚠️
+
+| Component | Priority | Description |
+|-----------|----------|-------------|
+| **App Widgets** | 🟡 Medium | ResourceLaunchWidget for home screen |
+| **Dynamic Shortcuts** | 🟡 Medium | Pinned folder shortcuts using ShortcutManager |
+| **OCR Integration** | 🔴 LOW | ML Kit Text Recognition (requires additional setup) |
+| **Translation** | 🔴 LOW | ML Kit Translation (requires additional setup) |
 
 ---
 
