@@ -13,11 +13,24 @@ import com.sza.fastmediasorter.domain.model.MediaType
 
 /**
  * Adapter for displaying media files in a grid or list.
+ * Supports selection mode with checkboxes.
  */
 class MediaFileAdapter(
     private val onItemClick: (MediaFile) -> Unit,
     private val onItemLongClick: (MediaFile) -> Boolean = { false }
 ) : ListAdapter<MediaFile, MediaFileAdapter.ViewHolder>(MediaFileDiffCallback()) {
+
+    private var isSelectionMode = false
+    private var selectedPaths = emptySet<String>()
+
+    fun setSelectionMode(enabled: Boolean, selectedFiles: Set<String>) {
+        val changed = isSelectionMode != enabled || selectedPaths != selectedFiles
+        isSelectionMode = enabled
+        selectedPaths = selectedFiles
+        if (changed) {
+            notifyDataSetChanged()
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemMediaFileBinding.inflate(
@@ -27,7 +40,7 @@ class MediaFileAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), isSelectionMode, selectedPaths)
     }
 
     class ViewHolder(
@@ -36,7 +49,7 @@ class MediaFileAdapter(
         private val onItemLongClick: (MediaFile) -> Boolean
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(mediaFile: MediaFile) {
+        fun bind(mediaFile: MediaFile, isSelectionMode: Boolean, selectedPaths: Set<String>) {
             binding.textFileName.text = mediaFile.name
 
             // Set placeholder icon based on media type
@@ -56,6 +69,10 @@ class MediaFileAdapter(
             } else {
                 binding.textDuration.visibility = View.GONE
             }
+
+            // Selection mode checkbox
+            binding.checkbox.visibility = if (isSelectionMode) View.VISIBLE else View.GONE
+            binding.checkbox.isChecked = selectedPaths.contains(mediaFile.path)
 
             // TODO: Load actual thumbnail using Coil/Glide
 

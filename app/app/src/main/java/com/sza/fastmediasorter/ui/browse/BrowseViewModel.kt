@@ -109,35 +109,130 @@ class BrowseViewModel @Inject constructor(
 
     fun onFileClick(mediaFile: MediaFile) {
         viewModelScope.launch {
-            val files = _uiState.value.files.map { it.path }
-            val currentIndex = files.indexOf(mediaFile.path)
-            _events.emit(BrowseUiEvent.NavigateToPlayer(mediaFile.path, files, currentIndex))
+            val state = _uiState.value
+            if (state.isSelectionMode) {
+                toggleSelection(mediaFile)
+            } else {
+                val files = state.files.map { it.path }
+                val currentIndex = files.indexOf(mediaFile.path)
+                _events.emit(BrowseUiEvent.NavigateToPlayer(mediaFile.path, files, currentIndex))
+            }
         }
     }
 
     fun onFileLongClick(mediaFile: MediaFile): Boolean {
-        // TODO: Implement selection mode
-        Timber.d("Long clicked: ${mediaFile.name}")
+        val state = _uiState.value
+        if (!state.isSelectionMode) {
+            // Enter selection mode and select this file
+            _uiState.update { 
+                it.copy(
+                    isSelectionMode = true,
+                    selectedFiles = setOf(mediaFile.path)
+                )
+            }
+        } else {
+            toggleSelection(mediaFile)
+        }
+        Timber.d("Long clicked: ${mediaFile.name}, selection mode: ${_uiState.value.isSelectionMode}")
         return true
     }
 
+    private fun toggleSelection(mediaFile: MediaFile) {
+        _uiState.update { state ->
+            val newSelection = if (state.selectedFiles.contains(mediaFile.path)) {
+                state.selectedFiles - mediaFile.path
+            } else {
+                state.selectedFiles + mediaFile.path
+            }
+            
+            // Exit selection mode if nothing selected
+            if (newSelection.isEmpty()) {
+                state.copy(isSelectionMode = false, selectedFiles = emptySet())
+            } else {
+                state.copy(selectedFiles = newSelection)
+            }
+        }
+    }
+
+    fun exitSelectionMode() {
+        _uiState.update { 
+            it.copy(isSelectionMode = false, selectedFiles = emptySet())
+        }
+    }
+
+    fun onSelectAllClick() {
+        _uiState.update { state ->
+            if (state.allSelected) {
+                // Deselect all
+                state.copy(selectedFiles = emptySet())
+            } else {
+                // Select all
+                state.copy(
+                    isSelectionMode = true,
+                    selectedFiles = state.files.map { it.path }.toSet()
+                )
+            }
+        }
+        Timber.d("Select all clicked: ${_uiState.value.selectedCount} selected")
+    }
+
+    fun onMoveClick() {
+        viewModelScope.launch {
+            val selectedFiles = _uiState.value.selectedFiles.toList()
+            if (selectedFiles.isNotEmpty()) {
+                _events.emit(BrowseUiEvent.ShowDestinationPicker(selectedFiles))
+            }
+        }
+    }
+
+    fun onCopyClick() {
+        viewModelScope.launch {
+            val selectedFiles = _uiState.value.selectedFiles.toList()
+            if (selectedFiles.isNotEmpty()) {
+                _events.emit(BrowseUiEvent.ShowDestinationPicker(selectedFiles))
+            }
+        }
+    }
+
+    fun onDeleteClick() {
+        viewModelScope.launch {
+            val count = _uiState.value.selectedCount
+            if (count > 0) {
+                _events.emit(BrowseUiEvent.ShowDeleteConfirmation(count))
+            }
+        }
+    }
+
+    fun confirmDelete() {
+        viewModelScope.launch {
+            val selectedFiles = _uiState.value.selectedFiles.toList()
+            // TODO: Implement actual file deletion via use case
+            exitSelectionMode()
+        }
+    }
+
     fun onSortClick() {
-        // TODO: Implement sorting options dialog
-        Timber.d("Sort clicked")
+        viewModelScope.launch {
+            _events.emit(BrowseUiEvent.ShowSortDialog)
+        }
+    }
+
+    fun onSortSelected(sortType: String) {
+        // TODO: Update sort order and refresh file list
+        _uiState.update { it.copy(/* sortOrder = sortType */) }
     }
 
     fun onViewModeClick() {
         _uiState.update { it.copy(isGridView = !it.isGridView) }
     }
 
-    fun onSelectAllClick() {
-        // TODO: Implement select all
-        Timber.d("Select all clicked")
-    }
-
     fun onBackPressed() {
         viewModelScope.launch {
-            _events.emit(BrowseUiEvent.NavigateBack)
+            if (_uiState.value.isSelectionMode) {
+                exitSelectionMode()
+            } else {
+                _events.emit(BrowseUiEvent.NavigateBack)
+            }
         }
     }
 }

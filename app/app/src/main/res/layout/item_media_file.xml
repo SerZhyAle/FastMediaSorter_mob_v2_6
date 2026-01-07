@@ -33,6 +33,20 @@
                 app:layout_constraintDimensionRatio="1:1"
                 tools:src="@drawable/ic_image"/>
 
+            <!-- Selection checkbox overlay -->
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:visibility="gone"
+                android:clickable="false"
+                android:focusable="false"
+                app:layout_constraintTop_toTopOf="@id/thumbnail"
+                app:layout_constraintStart_toStartOf="@id/thumbnail"
+                tools:visibility="visible"
+                tools:checked="true"/>
+
             <!-- Video duration overlay -->
             <TextView
                 android:id="@+id/textDuration"
