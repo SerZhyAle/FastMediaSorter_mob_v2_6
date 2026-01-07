@@ -1,14 +1,14 @@
 # Tactical Development Plan - Current Phase
 
 **Date**: January 7, 2026  
-**Status**: Epic 1 Complete, Epic 2 ~95% Complete  
+**Status**: Epic 1 Complete, Epic 2 ~98% Complete, Epic 3 Started  
 **Project Version**: v2.0.0-dev
 
 ---
 
 ## Executive Summary
 
-The FastMediaSorter v2 project is being rebuilt from scratch with a clean architecture. The foundation (Epic 1) is **complete and solid**. Epic 2 (Local File Management) is approximately **95% complete** with core infrastructure including UseCases, FileOperationStrategy, PlayerActivity, EditResourceActivity, and SettingsActivity now implemented.
+The FastMediaSorter v2 project is being rebuilt from scratch with a clean architecture. The foundation (Epic 1) is **complete and solid**. Epic 2 (Local File Management) is approximately **98% complete** with all core infrastructure including UseCases, FileOperationStrategy, PlayerActivity with Video/Audio support, EditResourceActivity, SettingsActivity with DataStore persistence, Destinations System, and File Selection Mode now implemented. Epic 3 (Media Playback) is well underway with ExoPlayer and MediaSession integration.
 
 ---
 
@@ -78,6 +78,11 @@ The FastMediaSorter v2 project is being rebuilt from scratch with a clean archit
 | **PlaybackSettingsFragment** | ✅ NEW | `ui/settings/PlaybackSettingsFragment.kt` |
 | **Settings Layouts** | ✅ NEW | `activity_settings.xml`, `fragment_settings_*.xml` |
 
+| **DestinationsSettingsFragment** | ✅ NEW | `ui/settings/DestinationsSettingsFragment.kt` |
+| **DestinationsSettingsViewModel** | ✅ NEW | `ui/settings/DestinationsSettingsViewModel.kt` |
+| **DestinationAdapter** | ✅ NEW | `ui/settings/DestinationAdapter.kt` |
+| **File Selection Mode** | ✅ NEW | Selection in BrowseActivity with Move/Copy/Delete |
+
 ### Missing - REMAINING WORK ⚠️
 
 | Component | Priority | Description |
@@ -86,10 +91,7 @@ The FastMediaSorter v2 project is being rebuilt from scratch with a clean archit
 | **Undo/Trash System** | 🟡 MEDIUM | Soft-delete not implemented |
 | **Pagination** | 🟡 MEDIUM | No pagination for large file lists |
 | **Sorting Dialog** | 🟢 LOW | Sort mode UI not implemented |
-| **Destinations System** | 🟡 MEDIUM | Move/copy destination selection |
-| **Video Player** | 🟡 MEDIUM | ExoPlayer integration (Epic 3) |
-| **Audio Player** | 🟡 MEDIUM | Audio playback with notification (Epic 3) |
-| **Settings Persistence** | 🟡 MEDIUM | PreferencesRepository integration |
+| **Destination Picker** | 🟡 MEDIUM | Dialog to pick destination for move/copy |
 
 ---
 
@@ -205,28 +207,57 @@ Created Audio Player with MediaSession:
 
 **Location**: `ui/player/`
 
-### 🔵 Task 10: Destinations System - NEXT
-**Estimated Effort**: 2-3 hours
+### 🔵 Task 10: Destinations System - COMPLETE
+**Status**: ✅ Completed January 7, 2026
 
-Implement quick move/copy destination targets:
+Implemented quick move/copy destination targets:
 
-1. Create DestinationsRepository for destination management
-2. Add DestinationEntity to Room database
-3. Implement DestinationsSettingsFragment UI
-4. Add destination selection dialog in BrowseActivity
-5. Integrate with FileOperationStrategy for move/copy
+1. ✅ Updated ResourceEntity with destination fields (isDestination, destinationOrder, destinationColor)
+2. ✅ Created DestinationsSettingsViewModel for destination management
+3. ✅ Created DestinationAdapter with drag-and-drop reorder support
+4. ✅ Implemented DestinationsSettingsFragment with full UI
+5. ✅ Added destination item layout with color, name, path, drag handle
 
-**Location**: `ui/settings/`, `domain/repository/`, `data/entity/`
+**Location**: `ui/settings/`, `data/db/entity/`
+
+### ✅ Task 11: File Selection Mode - COMPLETE
+**Status**: ✅ Completed January 7, 2026
+
+Implemented multi-select functionality in BrowseActivity:
+
+1. ✅ Updated BrowseUiState with selection mode fields (isSelectionMode, selectedFiles)
+2. ✅ Updated BrowseViewModel with selection logic (long-press to enter, click to toggle)
+3. ✅ Added checkbox overlay to item_media_file.xml
+4. ✅ Updated MediaFileAdapter with setSelectionMode() method
+5. ✅ Added selection bottom bar with Move, Copy, Delete buttons
+6. ✅ Added delete confirmation dialog
+7. ✅ Handle back press to exit selection mode
+8. ✅ Added ic_move.xml and ic_copy.xml icons
+
+**Location**: `ui/browse/`
+
+### 🔵 Task 12: Sorting Dialog - NEXT
+**Estimated Effort**: 1-2 hours
+
+Implement sort options dialog in BrowseActivity:
+
+1. Create SortOptionsDialog with sort mode selection
+2. Add sort by: Name, Date, Size, Type options
+3. Add ascending/descending toggle
+4. Connect to BrowseViewModel sort methods
+5. Persist sort preference per resource
+
+**Location**: `ui/browse/`
 
 ---
 
-## 🟣 Sprint 2 Preview (Next Week)
+## 🟣 Sprint 2 Preview (Next Tasks)
 
-1. **Destinations System** - Quick move/copy targets
-2. **File Selection Mode** - Multi-select in BrowseActivity
-3. **Sorting Dialog** - Sort mode UI in BrowseActivity
-4. **Undo/Trash System** - Soft-delete with recovery
-5. **Pagination** - For large file lists
+1. **Sorting Dialog** - Sort mode UI in BrowseActivity  
+2. **Destination Picker** - Dialog to select destination in selection mode
+3. **Undo/Trash System** - Soft-delete with recovery
+4. **Pagination** - For large file lists
+5. **FavoritesActivity** - Browse favorited files
 
 ---
 
