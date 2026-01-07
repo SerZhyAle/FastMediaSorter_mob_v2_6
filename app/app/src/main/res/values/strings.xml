@@ -307,6 +307,9 @@
     <string name="filter_videos">Videos</string>
     <string name="filter_audio">Audio</string>
     <string name="filter_other">Other</string>
+    <string name="cd_search_thumbnail">Search result thumbnail</string>
+    <string name="cd_search_icon">Search icon</string>
+    <string name="cd_toggle_filters">Toggle search filters</string>
 </resources>
 
 

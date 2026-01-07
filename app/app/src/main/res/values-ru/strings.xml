@@ -307,5 +307,8 @@
     <string name="filter_videos">Видео</string>
     <string name="filter_audio">Аудио</string>
     <string name="filter_other">Другое</string>
+    <string name="cd_search_thumbnail">Миниатюра результата поиска</string>
+    <string name="cd_search_icon">Значок поиска</string>
+    <string name="cd_toggle_filters">Переключить фильтры поиска</string>
 </resources>
 
