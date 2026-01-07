@@ -1,0 +1,92 @@
+TITLE (30 chars max):
+FastMediaSorter v2
+
+SHORT DESCRIPTION (80 chars max):
+Sort media fast: photos, videos, GIFs. SMB, SFTP, FTP, Drive, Dropbox, OneDrive.
+
+FULL DESCRIPTION (4000 chars max):
+FastMediaSorter v2 is your ultimate media management tool for Android. Organize thousands of photos, videos, audio files, and documents from local storage, network drives, and cloud services - all in one beautiful, intuitive interface.
+
+✨ WHAT'S NEW IN V2:
+
+📱 Completely redesigned with Material Design 3
+🎯 Enhanced favorites system across all sources
+🔐 PIN protection for individual resources
+⚙️ Per-resource configuration (slideshow, scan depth, thumbnails)
+📖 Built-in EPUB e-book reader
+📄 PDF and text document viewer
+🌐 Auto-translation with hybrid OCR (ML Kit + Tesseract)
+🎵 Lyrics support for music playback
+📥 Download network files to local storage
+↩️ Undo actions with trash management
+
+🚀 KEY FEATURES:
+
+📂 UNIFIED MEDIA HUB
+Manage files from all your sources in one place:
+• Local device storage & SD card
+• Network drives (SMB/CIFS, SFTP, FTP)
+• Cloud storage (Google Drive, Dropbox, OneDrive)
+• WebDAV servers
+
+⚡ LIGHTNING-FAST SORTING
+Configure destination folders and sort files with a single tap while browsing. Perfect for organizing photo archives with thousands of images.
+
+🖼️ POWERFUL VIEWER & PLAYER
+• View images with zoom, pan, and gesture controls
+• Play videos with ExoPlayer (all major formats)
+• Audio player with lyrics support
+• GIF animation playback
+• Slideshow mode with customizable intervals
+• Full-screen mode with system bars auto-hide
+
+✏️ IMAGE EDITING
+Edit images directly without leaving the app:
+• Rotate and flip
+• Crop and resize
+• Adjust brightness, contrast, saturation
+• Apply filters (grayscale, sepia, negative, blur)
+• Works with local AND network files!
+
+📚 DOCUMENT SUPPORT
+• Text files (.txt, .md, .log, .json, .xml)
+• PDF documents with zoom and pan
+• EPUB e-books with chapter navigation and search
+• Syntax highlighting for code files
+
+🔍 ADVANCED ORGANIZATION
+• Sort by name, date, size, duration
+• Filter by media type
+• Search across all resources
+• Grid or list view with pagination
+• Mark favorites and access them instantly
+
+🔒 SECURITY & PRIVACY
+• PIN protection for sensitive folders
+• All processing happens on your device
+• No ads, no tracking, no cloud upload
+• Your data stays yours
+
+🎨 SMART FEATURES
+• Thumbnail caching (up to 16GB configurable)
+• Keyboard navigation support
+• Light and dark themes
+• Undo & trash functionality
+• Two-stage video metadata loading
+• Batch operations (copy, move, delete)
+
+💪 PERFORMANCE
+Optimized for large collections with 10,000+ files. Efficient caching and lazy loading ensure smooth performance even with huge media libraries.
+
+🌐 LANGUAGE SUPPORT
+Interface available in English, Russian, and Ukrainian.
+
+📱 COMPATIBILITY
+Requires Android 9.0 (API 28) or higher.
+
+🆓 FREE & OPEN SOURCE
+No hidden fees, no subscriptions. Download FastMediaSorter v2 and take control of your media library today!
+
+---
+Privacy Policy: https://serzhyale.github.io/FastMediaSorter_mob_v2/PRIVACY_POLICY.html
+Terms of Service: https://serzhyale.github.io/FastMediaSorter_mob_v2/TERMS_OF_SERVICE.html
