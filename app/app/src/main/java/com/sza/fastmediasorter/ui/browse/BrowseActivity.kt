@@ -14,6 +14,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.sza.fastmediasorter.R
 import com.sza.fastmediasorter.databinding.ActivityBrowseBinding
 import com.sza.fastmediasorter.ui.base.BaseActivity
+import com.sza.fastmediasorter.ui.dialog.FileInfoDialog
 import com.sza.fastmediasorter.ui.player.PlayerActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -91,6 +92,7 @@ class BrowseActivity : BaseActivity<ActivityBrowseBinding>() {
     }
 
     private fun setupSelectionToolbar() {
+        binding.btnInfo.setOnClickListener { viewModel.onInfoClick() }
         binding.btnMove.setOnClickListener { viewModel.onMoveClick() }
         binding.btnCopy.setOnClickListener { viewModel.onCopyClick() }
         binding.btnDelete.setOnClickListener { viewModel.onDeleteClick() }
@@ -127,6 +129,10 @@ class BrowseActivity : BaseActivity<ActivityBrowseBinding>() {
         // Selection toolbar visibility
         binding.selectionBottomBar.visibility = if (state.isSelectionMode) View.VISIBLE else View.GONE
         binding.selectionCount.text = getString(R.string.selected_count, state.selectedCount)
+        
+        // Info button only enabled when exactly one file selected
+        binding.btnInfo.isEnabled = state.selectedCount == 1
+        binding.btnInfo.alpha = if (state.selectedCount == 1) 1.0f else 0.5f
 
         // Loading state
         binding.progressBar.visibility = if (state.isLoading) View.VISIBLE else View.GONE
@@ -199,7 +205,15 @@ class BrowseActivity : BaseActivity<ActivityBrowseBinding>() {
             is BrowseUiEvent.ShowSortDialog -> {
                 showSortDialog(event.currentSortMode)
             }
+            is BrowseUiEvent.ShowFileInfo -> {
+                showFileInfoDialog(event.filePath)
+            }
         }
+    }
+
+    private fun showFileInfoDialog(filePath: String) {
+        val dialog = FileInfoDialog(this, filePath)
+        dialog.show()
     }
 
     private fun showUndoSnackbar(message: String, deletedCount: Int) {

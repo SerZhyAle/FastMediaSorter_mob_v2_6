@@ -291,6 +291,19 @@ class BrowseViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Show file info dialog for the first selected file.
+     * Only works when exactly one file is selected.
+     */
+    fun onInfoClick() {
+        viewModelScope.launch {
+            val selectedFiles = _uiState.value.selectedFiles.toList()
+            if (selectedFiles.size == 1) {
+                _events.emit(BrowseUiEvent.ShowFileInfo(selectedFiles.first()))
+            }
+        }
+    }
+
     fun onSortModeSelected(sortMode: SortMode) {
         val currentFiles = _uiState.value.files
         val sortedFiles = sortFiles(currentFiles, sortMode)

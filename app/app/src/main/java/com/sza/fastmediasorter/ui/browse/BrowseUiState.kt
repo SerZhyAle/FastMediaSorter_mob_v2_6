@@ -39,4 +39,5 @@ sealed class BrowseUiEvent {
     data class ShowDestinationPicker(val selectedFiles: List<String>, val isMove: Boolean) : BrowseUiEvent()
     data class ShowDeleteConfirmation(val count: Int) : BrowseUiEvent()
     data class ShowSortDialog(val currentSortMode: SortMode) : BrowseUiEvent()
+    data class ShowFileInfo(val filePath: String) : BrowseUiEvent()
 }

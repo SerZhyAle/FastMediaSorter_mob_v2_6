@@ -21,4 +21,4 @@ Key Rules from SPEC/:
 - Use MVVM with StateFlow, Hilt injection, and proper error handling.
 - Ensure backward compatibility and minimal dependencies.
 
-Start immediately with the next task: Complete Video Player Integration (add missing UI integration, test playback, then commit). Then proceed to Audio Player implementation.
+Start immediately with the next task

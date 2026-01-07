@@ -16,6 +16,7 @@
     <string name="action_undo">Undo</string>
     <string name="action_move">Move</string>
     <string name="action_copy">Copy</string>
+    <string name="action_info">Info</string>
     <string name="selected_count">%d selected</string>
     <string name="delete_confirmation_title">Delete Files?</string>
     <string name="delete_confirmation_message">Delete %d file(s)? Files will be moved to trash and can be restored.</string>
