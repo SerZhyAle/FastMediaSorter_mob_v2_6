@@ -148,22 +148,31 @@ The FastMediaSorter v2 project is being rebuilt from scratch with a clean archit
    - Auto-detects Android SDK (4 common locations)
    - Shows APK size and location on success
 
+8. **Network File Operations** ✅ NEW
+   - FtpClient: Added deleteFile(), rename(), createDirectory(), uploadFile(), exists()
+   - SftpClient: Added deleteFile(), rename(), createDirectory(), uploadFile(), exists()
+   - SmbClient: Added deleteFile(), rename(), createDirectory(), uploadFile(), exists()
+   - FtpOperationStrategy: Full FileOperationStrategy for FTP protocol
+   - SftpOperationStrategy: Full FileOperationStrategy with password/key auth
+   - SmbOperationStrategy: Full FileOperationStrategy for Windows shares
+
 **Architecture Notes:**
-- Operation strategies (SmbOperationStrategy, SftpOperationStrategy, FtpOperationStrategy) intentionally removed - will be implemented when full network file operations are needed
-- Current focus: connection testing and credential management
-- Full file operations (delete, rename, upload, mkdir) deferred to next iteration
+- All network operation strategies implement the same FileOperationStrategy interface
+- Support for remote-to-remote copy via temp file download/upload
+- kotlin.Result<T> pattern used for error handling across all network clients
 
 ### Missing - REMAINING WORK ⚠️
 
 | Component | Priority | Description |
 |-----------|----------|-------------|
-| **Network File Operations** | 🔴 HIGH | Full FileOperationStrategy for SMB/SFTP/FTP (delete, rename, upload, mkdir) |
 | **Cloud Integration** | 🔴 HIGH | Google Drive, OneDrive, Dropbox clients (requires API key setup) |
+| **Network Resource Browsing** | 🟡 MED | Integration with BrowseActivity for network resources |
 
 ### Recently Completed ✅
 
 | Component | Status | Description |
 |-----------|--------|-------------|
+| **Network File Operations** | ✅ | Full FileOperationStrategy for SMB/SFTP/FTP (delete, rename, upload, mkdir) |
 | **File Info Dialog** | ✅ | Show comprehensive file details (EXIF, media metadata) |
 | **Search Functionality** | ✅ | Real-time search with filter by file name |
 
@@ -396,11 +405,12 @@ Implemented Paging3 for large file lists:
 
 ## 🟣 Sprint 2 Preview (Next Tasks)
 
-1. **Network File Operations** - Implement full FileOperationStrategy for network protocols
-2. **Search Functionality** - Search within resources
-3. **File Info Dialog** - Show file details on info click
-4. **Cloud Integration** - Google Drive/OneDrive/Dropbox (Epic 5)
-5. **Advanced Features** - OCR, Translation (Epic 6)
+1. ✅ **Network File Operations** - Full FileOperationStrategy for SMB/SFTP/FTP *(COMPLETE)*
+2. ✅ **Search Functionality** - Real-time search in BrowseActivity *(COMPLETE)*  
+3. ✅ **File Info Dialog** - Comprehensive file details via Info button *(COMPLETE)*
+4. **Network Resource Browsing** - Integrate network scanning with BrowseActivity
+5. **Cloud Integration** - Google Drive/OneDrive/Dropbox (Epic 5, requires API keys)
+6. **Advanced Features** - OCR, Translation (Epic 6)
 
 ---
 
@@ -415,7 +425,10 @@ com.sza.fastmediasorter/
 │   │   ├── dao/                   # DAO interfaces
 │   │   └── entity/                # Room entities
 │   ├── operation/                 # Operation strategies
-│   │   └── LocalOperationStrategy.kt
+│   │   ├── LocalOperationStrategy.kt
+│   │   ├── FtpOperationStrategy.kt
+│   │   ├── SftpOperationStrategy.kt
+│   │   └── SmbOperationStrategy.kt
 │   ├── repository/                # Repository implementations
 │   └── scanner/                   # Media scanners
 ├── di/
