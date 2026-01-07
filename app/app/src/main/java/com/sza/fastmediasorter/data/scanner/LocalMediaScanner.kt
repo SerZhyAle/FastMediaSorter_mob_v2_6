@@ -1,6 +1,8 @@
 package com.sza.fastmediasorter.data.scanner
 
 import android.content.Context
+import android.graphics.BitmapFactory
+import android.media.MediaMetadataRetriever
 import com.sza.fastmediasorter.domain.model.MediaFile
 import com.sza.fastmediasorter.domain.model.MediaType
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -31,6 +33,9 @@ class LocalMediaScanner @Inject constructor(
         private val TXT_EXTENSIONS = setOf("txt", "log", "json", "xml", "md")
         private val EPUB_EXTENSIONS = setOf("epub")
     }
+    
+    /** Reusable MediaMetadataRetriever for extracting video/audio metadata */
+    private val mediaRetriever = MediaMetadataRetriever()
 
     /**
      * Scan a folder and return list of media files.
@@ -94,15 +99,58 @@ class LocalMediaScanner @Inject constructor(
             return null
         }
 
+        var duration: Long? = null
+        var width: Int? = null
+        var height: Int? = null
+        
+        // Extract metadata based on media type
+        when (mediaType) {
+            MediaType.IMAGE, MediaType.GIF -> {
+                try {
+                    val options = BitmapFactory.Options().apply {
+                        inJustDecodeBounds = true
+                    }
+                    BitmapFactory.decodeFile(absolutePath, options)
+                    width = options.outWidth.takeIf { it > 0 }
+                    height = options.outHeight.takeIf { it > 0 }
+                } catch (e: Exception) {
+                    Timber.w(e, "Failed to extract image dimensions: $absolutePath")
+                }
+            }
+            MediaType.VIDEO -> {
+                try {
+                    mediaRetriever.setDataSource(absolutePath)
+                    duration = mediaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
+                        ?.toLongOrNull()
+                    width = mediaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH)
+                        ?.toIntOrNull()
+                    height = mediaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT)
+                        ?.toIntOrNull()
+                } catch (e: Exception) {
+                    Timber.w(e, "Failed to extract video metadata: $absolutePath")
+                }
+            }
+            MediaType.AUDIO -> {
+                try {
+                    mediaRetriever.setDataSource(absolutePath)
+                    duration = mediaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
+                        ?.toLongOrNull()
+                } catch (e: Exception) {
+                    Timber.w(e, "Failed to extract audio metadata: $absolutePath")
+                }
+            }
+            else -> { /* No metadata to extract for other types */ }
+        }
+
         return MediaFile(
             path = absolutePath,
             name = name,
             size = length(),
             date = Date(lastModified()),
             type = mediaType,
-            duration = null, // TODO: Extract duration for video/audio
-            width = null,    // TODO: Extract dimensions for images/videos
-            height = null
+            duration = duration,
+            width = width,
+            height = height
         )
     }
 
