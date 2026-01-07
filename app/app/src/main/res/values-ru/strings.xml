@@ -14,6 +14,28 @@
     <string name="action_close">Закрыть</string>
     <string name="action_settings">Настройки</string>
     <string name="action_undo">Отменить</string>
+    <string name="action_move">Переместить</string>
+    <string name="action_copy">Копировать</string>
+    <string name="action_info">Информация</string>
+    <string name="action_search">Поиск</string>
+    <string name="search_hint">Поиск файлов…</string>
+    <string name="no_search_results">Файлы не найдены</string>
+    <string name="selected_count">Выбрано: %d</string>
+    <string name="delete_confirmation_title">Удалить файлы?</string>
+    <string name="delete_confirmation_message">Удалить %d файл(ов)? Файлы будут перемещены в корзину и могут быть восстановлены.</string>
+    <string name="delete_single_file_message">Удалить \"%1$s\"? Файл будет перемещён в корзину.</string>
+    <string name="select_destination_move">Переместить в…</string>
+    <string name="select_destination_copy">Копировать в…</string>
+    <string name="no_destinations">Папки назначения не настроены.\nДобавьте их в Настройках для быстрого перемещения/копирования.</string>
+    <string name="files_moved">Перемещено файлов: %d</string>
+    <string name="files_copied">Скопировано файлов: %d</string>
+    <string name="files_deleted">Удалено файлов: %d</string>
+    <string name="file_deleted">Файл удалён</string>
+    <string name="file_restored">Файл восстановлен</string>
+    <string name="files_restored">Восстановлено файлов: %d</string>
+    <string name="share">Поделиться</string>
+    <string name="error_sharing_file">Ошибка при отправке файла</string>
+    <string name="operation_in_progress">Операция выполняется…</string>
 
     <!-- Welcome/Onboarding -->
     <string name="welcome_title">Добро пожаловать в FastMediaSorter</string>
@@ -83,6 +105,10 @@
     <string name="favorites">Избранное</string>
     <string name="add_to_favorites">Добавить в избранное</string>
     <string name="remove_from_favorites">Удалить из избранного</string>
+    <string name="no_favorites">Нет избранных файлов</string>
+    <string name="no_favorites_hint">Нажмите на иконку сердца на любом файле,\nчтобы добавить его в избранное</string>
+    <string name="added_to_favorites">Добавлено в избранное</string>
+    <string name="removed_from_favorites">Удалено из избранного</string>
 
     <!-- Errors -->
     <string name="error_unknown">Произошла неизвестная ошибка</string>
@@ -113,4 +139,155 @@
     <string name="local_folder_description">Просмотр фото и видео с вашего устройства</string>
     <string name="error_opening_folder_picker">Не удалось открыть выбор папки</string>
     <string name="feature_not_yet_implemented">%1$s скоро будет доступен!</string>
+
+    <!-- Player -->
+    <string name="action_previous">Предыдущий</string>
+    <string name="action_next">Следующий</string>
+    <string name="action_share">Поделиться</string>
+    <string name="action_play">Воспроизвести</string>
+    <string name="action_pause">Пауза</string>
+    <string name="action_rewind">Назад 10 секунд</string>
+    <string name="action_forward">Вперёд 10 секунд</string>
+    <string name="file_info">Информация о файле</string>
+    <string name="info_name">Имя</string>
+    <string name="info_path">Расположение</string>
+    <string name="info_size">Размер</string>
+    <string name="info_type">Тип</string>
+    <string name="info_modified">Изменён</string>
+    <string name="open_with">Открыть с помощью…</string>
+
+    <!-- File Info - Sections -->
+    <string name="info_section_basic">Основная информация</string>
+    <string name="info_section_image">Данные изображения</string>
+    <string name="info_section_gif">Данные GIF</string>
+    <string name="info_section_video">Данные видео</string>
+    <string name="info_section_audio">Данные аудио</string>
+    <string name="info_section_audio_track">Аудиодорожка</string>
+    <string name="info_section_document">Данные документа</string>
+
+    <!-- File Info - Image Metadata -->
+    <string name="info_resolution">Разрешение</string>
+    <string name="info_megapixels">Мегапикселей</string>
+    <string name="info_camera">Камера</string>
+    <string name="info_date_taken">Дата съёмки</string>
+    <string name="info_aperture">Диафрагма</string>
+    <string name="info_exposure">Выдержка</string>
+    <string name="info_iso">ISO</string>
+    <string name="info_focal_length">Фокусное расстояние</string>
+    <string name="info_location">Местоположение</string>
+    <string name="info_flash">Вспышка</string>
+    <string name="info_flash_fired">Сработала</string>
+    <string name="info_flash_not_fired">Не сработала</string>
+    <string name="info_white_balance">Баланс белого</string>
+
+    <!-- File Info - Video Metadata -->
+    <string name="info_duration">Длительность</string>
+    <string name="info_quality">Качество</string>
+    <string name="info_bitrate">Битрейт</string>
+    <string name="info_framerate">Частота кадров</string>
+    <string name="info_rotation">Поворот</string>
+    <string name="info_codec">Кодек</string>
+    <string name="info_date_recorded">Дата записи</string>
+
+    <!-- File Info - Audio Metadata -->
+    <string name="info_title">Название</string>
+    <string name="info_artist">Исполнитель</string>
+    <string name="info_album">Альбом</string>
+    <string name="info_album_artist">Исполнитель альбома</string>
+    <string name="info_year">Год</string>
+    <string name="info_track">Трек</string>
+    <string name="info_genre">Жанр</string>
+    <string name="info_composer">Композитор</string>
+    <string name="info_sample_rate">Частота дискретизации</string>
+    <string name="info_bit_depth">Разрядность</string>
+    <string name="info_format">Формат</string>
+
+    <!-- File Info - Document Metadata -->
+    <string name="info_pages">Страниц</string>
+    <string name="info_lines">Строк</string>
+    <string name="info_words">Слов</string>
+    <string name="info_characters">Символов</string>
+    <string name="media_content">Медиаконтент</string>
+    <string name="player">Плеер</string>
+    <string name="error_loading_media">Ошибка загрузки медиа</string>
+    <string name="album_art">Обложка альбома</string>
+
+    <!-- Edit Resource -->
+    <string name="edit_resource">Редактировать ресурс</string>
+    <string name="resource_info">Информация о ресурсе</string>
+    <string name="resource_name">Название</string>
+    <string name="display_settings">Настройки отображения</string>
+    <string name="advanced_settings">Расширенные настройки</string>
+    <string name="destination_settings">Настройки назначения</string>
+    <string name="work_with_all_files">Работать со всеми файлами</string>
+    <string name="work_with_all_files_description">Показывать все типы файлов, не только медиа</string>
+    <string name="use_as_destination">Использовать как назначение</string>
+    <string name="use_as_destination_description">Показывать в быстром перемещении/копировании</string>
+    <string name="destination_color">Цвет значка назначения</string>
+    <string name="color_picker_coming_soon">Выбор цвета скоро</string>
+    <string name="confirm_delete_resource_message">Вы уверены, что хотите удалить этот ресурс? Файлы не будут удалены.</string>
+
+    <!-- Settings - General -->
+    <string name="theme">Тема</string>
+    <string name="theme_light">Светлая</string>
+    <string name="theme_dark">Тёмная</string>
+    <string name="theme_system">Системная</string>
+    <string name="default_view_mode">Режим просмотра по умолчанию</string>
+    <string name="behavior">Поведение</string>
+    <string name="show_hidden_files">Показывать скрытые файлы</string>
+    <string name="show_hidden_files_description">Отображать файлы и папки, начинающиеся с точки</string>
+    <string name="confirm_delete">Подтверждать удаление</string>
+    <string name="confirm_move">Подтверждать перемещение</string>
+    <string name="prevent_sleep">Не выключать экран</string>
+    <string name="prevent_sleep_description">Не выключать экран во время воспроизведения</string>
+    <string name="cache">Кэш</string>
+    <string name="current_cache_size">Текущий размер кэша:</string>
+    <string name="clear_cache">Очистить кэш</string>
+
+    <!-- Settings - Playback -->
+    <string name="slideshow_settings">Слайд-шоу</string>
+    <string name="slideshow_interval">Интервал</string>
+    <string name="random_order">Случайный порядок</string>
+    <string name="loop_slideshow">Повторять слайд-шоу</string>
+    <string name="touch_zones">Зоны касания</string>
+    <string name="enable_touch_zones">Включить зоны касания</string>
+    <string name="enable_touch_zones_description">Касание по краям для навигации</string>
+    <string name="show_zone_overlay">Показывать индикаторы зон</string>
+    <string name="video_playback">Воспроизведение видео</string>
+    <string name="resume_playback">Продолжить воспроизведение</string>
+    <string name="resume_playback_description">Продолжить видео с того места, где остановились</string>
+    <string name="auto_play_videos">Автовоспроизведение видео</string>
+
+    <!-- Settings - Destinations -->
+    <string name="no_destinations_description">Добавьте ресурсы как папки назначения для быстрого перемещения/копирования</string>
+    <string name="add_destination">Добавить назначение</string>
+    <string name="remove_destination">Удалить назначение</string>
+    <string name="confirm_remove_destination">Удалить \"%1$s\" из назначений?</string>
+    <string name="destination_added">Добавлено \"%1$s\" как назначение</string>
+    <string name="destination_removed">Удалено \"%1$s\" из назначений</string>
+    <string name="no_resources_to_add">Нет доступных ресурсов для добавления</string>
+    <string name="drag_to_reorder">Перетащите для изменения порядка</string>
+    <string name="select_color">Выберите цвет</string>
+
+    <!-- Network Credentials -->
+    <string name="add_smb_connection">Добавить SMB-подключение</string>
+    <string name="add_sftp_connection">Добавить SFTP-подключение</string>
+    <string name="add_ftp_connection">Добавить FTP-подключение</string>
+    <string name="add_network_connection">Добавить сетевое подключение</string>
+    <string name="server_address">Адрес сервера</string>
+    <string name="port">Порт</string>
+    <string name="username">Имя пользователя</string>
+    <string name="password">Пароль</string>
+    <string name="use_ssh_key">Использовать SSH-ключ</string>
+    <string name="ssh_key_path">Путь к SSH-ключу</string>
+    <string name="domain_optional">Домен (необязательно)</string>
+    <string name="share_name">Имя общей папки</string>
+    <string name="test_connection">Проверить подключение</string>
+    <string name="error_name_required">Необходимо указать имя</string>
+    <string name="error_server_required">Необходимо указать адрес сервера</string>
+    <string name="error_invalid_port">Неверный номер порта (1-65535)</string>
+    <string name="error_username_required">Необходимо указать имя пользователя</string>
+    <string name="error_share_name_required">Необходимо указать имя общей папки</string>
+    <string name="error_ssh_key_required">Необходимо указать путь к SSH-ключу</string>
+    <string name="error_password_required">Необходимо указать пароль</string>
 </resources>
