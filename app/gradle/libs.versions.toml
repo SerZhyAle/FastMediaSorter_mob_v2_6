@@ -25,6 +25,12 @@ smbj = "0.12.1"
 sshj = "0.37.0"
 commonsNet = "3.10.0"
 
+# Testing
+junit = "4.13.2"
+mockito = "5.8.0"
+mockitoKotlin = "5.2.1"
+coroutinesTest = "1.8.0"
+
 # Cloud Storage
 googleAuth = "21.0.0"
 googleApiClient = "2.2.0"
@@ -110,6 +116,12 @@ msal = { group = "com.microsoft.identity.client", name = "msal", version.ref = "
 # Cloud Storage - Dropbox
 dropbox-core-sdk = { group = "com.dropbox.core", name = "dropbox-core-sdk", version.ref = "dropbox" }
 dropbox-android-sdk = { group = "com.dropbox.core", name = "dropbox-android-sdk", version.ref = "dropbox" }
+
+# Testing
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
+mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version.ref = "mockitoKotlin" }
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutinesTest" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

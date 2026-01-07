@@ -180,6 +180,12 @@ dependencies {
     // Cloud Storage - Dropbox
     implementation(libs.dropbox.core.sdk)
     implementation(libs.dropbox.android.sdk)
+
+    // Testing
+    testImplementation(libs.junit)
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.kotlin)
+    testImplementation(libs.kotlinx.coroutines.test)
 }
 
 // ktlint configuration
