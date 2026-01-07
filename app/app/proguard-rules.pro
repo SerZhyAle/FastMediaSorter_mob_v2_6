@@ -2,15 +2,26 @@
 # By default, the flags in this file are appended to flags specified
 # in the Android SDK tools proguard-android-optimize.txt file.
 
-# Keep Hilt
+# ===== Hilt / Dagger =====
 -keepclasseswithmembers class * {
     @dagger.hilt.* <methods>;
 }
+-keep class dagger.hilt.** { *; }
+-keep class javax.inject.** { *; }
+-keep class * extends dagger.hilt.android.lifecycle.HiltViewModel { *; }
 
-# Keep Room entities
+# ===== Room Database =====
 -keep class com.sza.fastmediasorter.data.db.entity.** { *; }
+-keep class com.sza.fastmediasorter.data.db.dao.** { *; }
+-keep class * extends androidx.room.RoomDatabase { *; }
 
-# Keep Glide generated API
+# ===== Domain Models (Parcelable) =====
+-keep class com.sza.fastmediasorter.domain.model.** { *; }
+-keepclassmembers class * implements android.os.Parcelable {
+    public static final ** CREATOR;
+}
+
+# ===== Glide =====
 -keep public class * implements com.bumptech.glide.module.GlideModule
 -keep class * extends com.bumptech.glide.module.AppGlideModule {
  <init>(...);
@@ -19,15 +30,102 @@
   **[] $VALUES;
   public *;
 }
+-keep class com.bumptech.glide.integration.okhttp3.OkHttpGlideModule { *; }
 
-# ExoPlayer
+# ===== ExoPlayer / Media3 =====
 -keep class androidx.media3.** { *; }
+-keep interface androidx.media3.** { *; }
+-dontwarn androidx.media3.**
 
-# SMB/SFTP/FTP Clients (for Epic 4)
+# ===== Network Libraries =====
+# SMBJ
 -keep class com.hierynomus.smbj.** { *; }
--keep class net.schmizz.sshj.** { *; }
--keep class org.apache.commons.net.** { *; }
+-keep class com.hierynomus.mssmb2.** { *; }
+-keep class com.hierynomus.protocol.** { *; }
+-dontwarn com.hierynomus.**
 
-# Bouncy Castle (for SMBJ/SSHJ)
+# SSHJ
+-keep class net.schmizz.sshj.** { *; }
+-keep class net.schmizz.concurrent.** { *; }
+-dontwarn net.schmizz.**
+
+# Apache Commons Net (FTP)
+-keep class org.apache.commons.net.** { *; }
+-dontwarn org.apache.commons.net.**
+
+# ===== Security / Crypto =====
+# Bouncy Castle (for SMBJ/SSHJ encryption)
 -keep class org.bouncycastle.** { *; }
 -dontwarn org.bouncycastle.**
+
+# AndroidX Security Crypto
+-keep class androidx.security.crypto.** { *; }
+
+# ===== Kotlin =====
+-keep class kotlin.** { *; }
+-keep class kotlin.Metadata { *; }
+-keepclassmembers class **$WhenMappings {
+    <fields>;
+}
+-keepclassmembers class kotlin.Metadata {
+    public <methods>;
+}
+
+# ===== Coroutines =====
+-keepnames class kotlinx.coroutines.internal.MainDispatcherFactory {}
+-keepnames class kotlinx.coroutines.CoroutineExceptionHandler {}
+-keepclassmembernames class kotlinx.** {
+    volatile <fields>;
+}
+
+# ===== DataStore =====
+-keep class androidx.datastore.*.** { *; }
+
+# ===== Enum Classes =====
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+
+# ===== Remove Logging in Release =====
+-assumenosideeffects class android.util.Log {
+    public static *** d(...);
+    public static *** v(...);
+    public static *** i(...);
+}
+-assumenosideeffects class timber.log.Timber {
+    public static *** d(...);
+    public static *** v(...);
+    public static *** i(...);
+}
+
+# ===== General Android =====
+-keepattributes *Annotation*
+-keepattributes SourceFile,LineNumberTable
+-keepattributes Signature
+-keepattributes Exceptions
+
+# Keep native methods
+-keepclasseswithmembernames class * {
+    native <methods>;
+}
+
+# ViewBinding
+-keep class * implements androidx.viewbinding.ViewBinding {
+    public static *** bind(***);
+    public static *** inflate(***);
+}
+
+# ===== Suppress Warnings for Optional Dependencies =====
+# MBassador (SMBJ internal - optional EL support)
+-dontwarn javax.el.**
+
+# EdDSA / Bouncy Castle internals
+-dontwarn sun.security.x509.**
+
+# SSHJ internal optional dependencies
+-dontwarn net.i2p.crypto.eddsa.**
+-dontwarn org.slf4j.**
+-dontwarn ch.qos.logback.**
+
+

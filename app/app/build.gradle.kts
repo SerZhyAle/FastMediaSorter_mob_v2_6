@@ -17,6 +17,14 @@ val localProperties = Properties().apply {
     }
 }
 
+// Load keystore.properties for release signing
+val keystoreProperties = Properties().apply {
+    val keystorePropertiesFile = rootProject.file("keystore.properties")
+    if (keystorePropertiesFile.exists()) {
+        load(FileInputStream(keystorePropertiesFile))
+    }
+}
+
 android {
     namespace = "com.sza.fastmediasorter"
     compileSdk = 35
@@ -35,11 +43,32 @@ android {
         buildConfigField("String", "DROPBOX_KEY", "\"${localProperties.getProperty("DROPBOX_KEY", "")}\"")
     }
 
+    signingConfigs {
+        create("release") {
+            val storeFilePath = keystoreProperties.getProperty("storeFile")
+            val storeFile = storeFilePath?.let { file(rootProject.file(it)) }
+            
+            // Only configure signing if keystore exists
+            if (storeFile?.exists() == true) {
+                this.storeFile = storeFile
+                storePassword = keystoreProperties.getProperty("storePassword")
+                keyAlias = keystoreProperties.getProperty("keyAlias")
+                keyPassword = keystoreProperties.getProperty("keyPassword")
+            }
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            
+            // Only apply signing if keystore is configured
+            val releaseSigningConfig = signingConfigs.getByName("release")
+            if (releaseSigningConfig.storeFile?.exists() == true) {
+                signingConfig = releaseSigningConfig
+            }
         }
         debug {
             applicationIdSuffix = ".debug"
