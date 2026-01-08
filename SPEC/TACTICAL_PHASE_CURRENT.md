@@ -233,19 +233,21 @@ The FastMediaSorter v2 project is being rebuilt from scratch with a clean archit
 
 | Component | Status | Files |
 |-----------|--------|-------|
-| **ProGuard/R8 Configuration** | ✅ NEW | Comprehensive rules for all dependencies, strip debug logs in release |
-| **Release Signing** | ✅ NEW | Optional keystore configuration, template file created |
-| **Release Build Testing** | ✅ NEW | Successful R8 minification, resource shrinking verified |
+| **ProGuard/R8 Configuration** | ✅ | Comprehensive rules for all dependencies, strip debug logs in release |
+| **Release Signing** | ✅ | Keystore configured, template file created |
+| **Release Build Testing** | ✅ | Successful R8 minification, resource shrinking, APK: 152.7 MB |
 | **Documentation Review** | ✅ | README, QUICK_START, TROUBLESHOOTING verified complete |
+| **Stress Test Generator** | ✅ NEW | `GenerateStressDataUseCase` for 10k file testing (Developer Options) |
+| **Store Graphics** | ✅ NEW | Feature graphic (1024x500), App icon (512x512) in `store_assets/graphics/` |
+| **Store Descriptions** | ✅ | Play Store listings ready (EN, RU, UK) |
 
 ### Remaining Work ⚠️
 
 | Component | Priority | Description |
-|-----------|----------|-------------|
-| **Stress Testing** | ✅ ENABLED | Generator implemented, test with 10k+ files ready (Developer Options) |
-| **Store Assets** | 🟡 MEDIUM | Screenshots, feature graphics, app descriptions |
-| **Privacy Policy** | 🟡 MEDIUM | Host privacy policy page (already exists as PRIVACY_POLICY.html) |
-| **Keystore Generation** | 🔴 LOW | Generate production keystore for release signing |
+|-----------|-------------|-------------|
+| **Screenshots** | 🟡 MEDIUM | Capture app screenshots for Play Store (8 required) |
+| **Device Testing** | 🟡 MEDIUM | Test signed APK on multiple devices |
+| **Privacy Policy Hosting** | 🟢 LOW | HOST online (HTML files already exist) |
 
 ---
 
