@@ -20,14 +20,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.sza.fastmediasorter.R
+import com.sza.fastmediasorter.pdf.PdfEditManager
 import com.sza.fastmediasorter.pdf.PdfToolsManager
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
+import java.io.File
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 /**
- * Dialog for PDF tools - page thumbnails, extraction, export to images
+ * Dialog for PDF tools - page thumbnails, extraction, export to images, rotate, delete
  */
+@AndroidEntryPoint
 class PdfToolsDialog : DialogFragment() {
     
     companion object {
@@ -44,12 +48,18 @@ class PdfToolsDialog : DialogFragment() {
     private var pdfUri: Uri? = null
     private var pdfToolsManager: PdfToolsManager? = null
     
+    @javax.inject.Inject
+    lateinit var pdfEditManager: PdfEditManager
+    
     // Views
     private lateinit var progressBar: ProgressBar
     private lateinit var infoText: TextView
     private lateinit var recyclerView: RecyclerView
     private lateinit var btnExtract: MaterialButton
     private lateinit var btnExportImages: MaterialButton
+    private lateinit var btnRotateLeft: MaterialButton
+    private lateinit var btnRotateRight: MaterialButton
+    private lateinit var btnDelete: MaterialButton
     
     private val thumbnails = mutableListOf<Bitmap?>()
     private val selectedPages = mutableSetOf<Int>()
@@ -70,6 +80,9 @@ class PdfToolsDialog : DialogFragment() {
         recyclerView = view.findViewById(R.id.recyclerView)
         btnExtract = view.findViewById(R.id.btnExtract)
         btnExportImages = view.findViewById(R.id.btnExportImages)
+        btnRotateLeft = view.findViewById(R.id.btnRotateLeft)
+        btnRotateRight = view.findViewById(R.id.btnRotateRight)
+        btnDelete = view.findViewById(R.id.btnDelete)
         
         setupRecyclerView()
         setupClickListeners()
@@ -116,6 +129,30 @@ class PdfToolsDialog : DialogFragment() {
                 selectedPages
             }
             exportPagesAsImages(pages)
+        }
+        
+        btnRotateLeft.setOnClickListener {
+            if (selectedPages.isEmpty()) {
+                Toast.makeText(context, R.string.select_pages_first, Toast.LENGTH_SHORT).show()
+            } else {
+                rotatePages(-90)
+            }
+        }
+        
+        btnRotateRight.setOnClickListener {
+            if (selectedPages.isEmpty()) {
+                Toast.makeText(context, R.string.select_pages_first, Toast.LENGTH_SHORT).show()
+            } else {
+                rotatePages(90)
+            }
+        }
+        
+        btnDelete.setOnClickListener {
+            if (selectedPages.isEmpty()) {
+                Toast.makeText(context, R.string.select_pages_first, Toast.LENGTH_SHORT).show()
+            } else {
+                confirmDeletePages()
+            }
         }
     }
     
@@ -200,6 +237,130 @@ class PdfToolsDialog : DialogFragment() {
     private fun exportPagesAsImages(pages: Set<Int>) {
         Toast.makeText(context, R.string.feature_coming_soon, Toast.LENGTH_SHORT).show()
         // Full implementation would require storage access framework
+    }
+    
+    private fun rotatePages(degrees: Int) {
+        val uri = pdfUri ?: return
+        val pages = selectedPages.toList().sorted()
+        
+        progressBar.visibility = View.VISIBLE
+        btnRotateLeft.isEnabled = false
+        btnRotateRight.isEnabled = false
+        
+        lifecycleScope.launch {
+            try {
+                // Create temp output file
+                val outputFile = withContext(Dispatchers.IO) {
+                    val tempDir = requireContext().cacheDir
+                    File.createTempFile("rotated_", ".pdf", tempDir)
+                }
+                
+                // Rotate pages using PdfEditManager
+                val result = withContext(Dispatchers.IO) {
+                    val rotations = pages.associateWith { degrees }
+                    pdfEditManager.rotatePages(
+                        context = requireContext(),
+                        sourceUri = uri,
+                        outputFile = outputFile,
+                        rotations = rotations
+                    )
+                }
+                
+                when (result) {
+                    is PdfEditManager.PdfResult.Success -> {
+                        Toast.makeText(context, R.string.pages_rotated, Toast.LENGTH_SHORT).show()
+                        // Reload PDF with rotated pages
+                        pdfUri = Uri.fromFile(result.data)
+                        selectedPages.clear()
+                        loadPdfData(pdfUri!!)
+                    }
+                    is PdfEditManager.PdfResult.Error -> {
+                        Toast.makeText(
+                            context,
+                            getString(R.string.pdf_operation_failed, result.message),
+                            Toast.LENGTH_LONG
+                        ).show()
+                        progressBar.visibility = View.GONE
+                    }
+                }
+            } catch (e: Exception) {
+                Toast.makeText(
+                    context,
+                    getString(R.string.pdf_operation_failed, e.message),
+                    Toast.LENGTH_LONG
+                ).show()
+                progressBar.visibility = View.GONE
+            } finally {
+                btnRotateLeft.isEnabled = true
+                btnRotateRight.isEnabled = true
+            }
+        }
+    }
+    
+    private fun confirmDeletePages() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(R.string.delete_pages)
+            .setMessage(getString(R.string.delete_pages_confirm, selectedPages.size))
+            .setPositiveButton(R.string.action_delete) { _, _ ->
+                deletePages()
+            }
+            .setNegativeButton(R.string.cancel, null)
+            .show()
+    }
+    
+    private fun deletePages() {
+        val uri = pdfUri ?: return
+        val pagesToDelete = selectedPages.toSet()
+        
+        progressBar.visibility = View.VISIBLE
+        btnDelete.isEnabled = false
+        
+        lifecycleScope.launch {
+            try {
+                // Create temp output file
+                val outputFile = withContext(Dispatchers.IO) {
+                    val tempDir = requireContext().cacheDir
+                    File.createTempFile("deleted_", ".pdf", tempDir)
+                }
+                
+                // Delete pages using PdfEditManager
+                val result = withContext(Dispatchers.IO) {
+                    pdfEditManager.deletePages(
+                        context = requireContext(),
+                        sourceUri = uri,
+                        outputFile = outputFile,
+                        pagesToDelete = pagesToDelete
+                    )
+                }
+                
+                when (result) {
+                    is PdfEditManager.PdfResult.Success -> {
+                        Toast.makeText(context, R.string.pages_deleted, Toast.LENGTH_SHORT).show()
+                        // Reload PDF with deleted pages removed
+                        pdfUri = Uri.fromFile(result.data)
+                        selectedPages.clear()
+                        loadPdfData(pdfUri!!)
+                    }
+                    is PdfEditManager.PdfResult.Error -> {
+                        Toast.makeText(
+                            context,
+                            getString(R.string.pdf_operation_failed, result.message),
+                            Toast.LENGTH_LONG
+                        ).show()
+                        progressBar.visibility = View.GONE
+                    }
+                }
+            } catch (e: Exception) {
+                Toast.makeText(
+                    context,
+                    getString(R.string.pdf_operation_failed, e.message),
+                    Toast.LENGTH_LONG
+                ).show()
+                progressBar.visibility = View.GONE
+            } finally {
+                btnDelete.isEnabled = true
+            }
+        }
     }
     
     override fun onDestroyView() {

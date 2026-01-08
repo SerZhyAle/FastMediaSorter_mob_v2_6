@@ -724,6 +724,12 @@
     <string name="extract_pages">Extract Pages</string>
     <string name="extract_pages_count">Extract %1$d Pages</string>
     <string name="export_as_images">Export as Images</string>
+    <string name="rotate_pages">Rotate Pages</string>
+    <string name="delete_pages">Delete Pages</string>
+    <string name="delete_pages_confirm">Delete %1$d selected pages? This will create a new PDF file.</string>
+    <string name="pages_rotated">Pages rotated successfully</string>
+    <string name="pages_deleted">Pages deleted successfully</string>
+    <string name="pdf_operation_failed">PDF operation failed: %1$s</string>
     <string name="feature_coming_soon">Feature coming soon</string>
     
     <!-- Lyrics Strings -->
