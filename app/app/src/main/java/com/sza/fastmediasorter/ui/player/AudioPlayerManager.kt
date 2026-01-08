@@ -2,13 +2,17 @@ package com.sza.fastmediasorter.ui.player
 
 import android.content.Context
 import android.net.Uri
+import android.os.Handler
+import android.os.Looper
 import androidx.annotation.OptIn
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
+import androidx.media3.common.PlaybackParameters
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.session.MediaSession
+import com.sza.fastmediasorter.data.repository.PlaybackPositionRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
 import timber.log.Timber
 import java.io.File
@@ -18,12 +22,14 @@ import javax.inject.Singleton
 /**
  * Manager class to handle audio playback with ExoPlayer and MediaSession.
  * Provides notification controls for background playback.
+ * Includes audiobook mode with position save/restore every 5 seconds.
  * 
  * Injected as singleton but player is initialized/released per activity lifecycle.
  */
 @Singleton
 class AudioPlayerManager @Inject constructor(
-    @ApplicationContext private val appContext: Context
+    @ApplicationContext private val appContext: Context,
+    private val playbackPositionRepository: PlaybackPositionRepository
 ) {
     private var player: ExoPlayer? = null
     private var mediaSession: MediaSession? = null
@@ -33,6 +39,12 @@ class AudioPlayerManager @Inject constructor(
     private var playWhenReady: Boolean = true
     private var wasPlaying: Boolean = false
     private var playbackListener: PlaybackListener? = null
+
+    // Audiobook mode
+    private var audiobookModeEnabled: Boolean = true
+    private var positionSaveHandler: Handler? = null
+    private var positionSaveRunnable: Runnable? = null
+    private val POSITION_SAVE_INTERVAL_MS = 5000L // 5 seconds
 
     /**
      * Listener for playback events.
@@ -48,6 +60,113 @@ class AudioPlayerManager @Inject constructor(
 
     fun setPlaybackListener(listener: PlaybackListener?) {
         this.playbackListener = listener
+    }
+
+    /**
+     * Enable or disable audiobook mode (position auto-save).
+     */
+    fun setAudiobookMode(enabled: Boolean) {
+        audiobookModeEnabled = enabled
+        if (enabled) {
+            startPositionSaveTimer()
+        } else {
+            stopPositionSaveTimer()
+        }
+        Timber.d("Audiobook mode: $enabled")
+    }
+
+    /**
+     * Get current audiobook mode state.
+     */
+    fun isAudiobookModeEnabled(): Boolean = audiobookModeEnabled
+
+    /**
+     * Set playback speed (0.5x to 2.0x).
+     */
+    fun setPlaybackSpeed(speed: Float) {
+        val clampedSpeed = speed.coerceIn(0.5f, 2.0f)
+        player?.playbackParameters = PlaybackParameters(clampedSpeed)
+        Timber.d("Playback speed set to ${clampedSpeed}x")
+    }
+
+    /**
+     * Get current playback speed.
+     */
+    fun getPlaybackSpeed(): Float {
+        return player?.playbackParameters?.speed ?: 1.0f
+    }
+
+    /**
+     * Rewind 10 seconds (audiobook feature).
+     */
+    fun rewind10Seconds() {
+        seekBackward(10_000)
+    }
+
+    /**
+     * Forward 30 seconds (audiobook feature).
+     */
+    fun forward30Seconds() {
+        seekForward(30_000)
+    }
+
+    /**
+     * Start auto-saving position every 5 seconds.
+     */
+    private fun startPositionSaveTimer() {
+        if (positionSaveHandler != null) return
+        
+        positionSaveHandler = Handler(Looper.getMainLooper())
+        positionSaveRunnable = object : Runnable {
+            override fun run() {
+                saveCurrentPosition()
+                positionSaveHandler?.postDelayed(this, POSITION_SAVE_INTERVAL_MS)
+            }
+        }
+        positionSaveHandler?.postDelayed(positionSaveRunnable!!, POSITION_SAVE_INTERVAL_MS)
+        Timber.d("Started position save timer")
+    }
+
+    /**
+     * Stop auto-saving position.
+     */
+    private fun stopPositionSaveTimer() {
+        positionSaveRunnable?.let {
+            positionSaveHandler?.removeCallbacks(it)
+        }
+        positionSaveHandler = null
+        positionSaveRunnable = null
+        Timber.d("Stopped position save timer")
+    }
+
+    /**
+     * Save current playback position to repository.
+     */
+    private fun saveCurrentPosition() {
+        val path = currentMediaPath ?: return
+        val player = player ?: return
+        
+        if (player.isPlaying) {
+            val position = player.currentPosition
+            val duration = player.duration
+            if (duration > 0) {
+                playbackPositionRepository.savePosition(path, position, duration)
+            }
+        }
+    }
+
+    /**
+     * Restore playback position from repository if available.
+     * Returns the restored position or 0 if none found.
+     */
+    private fun restorePlaybackPosition(filePath: String): Long {
+        val savedPosition = playbackPositionRepository.getPosition(filePath)
+        return if (savedPosition != null && savedPosition.shouldResume()) {
+            Timber.d("Restoring playback position: ${savedPosition.position} / ${savedPosition.duration}")
+            savedPosition.position
+        } else {
+            0L
+        }
     }
 
     /**
@@ -74,6 +193,7 @@ class AudioPlayerManager @Inject constructor(
 
     /**
      * Load and prepare an audio file for playback.
+     * Automatically restores position if audiobook mode is enabled.
      */
     fun loadAudio(filePath: String, title: String? = null, artist: String? = null, startPosition: Long = 0) {
         Timber.d("Loading audio: $filePath at position: $startPosition")
@@ -90,7 +210,13 @@ class AudioPlayerManager @Inject constructor(
         }
 
         currentMediaPath = filePath
-        playbackPosition = startPosition
+        
+        // Use restored position if audiobook mode is enabled and no explicit start position
+        playbackPosition = if (startPosition == 0L && audiobookModeEnabled) {
+            restorePlaybackPosition(filePath)
+        } else {
+            startPosition
+        }
 
         // Convert file path to URI
         val uri = if (filePath.startsWith("content://") || filePath.startsWith("file://")) {
@@ -114,6 +240,11 @@ class AudioPlayerManager @Inject constructor(
         player.setMediaItem(mediaItem)
         player.seekTo(playbackPosition)
         player.prepare()
+        
+        // Start position saving if audiobook mode enabled
+        if (audiobookModeEnabled) {
+            startPositionSaveTimer()
+        }
     }
 
     /**
@@ -219,6 +350,13 @@ class AudioPlayerManager @Inject constructor(
      */
     fun release() {
         Timber.d("Releasing Audio Player and MediaSession")
+        
+        // Save final position before releasing
+        if (audiobookModeEnabled) {
+            saveCurrentPosition()
+            stopPositionSaveTimer()
+        }
+        
         saveState()
         
         mediaSession?.release()
