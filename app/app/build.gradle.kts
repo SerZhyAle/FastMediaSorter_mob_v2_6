@@ -158,6 +158,13 @@ dependencies {
     // Security
     implementation(libs.security.crypto)
 
+    // PDF Editing
+    implementation(libs.pdfbox.android) {
+        exclude(group = "org.bouncycastle", module = "bcprov-jdk15to18")
+        exclude(group = "org.bouncycastle", module = "bcpkix-jdk15to18")
+        exclude(group = "org.bouncycastle", module = "bcutil-jdk15to18")
+    }
+
     // ML Kit - OCR and Translation
     implementation(libs.mlkit.text.recognition)
     implementation(libs.mlkit.translate)

@@ -24,6 +24,7 @@ gson = "2.10.1"
 smbj = "0.12.1"
 sshj = "0.37.0"
 commonsNet = "3.10.0"
+pdfbox = "2.0.27.0"
 
 # Testing
 junit = "4.13.2"
@@ -96,6 +97,9 @@ commons-net = { group = "commons-net", name = "commons-net", version.ref = "comm
 
 # Security
 security-crypto = { group = "androidx.security", name = "security-crypto", version = "1.1.0-alpha06" }
+
+# PDF Editing
+pdfbox-android = { group = "com.tom-roush", name = "pdfbox-android", version.ref = "pdfbox" }
 
 # ML Kit - OCR and Translation
 mlkit-text-recognition = { group = "com.google.mlkit", name = "text-recognition", version = "16.0.1" }
