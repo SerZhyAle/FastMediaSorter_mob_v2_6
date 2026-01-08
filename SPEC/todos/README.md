@@ -1,53 +1,70 @@
-# FastMediaSorter v2 - TODO Technical Specifications
+# FastMediaSorter v2 - TODO Archive
 
-**Last Updated**: January 6, 2026
-
----
-
-## Purpose
-
-Эта папка содержит **технические спецификации** для реализации FastMediaSorter v2 **с нуля**. Каждый Epic описывает архитектурные требования, интерфейсные контракты и guidelines БЕЗ готового копируемого кода.
-
-**КРИТИЧНО**: Эти спецификации для **чистовой разработки**, а НЕ для копирования существующего V1 кода. V1 имеет накопленные проблемы от многочисленных патчей.
+**Last Updated**: January 9, 2026  
+**Status**: CONSOLIDATED into `../TODO_CONSOLIDATED.md`
 
 ---
 
-## Development Philosophy
+## ⚠️ IMPORTANT NOTICE
 
-✅ **ПРАВИЛЬНО**: Использовать спецификации как архитектурный гид → реализовать свежий код  
-❌ **НЕПРАВИЛЬНО**: Копировать готовый код из V1 → унаследовать legacy проблемы
+**All TODO items have been consolidated into a single file:**
 
-**Подход**:
-1. Читай спецификацию Epic (архитектура, интерфейсы, анти-паттерны)
-2. Реализуй согласно требованиям (свой код, не копипаста)
-3. Проверь по Completion Checklist
-4. Переходи к следующему Epic
+📄 **[../TODO_CONSOLIDATED.md](../TODO_CONSOLIDATED.md)**
+
+This folder now serves as an **archive** of completed epics and historical development tracking.
 
 ---
 
-## File Status
+## Why Consolidation?
 
-### ✅ Complete Technical Specifications
+As the project reached 85% completion with Epics 1-4 and 7 complete, maintaining separate TODO files became redundant. The new consolidated file provides:
 
-| File | Type | Lines | Coverage | Description |
-|------|------|-------|----------|-------------|
-| `todo_epic1_foundation_COMPLETE.md` | ✅ Spec Ready | 500+ | 100% | Gradle config (TOML), Hilt DI spec, Room schema, BaseActivity/Fragment contracts, localization (includes XML layouts for reference) |
-| `todo_epic2_local_COMPLETE.md` | ✅ Spec Ready | 800+ | 100% | Local file management architecture, MainActivity/BrowseActivity UI contracts, ViewModel requirements, LocalMediaScanner spec (includes XML layouts) |
-| `todo_epic3_player_COMPLETE.md` | ✅ Spec Ready | 1100+ | 100% | PlayerActivity decomposition strategy, VideoPlayerManager/PdfRenderer/TextViewer interface specs, ExoPlayer integration requirements |
-| `todo_epic4_network_COMPLETE.md` | ✅ Spec Ready | 1500+ | 95% | SMB/SFTP/FTP client interface contracts, connection pooling architecture, EncryptedSharedPreferences requirements, known pitfalls from V1 |
-| `todo_epic5_cloud_COMPLETE.md` | ✅ Spec Ready | 1600+ | 90% | OAuth manual setup guides (Google/OneDrive/Dropbox with console screenshots), client interface specs, token management strategy |
+- ✅ Single source of truth for all remaining work
+- ✅ Clear prioritization (Release > Cloud > Advanced)
+- ✅ Active development focus (Epic 8: Release Engineering)
+- ✅ Known issues and technical debt tracking
+- ✅ Next steps with timeline
 
 ---
 
-## Roadmap for Complete Guides
+## Archive Contents
 
-### ✅ Completed
-- [x] Epic 1: Foundation (COMPLETE)
-- [x] Epic 2: Local Files (COMPLETE)
+This folder previously contained:
 
-### 🚧 In Progress
-- [ ] Epic 3: Player Activity (UI layouts needed)
-- [ ] Epic 4: Network Protocols (SMB/SFTP/FTP code examples)
+### Completed Epics (Now Archived)
+- ~~`todo_epic1_foundation_COMPLETE.md`~~ - Foundation complete (100%)
+- ~~`todo_epic2_local_COMPLETE.md`~~ - Local file management complete (100%)
+- ~~`todo_epic3_player_COMPLETE.md`~~ - Player activity complete (100%)
+- ~~`todo_epic4_network_COMPLETE.md`~~ - Network protocols complete (100%)
+- ~~`todo_epic5_cloud_COMPLETE.md`~~ - Cloud integration complete (25%)
+
+### Individual Epic TODOs (Now Consolidated)
+- ~~`todo_epic6_advanced.md`~~ - Merged into TODO_CONSOLIDATED.md
+- ~~`todo_epic7_quality.md`~~ - Merged into TODO_CONSOLIDATED.md
+- ~~`todo_epic8_release.md`~~ - Merged into TODO_CONSOLIDATED.md
+
+---
+
+## Current Development Status
+
+**Active Epic:** Epic 8 - Release Engineering (66% complete)
+
+**Next Priorities:**
+1. Complete automated testing suite
+2. Execute full manual QA checklist
+3. Store preparation and final release
+
+**Deferred to Post-Release:**
+- Epic 5: Cloud Integration (Google Drive/OneDrive/Dropbox)
+- Epic 6: Advanced Features (OCR/Translation polish)
+
+---
+
+## For Active Development
+
+**👉 See:** [TODO_CONSOLIDATED.md](../TODO_CONSOLIDATED.md)
+
+All active tasks, priorities, and next steps are now tracked in the consolidated file.
 
 ### 📋 Planned
 - [ ] Epic 5: Cloud Integration (OAuth setup guides)

@@ -3,7 +3,20 @@
 **Purpose**: Complete development guide and task specification for implementing FastMediaSorter v2 from scratch.
 
 **Status**: Production-Ready Application (Build v2.25.1212+)  
-**Last Updated**: January 5, 2026
+**Last Updated**: January 9, 2026
+
+---
+
+## 📋 Active TODO List
+
+**All remaining development tasks are consolidated in:** [TODO_CONSOLIDATED.md](TODO_CONSOLIDATED.md)
+
+This single file contains:
+- Current project status (85% complete)
+- Active development priorities (Epic 8: Release Engineering)
+- Remaining work for Epics 5, 6, 8
+- Known issues and technical debt
+- Timeline and next steps
 
 ---
 
