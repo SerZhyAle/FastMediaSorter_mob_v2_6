@@ -707,6 +707,17 @@
     <string name="ocr_error">OCR error: %1$s</string>
     <string name="ocr_failed">Text recognition failed</string>
     <string name="text_copied">Text copied to clipboard</string>
+    
+    <!-- PDF Tools Strings -->
+    <string name="pdf_tools">PDF Tools</string>
+    <string name="loading_pdf">Loading PDF…</string>
+    <string name="pdf_info_format">%1$s • %2$d pages</string>
+    <string name="pdf_load_error">Failed to load PDF</string>
+    <string name="select_pages_first">Select pages first</string>
+    <string name="extract_pages">Extract Pages</string>
+    <string name="extract_pages_count">Extract %1$d Pages</string>
+    <string name="export_as_images">Export as Images</string>
+    <string name="feature_coming_soon">Feature coming soon</string>
 </resources>
 
 
