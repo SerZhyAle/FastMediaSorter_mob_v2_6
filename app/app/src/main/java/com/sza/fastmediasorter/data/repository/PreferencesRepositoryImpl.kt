@@ -112,6 +112,10 @@ class PreferencesRepositoryImpl @Inject constructor(
         val NETWORK_PARALLELISM = intPreferencesKey("network_parallelism")
         val OFFLINE_MODE = booleanPreferencesKey("offline_mode")
 
+        // Album Art Settings
+        val ALBUM_ART_WIFI_ONLY = booleanPreferencesKey("album_art_wifi_only")
+        val SHOW_ALBUM_ART = booleanPreferencesKey("show_album_art")
+
         // Onboarding
         val HAS_COMPLETED_ONBOARDING = booleanPreferencesKey("has_completed_onboarding")
     }
@@ -835,6 +839,30 @@ class PreferencesRepositoryImpl @Inject constructor(
         Timber.d("Setting offline mode: $enabled")
         context.dataStore.edit { prefs ->
             prefs[Keys.OFFLINE_MODE] = enabled
+        }
+    }
+
+    // ==================== Album Art Settings ====================
+
+    override val albumArtWifiOnly: Flow<Boolean> = context.dataStore.data.map { prefs ->
+        prefs[Keys.ALBUM_ART_WIFI_ONLY] ?: true
+    }
+
+    override suspend fun setAlbumArtWifiOnly(wifiOnly: Boolean) {
+        Timber.d("Setting album art WiFi only: $wifiOnly")
+        context.dataStore.edit { prefs ->
+            prefs[Keys.ALBUM_ART_WIFI_ONLY] = wifiOnly
+        }
+    }
+
+    override val showAlbumArt: Flow<Boolean> = context.dataStore.data.map { prefs ->
+        prefs[Keys.SHOW_ALBUM_ART] ?: true
+    }
+
+    override suspend fun setShowAlbumArt(show: Boolean) {
+        Timber.d("Setting show album art: $show")
+        context.dataStore.edit { prefs ->
+            prefs[Keys.SHOW_ALBUM_ART] = show
         }
     }
 

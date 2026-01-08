@@ -411,6 +411,20 @@ interface PreferencesRepository {
     val offlineMode: Flow<Boolean>
     suspend fun setOfflineMode(enabled: Boolean)
 
+    // ==================== Album Art Settings ====================
+
+    /**
+     * Whether to download album art only on WiFi.
+     */
+    val albumArtWifiOnly: Flow<Boolean>
+    suspend fun setAlbumArtWifiOnly(wifiOnly: Boolean)
+
+    /**
+     * Whether to show album art in browse view.
+     */
+    val showAlbumArt: Flow<Boolean>
+    suspend fun setShowAlbumArt(show: Boolean)
+
     // ==================== Onboarding ====================
 
     /**

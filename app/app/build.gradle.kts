@@ -150,6 +150,8 @@ dependencies {
     implementation(libs.smbj)
     implementation(libs.sshj)
     implementation(libs.commons.net)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.gson)
     implementation(libs.okhttp)
     implementation(libs.gson)
 
