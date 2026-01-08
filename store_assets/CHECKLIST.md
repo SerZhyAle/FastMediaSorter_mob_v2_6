@@ -36,14 +36,14 @@
 - [ ] (Optional) Add text overlays with feature highlights
 
 #### Graphics (Priority: HIGH)
-- [ ] Design feature graphic (1024 x 500 px)
+- [x] Design feature graphic (1024 x 500 px) ✅ `graphics/feature_graphic.png`
   - App name + tagline
   - Key visual (folder icon with media)
   - Feature badges (SMB, SFTP, Cloud)
-  - Color scheme: Green (#4CAF50), Amber (#FFC107)
-- [ ] Create high-res app icon (512 x 512 px)
-  - Use existing launcher icon as base
-  - Scale up to 512x512 with proper quality
+  - Color scheme: Teal/Green gradient
+- [x] Create high-res app icon (512 x 512 px) ✅ `graphics/app_icon_512.png`
+  - Modern folder with media play symbol
+  - Material Design 3 aesthetic
 - [ ] (Optional) Record promo video
   - 30-120 seconds
   - Show key features in action
