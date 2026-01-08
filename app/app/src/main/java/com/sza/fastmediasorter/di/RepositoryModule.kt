@@ -52,4 +52,11 @@ abstract class RepositoryModule {
     abstract fun bindNetworkCredentialsRepository(
         impl: NetworkCredentialsRepositoryImpl
     ): NetworkCredentialsRepository
+
+
+    @Binds
+    @Singleton
+    abstract fun bindStressTestRepository(
+        impl: com.sza.fastmediasorter.data.repository.debug.StressTestRepositoryImpl
+    ): com.sza.fastmediasorter.domain.repository.StressTestRepository
 }

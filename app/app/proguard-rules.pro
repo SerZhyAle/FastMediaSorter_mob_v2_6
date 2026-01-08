@@ -128,4 +128,6 @@
 -dontwarn org.slf4j.**
 -dontwarn ch.qos.logback.**
 
-
+# ===== FindBugs Annotations (Microsoft Identity Library) =====
+# These annotations are compile-time only and not needed at runtime
+-dontwarn edu.umd.cs.findbugs.annotations.**

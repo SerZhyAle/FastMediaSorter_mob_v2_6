@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.Glide
 import com.sza.fastmediasorter.data.cache.UnifiedFileCache
 import com.sza.fastmediasorter.domain.repository.PreferencesRepository
+import com.sza.fastmediasorter.domain.usecase.debug.GenerateStressDataUseCase
 import com.sza.fastmediasorter.util.LocaleHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -29,6 +30,7 @@ import javax.inject.Inject
 class GeneralSettingsViewModel @Inject constructor(
     private val preferencesRepository: PreferencesRepository,
     private val unifiedFileCache: UnifiedFileCache,
+    private val generateStressDataUseCase: GenerateStressDataUseCase,
     @ApplicationContext private val context: Context
 ) : ViewModel() {
 
@@ -161,6 +163,26 @@ class GeneralSettingsViewModel @Inject constructor(
             _uiState.update { it.copy(cacheSizeDisplay = displaySize) }
         }
     }
+
+    fun generateStressTestData() {
+        viewModelScope.launch {
+            _uiState.update { it.copy(isGeneratingData = true) }
+            val dir = context.getExternalFilesDir(null)?.resolve("StressTestResult")
+            if (dir != null) {
+                Timber.d("Generating stress test data in: ${dir.absolutePath}")
+                val result = generateStressDataUseCase(dir.absolutePath, 10000) { progress ->
+                    if (progress % 1000 == 0) Timber.d("Generated $progress files...")
+                }
+                result.onSuccess {
+                    Timber.d("Stress test data generation complete")
+                }
+                result.onError { msg, e, _ ->
+                    Timber.e(e, "Stress test data generation failed: $msg")
+                }
+            }
+            _uiState.update { it.copy(isGeneratingData = false) }
+        }
+    }
 }
 
 /**
@@ -174,5 +196,6 @@ data class GeneralSettingsUiState(
     val confirmDelete: Boolean = true,
     val confirmMove: Boolean = false,
     val preventSleepDuringPlayback: Boolean = true,
-    val cacheSizeDisplay: String = "0 MB"
+    val cacheSizeDisplay: String = "0 MB",
+    val isGeneratingData: Boolean = false
 )

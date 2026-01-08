@@ -85,8 +85,16 @@ $h2 = $hourFull.Substring(1, 1)  # "4"
 # Group 4: H2 + mm
 $versionName = "$y1.$y2$m1.$m2$dayFull$h1.$h2$minuteFull"
 
-# VersionCode: YYMMDDHHmm
-$versionCode = [int]("$yearFull$monthFull$dayFull$hourFull$minuteFull")
+# VersionCode: Fit within Int32 max (2147483647)
+# Format: YYMMDDHHMM where YY is year since 2000 (26 for 2026)
+# This gives us: 26 + 01 + 08 + 00 + 02 = 2601080002 (TOO LARGE)
+# New format: Use day-of-year + time: YYDDDHHHMM (YY=00-99, DDD=001-366, HHH=000-239 in 10min blocks, MM=00-59 spare)
+# Even simpler: Just use sequential build number base + MMDDHHMM
+# Safest: Year offset (26) + MMDDHHMM = 260108HHMM, still may overflow
+# BEST: Use minutes since epoch (limited range) OR simple increment
+# PRACTICAL: YYMMDDHH + build minute/10 = 26010800 + 0 = 26010800 (fits in Int32)
+$yearShort = $now.ToString("yy")  # 26 for 2026
+$versionCode = [int]("$yearShort$monthFull$dayFull$hourFull")
 
 Write-Host "Building FastMediaSorter v$versionName (code: $versionCode)" -ForegroundColor Cyan
 
@@ -115,10 +123,9 @@ $content | Set-Content $buildFilePath -NoNewline
 
 Write-Host "Updated version in build.gradle.kts" -ForegroundColor Green
 
-# Start the Gradle build process
-Set-Location "app"
+# Start the Gradle build process from root directory
 Write-Host "Starting Gradle build..." -ForegroundColor Yellow
-& .\gradlew assembleRelease
+& .\gradlew.bat :app:app:assembleRelease
 
 # Check build result
 if ($LASTEXITCODE -eq 0) {

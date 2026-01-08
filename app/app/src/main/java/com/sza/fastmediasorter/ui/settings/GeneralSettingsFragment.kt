@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.sza.fastmediasorter.BuildConfig
 import com.sza.fastmediasorter.R
 import com.sza.fastmediasorter.databinding.FragmentSettingsGeneralBinding
 import com.sza.fastmediasorter.ui.base.BaseFragment
@@ -39,7 +40,9 @@ class GeneralSettingsFragment : BaseFragment<FragmentSettingsGeneralBinding>() {
         setupThemeRadioGroup()
         setupDisplayModeDropdown()
         setupSwitches()
+
         setupCacheSection()
+        setupDeveloperOptions()
         observeState()
     }
 
@@ -109,6 +112,15 @@ class GeneralSettingsFragment : BaseFragment<FragmentSettingsGeneralBinding>() {
         }
     }
 
+    private fun setupDeveloperOptions() {
+        if (BuildConfig.DEBUG) {
+            binding.layoutDeveloperOptions.visibility = View.VISIBLE
+            binding.btnGenerateStressData.setOnClickListener {
+                viewModel.generateStressTestData()
+            }
+        }
+    }
+
     private fun observeState() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -154,5 +166,13 @@ class GeneralSettingsFragment : BaseFragment<FragmentSettingsGeneralBinding>() {
 
         // Update cache size display
         binding.tvCacheSize.text = state.cacheSizeDisplay
+        
+        // Update generator button state
+        binding.btnGenerateStressData.isEnabled = !state.isGeneratingData
+        binding.btnGenerateStressData.text = if (state.isGeneratingData) {
+            "Generating..."
+        } else {
+            "Generate 10k Files (Stress Test)"
+        }
     }
 }

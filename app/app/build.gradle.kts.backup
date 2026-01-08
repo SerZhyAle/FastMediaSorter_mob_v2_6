@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
+    alias(libs.plugins.ktlint)
     id("org.jetbrains.kotlin.plugin.parcelize")
 }
 
@@ -17,6 +18,14 @@ val localProperties = Properties().apply {
     }
 }
 
+// Load keystore.properties for release signing
+val keystoreProperties = Properties().apply {
+    val keystorePropertiesFile = rootProject.file("keystore.properties")
+    if (keystorePropertiesFile.exists()) {
+        load(FileInputStream(keystorePropertiesFile))
+    }
+}
+
 android {
     namespace = "com.sza.fastmediasorter"
     compileSdk = 35
@@ -25,8 +34,8 @@ android {
         applicationId = "com.sza.fastmediasorter"
         minSdk = 28
         targetSdk = 35
-        versionCode = 26010623
-        versionName = "2.601.062.354"
+        versionCode = 26010800
+        versionName = "2.60.1080.009"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -35,11 +44,32 @@ android {
         buildConfigField("String", "DROPBOX_KEY", "\"${localProperties.getProperty("DROPBOX_KEY", "")}\"")
     }
 
+    signingConfigs {
+        create("release") {
+            val storeFilePath = keystoreProperties.getProperty("storeFile")
+            val storeFile = storeFilePath?.let { file(rootProject.file(it)) }
+            
+            // Only configure signing if keystore exists
+            if (storeFile?.exists() == true) {
+                this.storeFile = storeFile
+                storePassword = keystoreProperties.getProperty("storePassword")
+                keyAlias = keystoreProperties.getProperty("keyAlias")
+                keyPassword = keystoreProperties.getProperty("keyPassword")
+            }
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            
+            // Only apply signing if keystore is configured
+            val releaseSigningConfig = signingConfigs.getByName("release")
+            if (releaseSigningConfig.storeFile?.exists() == true) {
+                signingConfig = releaseSigningConfig
+            }
         }
         debug {
             applicationIdSuffix = ".debug"
@@ -63,12 +93,18 @@ android {
     }
 }
 
+// Room schema export for migration testing
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
+}
+
 dependencies {
     // Core
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
+    implementation(libs.androidx.fragment)
     implementation(libs.androidx.constraintlayout)
 
     // Lifecycle
@@ -87,6 +123,14 @@ dependencies {
 
     // Coroutines
     implementation(libs.kotlinx.coroutines)
+    implementation(libs.kotlinx.coroutines.play.services)
+
+    // DataStore
+    implementation(libs.datastore.preferences)
+
+    // Paging
+    implementation(libs.paging.runtime)
+    implementation(libs.paging.common)
 
     // Logging
     implementation(libs.timber)
@@ -97,7 +141,62 @@ dependencies {
     // Media Player (for later epics)
     implementation(libs.exoplayer)
     implementation(libs.exoplayer.ui)
+    implementation(libs.media3.session)
+
+    // Network Protocols (Epic 4)
+    implementation(libs.smbj)
+    implementation(libs.sshj)
+    implementation(libs.commons.net)
+    implementation(libs.okhttp)
+    implementation(libs.gson)
 
     // Security
     implementation(libs.security.crypto)
+
+    // ML Kit - OCR and Translation
+    implementation(libs.mlkit.text.recognition)
+    implementation(libs.mlkit.translate)
+    implementation(libs.mlkit.language.id)
+    
+    // Tesseract OCR (offline, better Cyrillic support)
+    implementation(libs.tesseract4android) {
+        exclude(group = "cz.adaptech.tesseract4android", module = "tesseract4android-openmp")
+    }
+
+    // Cloud Storage - Google Drive
+    implementation(libs.play.services.auth)
+    implementation(libs.google.api.client.android) {
+        exclude(group = "org.apache.httpcomponents")
+        exclude(group = "com.google.guava", module = "listenablefuture")
+    }
+    implementation(libs.google.api.services.drive) {
+        exclude(group = "org.apache.httpcomponents")
+        exclude(group = "com.google.guava", module = "listenablefuture")
+    }
+
+    // Cloud Storage - OneDrive
+    implementation(libs.msal)
+
+    // Cloud Storage - Dropbox
+    implementation(libs.dropbox.core.sdk)
+    implementation(libs.dropbox.android.sdk)
+
+    // Testing
+    testImplementation(libs.junit)
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.kotlin)
+    testImplementation(libs.kotlinx.coroutines.test)
+}
+
+// ktlint configuration
+ktlint {
+    version.set("1.0.1")
+    android.set(true)
+    outputColorName.set("RED")
+    ignoreFailures.set(false)
+    
+    filter {
+        exclude("**/generated/**")
+        exclude("**/build/**")
+    }
 }

@@ -273,6 +273,41 @@
             android:text="@string/clear_cache"
             style="@style/Widget.Material3.Button.OutlinedButton"/>
 
+        <!-- Developer Options (Debug Only) -->
+        <LinearLayout
+            android:id="@+id/layoutDeveloperOptions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?colorOutline"
+                android:layout_marginVertical="@dimen/spacing_medium"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Developer Options"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:textColor="?colorError"
+                android:layout_marginBottom="@dimen/spacing_small"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnGenerateStressData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Generate 10k Files (Stress Test)"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:textColor="?colorError"
+                app:strokeColor="?colorError"/>
+
+        </LinearLayout>
+
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>

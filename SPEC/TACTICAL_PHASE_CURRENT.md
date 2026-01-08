@@ -631,7 +631,30 @@ cd app
 
 **Next**: Optionally add unit tests, or proceed to finalize for release
 
-### January 8, 2026 - Accessibility Audit & Epic 7 Completion
+### January 8, 2026 - Stress Test Data Generator (Epic 8)
+**Commit**: `<pending>`
+**Features Completed**:
+- Created `StressTestGenerator` class in `data/debug` for generating 10,000 dummy files (images & text)
+- Built `GenerateStressDataUseCase` for executing the generation process
+- Updated `GeneralSettingsFragment` with a "Developer Options" section (visible in Debug builds)
+- Added "Generate 10k Files" button to General Settings
+- Integrated loading state visualization during generation
+- Updates `uiState` in real-time to prevent multiple clicks
+
+**Technical Details**:
+- Generator runs on `Dispatchers.IO`
+- Creates 50% images (colored bitmaps) and 50% text files
+- Files are saved to external app storage in `StressTestResult` folder
+- Uses `System.currentTimeMillis()` for unique filenames
+
+**Epic 8 Status**: 🟡 In Progress
+- Production hardening: ✅ Complete
+- Stress Testing: 🟡 In Progress (Tool built, pending execution)
+- Store Assets: ⏳ Pending
+
+**Next**: Run the stress test and verify Paging3 performance.
+
+### January 8, 2026 - Production Hardening & Epic 8 Start
 **Commit**: `c703fc0`
 **Features Completed**:
 - Conducted comprehensive accessibility audit across all layout files
