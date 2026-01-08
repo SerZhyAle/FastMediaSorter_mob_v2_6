@@ -65,4 +65,35 @@ sealed class PlayerUiEvent {
     data class ShowContextMenu(val filePath: String) : PlayerUiEvent()
     data class ShowRenameDialog(val filePath: String) : PlayerUiEvent()
     data object NavigateBack : PlayerUiEvent()
+
+    // Translation events
+    data class ShowTranslationDialog(
+        val contentToTranslate: String,
+        val sourceLanguage: String? = null,
+        val targetLanguage: String? = null
+    ) : PlayerUiEvent()
+    data class ShowTranslationResult(val translatedText: String) : PlayerUiEvent()
+    data class ShowTranslationProgress(val isLoading: Boolean) : PlayerUiEvent()
+
+    // OCR events
+    data class ShowOcrDialog(val filePath: String) : PlayerUiEvent()
+
+    // PDF events
+    data class ShowPdfToolsDialog(val filePath: String) : PlayerUiEvent()
+
+    // Google Lens events
+    data class ShareToGoogleLens(val filePath: String) : PlayerUiEvent()
+    data object ShowGoogleLensNotInstalled : PlayerUiEvent()
+
+    // Text editing events
+    data class ShowTextEditorDialog(val filePath: String) : PlayerUiEvent()
+    data object RefreshCurrentFile : PlayerUiEvent()
+    data class CopyToClipboard(val text: String) : PlayerUiEvent()
+
+    // Lyrics events
+    data class ShowLyricsDialog(
+        val filePath: String,
+        val artist: String? = null,
+        val title: String? = null
+    ) : PlayerUiEvent()
 }

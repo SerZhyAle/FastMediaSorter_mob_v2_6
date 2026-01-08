@@ -67,8 +67,12 @@
     <!-- Dialog -->
     <dimen name="dialog_padding">24dp</dimen>
     <dimen name="dialog_min_width">280dp</dimen>
+    <dimen name="error_details_max_height">150dp</dimen>
 
     <!-- Player Controls -->
     <dimen name="player_controls_height">80dp</dimen>
     <dimen name="seekbar_height">4dp</dimen>
+
+    <!-- Text Editor -->
+    <dimen name="text_editor_min_width">1000dp</dimen>
 </resources>

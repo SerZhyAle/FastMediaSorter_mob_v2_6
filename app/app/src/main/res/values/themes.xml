@@ -100,6 +100,18 @@
         <item name="colorOnSurface">@color/gray_900</item>
     </style>
 
+    <!-- Standard Dialog Theme -->
+    <style name="Theme.FastMediaSorter.Dialog" parent="Theme.Material3.DayNight.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="colorPrimary">@color/green_500</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSurface">@color/white</item>
+        <item name="colorOnSurface">@color/gray_900</item>
+    </style>
+
+    <!-- Fullscreen Dialog for Log Viewer -->
+    <style name="Theme.FastMediaSorter.Dialog.Fullscreen" parent="Theme.FastMediaSorter.FullScreenDialog" />
+
     <!-- ExoPlayer Control Styles -->
     <style name="ExoMediaButton" parent="Widget.AppCompat.ImageButton">
         <item name="android:background">?attr/selectableItemBackgroundBorderless</item>

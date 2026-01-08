@@ -5,6 +5,7 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -14,12 +15,18 @@ import com.sza.fastmediasorter.R
 import com.sza.fastmediasorter.databinding.ItemMediaPageBinding
 import com.sza.fastmediasorter.databinding.ItemMediaPageVideoBinding
 import com.sza.fastmediasorter.databinding.ItemMediaPageAudioBinding
+import com.sza.fastmediasorter.databinding.ItemMediaPageTextBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.io.File
 
 /**
  * Adapter for ViewPager2 to display media files.
- * Supports images, videos with ExoPlayer, and audio with controls.
+ * Supports images, videos with ExoPlayer, audio with controls, and text files.
  */
 class MediaPagerAdapter(
     private val onMediaClick: () -> Unit,
@@ -34,6 +41,8 @@ class MediaPagerAdapter(
         private const val VIEW_TYPE_IMAGE = 0
         private const val VIEW_TYPE_VIDEO = 1
         private const val VIEW_TYPE_AUDIO = 2
+        private const val VIEW_TYPE_TEXT = 3
+        private const val MAX_TEXT_FILE_SIZE = 1_000_000L // 1MB limit for text files
     }
 
     private var currentVideoHolder: VideoViewHolder? = null
@@ -46,6 +55,7 @@ class MediaPagerAdapter(
         return when {
             isVideo(file) -> VIEW_TYPE_VIDEO
             isAudio(file) -> VIEW_TYPE_AUDIO
+            isText(file) -> VIEW_TYPE_TEXT
             else -> VIEW_TYPE_IMAGE
         }
     }
@@ -68,6 +78,14 @@ class MediaPagerAdapter(
                 )
                 AudioViewHolder(binding)
             }
+            VIEW_TYPE_TEXT -> {
+                val binding = ItemMediaPageTextBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+                TextViewHolder(binding)
+            }
             else -> {
                 val binding = ItemMediaPageBinding.inflate(
                     LayoutInflater.from(parent.context),
@@ -85,6 +103,7 @@ class MediaPagerAdapter(
             is ImageViewHolder -> holder.bind(filePath)
             is VideoViewHolder -> holder.bind(filePath)
             is AudioViewHolder -> holder.bind(filePath)
+            is TextViewHolder -> holder.bind(filePath)
         }
     }
 
@@ -93,6 +112,7 @@ class MediaPagerAdapter(
         when (holder) {
             is VideoViewHolder -> holder.stopPlayback()
             is AudioViewHolder -> holder.stopPlayback()
+            is TextViewHolder -> holder.cancelLoading()
         }
     }
 
@@ -498,6 +518,109 @@ class MediaPagerAdapter(
     private fun isAudio(file: File): Boolean {
         val extension = file.extension.lowercase()
         return extension in listOf("mp3", "wav", "flac", "aac", "ogg", "m4a", "wma", "opus")
+    }
+
+    private fun isText(file: File): Boolean {
+        val extension = file.extension.lowercase()
+        return extension in listOf(
+            "txt", "log", "md", "json", "xml", "html", "css", "js", "ts",
+            "kt", "java", "py", "rb", "c", "cpp", "h", "hpp", "cs", "go",
+            "rs", "swift", "yaml", "yml", "toml", "ini", "conf", "cfg",
+            "properties", "sh", "bash", "bat", "ps1", "sql", "csv"
+        )
+    }
+
+    /**
+     * ViewHolder for text files.
+     */
+    inner class TextViewHolder(
+        private val binding: ItemMediaPageTextBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
+
+        private var loadJob: Job? = null
+
+        fun bind(filePath: String) {
+            // Reset state
+            binding.progressBar.isVisible = true
+            binding.textScrollView.isVisible = false
+            binding.errorContainer.isVisible = false
+            binding.truncationNotice.isVisible = false
+            binding.textContent.text = ""
+
+            // Set click listener
+            binding.root.setOnClickListener {
+                onMediaClick()
+            }
+
+            binding.root.setOnLongClickListener {
+                onMediaLongClick()
+            }
+
+            // Load text content
+            loadTextContent(filePath)
+        }
+
+        private fun loadTextContent(filePath: String) {
+            loadJob?.cancel()
+            loadJob = CoroutineScope(Dispatchers.Main).launch {
+                try {
+                    val result = withContext(Dispatchers.IO) {
+                        val file = File(filePath)
+                        if (!file.exists()) {
+                            throw IllegalStateException("File not found")
+                        }
+                        if (!file.canRead()) {
+                            throw IllegalStateException("Cannot read file")
+                        }
+
+                        val isTruncated = file.length() > MAX_TEXT_FILE_SIZE
+                        
+                        val content = if (isTruncated) {
+                            // Read only first 1MB
+                            file.inputStream().use { input ->
+                                val bytes = ByteArray(MAX_TEXT_FILE_SIZE.toInt())
+                                val read = input.read(bytes)
+                                String(bytes, 0, read, Charsets.UTF_8)
+                            }
+                        } else {
+                            file.readText(Charsets.UTF_8)
+                        }
+                        
+                        Pair(content, isTruncated)
+                    }
+
+                    val (content, isTruncated) = result
+                    
+                    binding.progressBar.isVisible = false
+                    binding.textScrollView.isVisible = true
+                    binding.textContent.text = content
+                    binding.truncationNotice.isVisible = isTruncated
+
+                } catch (e: Exception) {
+                    Timber.e(e, "Failed to load text file: $filePath")
+                    showError(e.message ?: "Failed to load file")
+                }
+            }
+        }
+
+        private fun showError(message: String) {
+            binding.progressBar.isVisible = false
+            binding.textScrollView.isVisible = false
+            binding.errorContainer.isVisible = true
+            binding.errorMessage.text = message
+            
+            binding.btnRetry.setOnClickListener {
+                val position = bindingAdapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    bind(getItem(position))
+                }
+            }
+        }
+
+        fun cancelLoading() {
+            loadJob?.cancel()
+            loadJob = null
+        }
     }
 
     class MediaDiffCallback : DiffUtil.ItemCallback<String>() {

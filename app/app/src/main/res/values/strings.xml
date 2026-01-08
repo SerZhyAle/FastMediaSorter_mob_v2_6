@@ -318,6 +318,10 @@
     <string name="translation_settings">Text &amp; Translation</string>
     <string name="enable_translation">Enable Translation</string>
     <string name="enable_google_lens">Send to Google Lens</string>
+    <string name="google_lens_not_installed_title">Google Lens Not Installed</string>
+    <string name="google_lens_not_installed_message">Google Lens is not installed on this device. Would you like to install it from the Play Store?</string>
+    <string name="google_lens_share_failed">Failed to share to Google Lens</string>
+    <string name="install">Install</string>
 
     <!-- Common Size Settings -->
     <string name="min_size_mb">Min (MB)</string>
@@ -619,6 +623,8 @@
     <string name="aspect_original">Original</string>
     <string name="adjust">Adjust</string>
     <string name="brightness">Brightness</string>
+    <string name="brightness_up">Brightness increased</string>
+    <string name="brightness_down">Brightness decreased</string>
     <string name="contrast">Contrast</string>
     <string name="saturation">Saturation</string>
     <string name="discard_changes">Discard Changes?</string>
@@ -706,6 +712,7 @@
     <string name="ocr_no_text_found">No text found in image</string>
     <string name="ocr_error">OCR error: %1$s</string>
     <string name="ocr_failed">Text recognition failed</string>
+    <string name="ocr_load_failed">Failed to load image for OCR</string>
     <string name="text_copied">Text copied to clipboard</string>
     
     <!-- PDF Tools Strings -->
@@ -731,12 +738,121 @@
     <string name="lyrics_source_online">Online</string>
     <string name="lyrics_synced">Synchronized</string>
     <string name="lyrics_unsynced">Unsynchronized</string>
+    <string name="lyrics_not_found_hint">Place a .lrc or .txt file with the same name as the audio file to display lyrics</string>
+    
+    <!-- Subtitles -->
+    <string name="toggle_subtitles">Toggle Subtitles</string>
+    <string name="subtitles_enabled">Subtitles enabled</string>
+    <string name="subtitles_disabled">Subtitles disabled</string>
+    <string name="no_subtitles_available">No subtitles available</string>
+    <string name="subtitles_hint">Place a .srt or .vtt file with the same name as the video file for subtitles</string>
     
     <!-- Context Menu Strings -->
     <string name="set_as_wallpaper">Set as Wallpaper</string>
     <string name="extract_audio">Extract Audio</string>
     <string name="open">Open</string>
     <string name="info">Info</string>
+    
+    <!-- PIN Dialog -->
+    <string name="enter_pin">Enter PIN</string>
+    <string name="pin_hint">Enter %1$d-digit PIN</string>
+    <string name="attempts_remaining">%1$d attempts remaining</string>
+    <string name="pin_incorrect">Incorrect PIN</string>
+    <string name="pin_length_error">PIN must be %1$d digits</string>
+    <string name="action_submit">Submit</string>
+    
+    <!-- Log View Dialog -->
+    <string name="debug_logs">Debug Logs</string>
+    <string name="search_logs">Search logs…</string>
+    <string name="filter_all">All</string>
+    <string name="export_logs">Export</string>
+    
+    <!-- Error Dialog additions -->
+    <string name="action_dismiss">Dismiss</string>
+    <string name="hide_details">Hide details</string>
+    <string name="copy_details">Copy details</string>
+
+    <!-- Settings - Image Options -->
+    <string name="thumbnail_quality">Thumbnail quality</string>
+    <string name="auto_rotate_images">Auto-rotate images</string>
+    <string name="auto_rotate_images_hint">Rotate based on EXIF orientation data</string>
+    <string name="show_exif_data">Show EXIF data</string>
+    <string name="show_exif_data_hint">Display camera info overlay</string>
+    <string name="jpeg_compression_quality">JPEG quality (save)</string>
+
+    <!-- Settings - Video Options -->
+    <string name="video_quality">Video quality</string>
+    <string name="hardware_acceleration">Hardware acceleration</string>
+    <string name="hardware_acceleration_hint">Use GPU for video decoding (recommended)</string>
+    <string name="seek_increment">Seek increment</string>
+    <string name="preview_duration">Preview duration</string>
+
+    <!-- Settings - Audio Options -->
+    <string name="waveform_style">Waveform style</string>
+    <string name="background_playback">Background playback</string>
+    <string name="background_playback_hint">Continue playing when app is in background</string>
+    <string name="audio_focus_handling">Audio focus handling</string>
+    <string name="search_audio_covers_hint">Search online for album artwork</string>
+
+    <!-- Settings - Document Options -->
+    <string name="text_encoding">Text encoding</string>
+    <string name="pdf_page_cache">PDF page cache</string>
+    <string name="pdf_render_quality">PDF render quality</string>
+    <string name="epub_font_family">EPUB font</string>
+    <string name="epub_font_size">EPUB font size</string>
+
+    <!-- Settings - GIF Options -->
+    <string name="gif_frame_rate_limit">GIF frame rate limit</string>
+
+    <!-- Settings - Translation Options -->
+    <string name="enable_translation_hint">Show translation button for text</string>
+    <string name="enable_google_lens_hint">Share images to Google Lens</string>
+
+    <!-- Quality Options -->
+    <string name="quality_auto">Auto</string>
+    <string name="quality_low">Low</string>
+    <string name="quality_medium">Medium</string>
+    <string name="quality_high">High</string>
+    <string name="quality_best">Best</string>
+
+    <!-- Waveform Styles -->
+    <string name="waveform_none">None</string>
+    <string name="waveform_bars">Bars</string>
+    <string name="waveform_line">Line</string>
+
+    <!-- Audio Focus Options -->
+    <string name="audio_focus_duck">Duck (lower volume)</string>
+    <string name="audio_focus_pause">Pause playback</string>
+    <string name="audio_focus_ignore">Ignore</string>
+
+    <!-- Text Encoding Options -->
+    <string name="encoding_auto">Auto-detect</string>
+    <string name="encoding_utf8">UTF-8</string>
+    <string name="encoding_utf16">UTF-16</string>
+    <string name="encoding_latin1">Latin-1</string>
+    <string name="encoding_windows1251">Windows-1251</string>
+
+    <!-- Font Family Options -->
+    <string name="font_serif">Serif</string>
+    <string name="font_sans">Sans-serif</string>
+    <string name="font_mono">Monospace</string>
+
+    <!-- Format Strings -->
+    <string name="pages_format">%d pages</string>
+    <string name="pixels_format">%dpx</string>
+    <string name="fps_format">%d fps</string>
+    <string name="seconds_format">%ds</string>
+    <string name="percent_format">%d%%</string>
+    <string name="no_limit">No limit</string>
+
+    <!-- Text Editor -->
+    <string name="edit_text_file">Edit Text File</string>
+    <string name="action_redo">Redo</string>
+    <string name="file_truncated_notice">File too large - showing first 1MB only</string>
+    <string name="file_truncated_warning">⚠️ File truncated. Changes cannot be saved.</string>
+    <string name="cannot_save_truncated">Cannot save changes to a truncated file. The file is too large to edit.</string>
+    <string name="file_saved_successfully">File saved successfully</string>
+    <string name="save_failed_message">Failed to save file: %1$s</string>
 </resources>
 
 

@@ -310,5 +310,108 @@
     <string name="cd_search_thumbnail">Миниатюра результата поиска</string>
     <string name="cd_search_icon">Значок поиска</string>
     <string name="cd_toggle_filters">Переключить фильтры поиска</string>
+
+    <!-- Settings - Image Options -->
+    <string name="thumbnail_quality">Качество миниатюр</string>
+    <string name="auto_rotate_images">Авто-поворот изображений</string>
+    <string name="auto_rotate_images_hint">Поворот на основе данных EXIF</string>
+    <string name="show_exif_data">Показывать данные EXIF</string>
+    <string name="show_exif_data_hint">Отображать информацию о камере</string>
+    <string name="jpeg_compression_quality">Качество JPEG (сохранение)</string>
+
+    <!-- Settings - Video Options -->
+    <string name="video_quality">Качество видео</string>
+    <string name="hardware_acceleration">Аппаратное ускорение</string>
+    <string name="hardware_acceleration_hint">Использовать GPU для декодирования (рекомендуется)</string>
+    <string name="seek_increment">Шаг перемотки</string>
+    <string name="preview_duration">Длительность превью</string>
+
+    <!-- Settings - Audio Options -->
+    <string name="waveform_style">Стиль волновой формы</string>
+    <string name="background_playback">Фоновое воспроизведение</string>
+    <string name="background_playback_hint">Продолжать воспроизведение в фоне</string>
+    <string name="audio_focus_handling">Обработка аудио фокуса</string>
+    <string name="search_audio_covers_hint">Искать обложки альбомов онлайн</string>
+
+    <!-- Settings - Document Options -->
+    <string name="text_encoding">Кодировка текста</string>
+    <string name="pdf_page_cache">Кэш страниц PDF</string>
+    <string name="pdf_render_quality">Качество рендера PDF</string>
+    <string name="epub_font_family">Шрифт EPUB</string>
+    <string name="epub_font_size">Размер шрифта EPUB</string>
+
+    <!-- Settings - GIF Options -->
+    <string name="gif_frame_rate_limit">Лимит частоты кадров GIF</string>
+
+    <!-- Settings - Translation Options -->
+    <string name="enable_translation_hint">Показывать кнопку перевода для текста</string>
+    <string name="enable_google_lens_hint">Отправлять изображения в Google Lens</string>
+
+    <!-- Quality Options -->
+    <string name="quality_auto">Авто</string>
+    <string name="quality_low">Низкое</string>
+    <string name="quality_medium">Среднее</string>
+    <string name="quality_high">Высокое</string>
+    <string name="quality_best">Лучшее</string>
+
+    <!-- Waveform Styles -->
+    <string name="waveform_none">Нет</string>
+    <string name="waveform_bars">Столбцы</string>
+    <string name="waveform_line">Линия</string>
+
+    <!-- Audio Focus Options -->
+    <string name="audio_focus_duck">Приглушить (убавить громкость)</string>
+    <string name="audio_focus_pause">Приостановить</string>
+    <string name="audio_focus_ignore">Игнорировать</string>
+
+    <!-- Text Encoding Options -->
+    <string name="encoding_auto">Автоопределение</string>
+    <string name="encoding_utf8">UTF-8</string>
+    <string name="encoding_utf16">UTF-16</string>
+    <string name="encoding_latin1">Latin-1</string>
+    <string name="encoding_windows1251">Windows-1251</string>
+
+    <!-- Font Family Options -->
+    <string name="font_serif">С засечками</string>
+    <string name="font_sans">Без засечек</string>
+    <string name="font_mono">Моноширинный</string>
+
+    <!-- Format Strings -->
+    <string name="pages_format">%d стр.</string>
+    <string name="pixels_format">%dпкс</string>
+    <string name="fps_format">%d к/с</string>
+    <string name="seconds_format">%dс</string>
+    <string name="percent_format">%d%%</string>
+    <string name="no_limit">Без ограничений</string>
+
+    <!-- Text Editor -->
+    <string name="edit_text_file">Редактирование текста</string>
+    <string name="action_redo">Повторить</string>
+    <string name="file_truncated_notice">Файл слишком большой — показан только первый 1МБ</string>
+    <string name="file_truncated_warning">⚠️ Файл обрезан. Изменения сохранить нельзя.</string>
+    <string name="cannot_save_truncated">Невозможно сохранить изменения в обрезанном файле. Файл слишком большой для редактирования.</string>
+    <string name="file_saved_successfully">Файл успешно сохранён</string>
+    <string name="save_failed_message">Ошибка сохранения: %1$s</string>
+
+    <!-- Lyrics -->
+    <string name="lyrics">Текст песни</string>
+    <string name="loading_lyrics">Загрузка текста…</string>
+    <string name="lyrics_not_found">Текст песни не найден</string>
+    <string name="lyrics_not_found_hint">Поместите файл .lrc или .txt с таким же именем как аудиофайл для отображения текста</string>
+    <string name="lyrics_copied">Текст скопирован в буфер обмена</string>
+    <string name="copy_lyrics">Копировать текст</string>
+    <string name="lyrics_source_embedded">Встроенный</string>
+    <string name="lyrics_source_lrc">LRC-файл</string>
+    <string name="lyrics_source_txt">Текстовый файл</string>
+    <string name="lyrics_source_online">Онлайн</string>
+    <string name="lyrics_synced">Синхронизированный</string>
+    <string name="lyrics_unsynced">Несинхронизированный</string>
+
+    <!-- Subtitles -->
+    <string name="toggle_subtitles">Переключить субтитры</string>
+    <string name="subtitles_enabled">Субтитры включены</string>
+    <string name="subtitles_disabled">Субтитры отключены</string>
+    <string name="no_subtitles_available">Субтитры недоступны</string>
+    <string name="subtitles_hint">Поместите файл .srt или .vtt с таким же именем как видеофайл для субтитров</string>
 </resources>
 

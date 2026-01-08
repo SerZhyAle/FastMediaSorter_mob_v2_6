@@ -3,8 +3,11 @@ package com.sza.fastmediasorter.ui.player
 import android.content.Context
 import android.net.Uri
 import androidx.annotation.OptIn
+import androidx.media3.common.C
 import androidx.media3.common.MediaItem
+import androidx.media3.common.MimeTypes
 import androidx.media3.common.Player
+import androidx.media3.common.TrackSelectionOverride
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
@@ -27,6 +30,7 @@ class VideoPlayerManager @Inject constructor(
     private var player: ExoPlayer? = null
     private var currentPlayerView: PlayerView? = null
     private var currentMediaPath: String? = null
+    private var subtitlesEnabled: Boolean = true
 
     private var playbackPosition: Long = 0
     private var playWhenReady: Boolean = true
@@ -87,7 +91,9 @@ class VideoPlayerManager @Inject constructor(
 
     /**
      * Load and prepare a video file for playback.
+     * Automatically detects and adds subtitle files (.srt, .vtt) with the same base name.
      */
+    @OptIn(UnstableApi::class)
     fun loadVideo(filePath: String, startPosition: Long = 0) {
         Timber.d("Loading video: $filePath at position: $startPosition")
 
@@ -112,12 +118,157 @@ class VideoPlayerManager @Inject constructor(
             Uri.fromFile(File(filePath))
         }
 
-        val mediaItem = MediaItem.fromUri(uri)
+        // Build MediaItem with subtitle tracks if found
+        val mediaItemBuilder = MediaItem.Builder()
+            .setUri(uri)
+
+        // Detect and add subtitle files
+        val subtitleConfigs = detectSubtitleFiles(filePath)
+        if (subtitleConfigs.isNotEmpty()) {
+            Timber.d("Found ${subtitleConfigs.size} subtitle file(s)")
+            mediaItemBuilder.setSubtitleConfigurations(subtitleConfigs)
+        }
+
+        val mediaItem = mediaItemBuilder.build()
 
         player.setMediaItem(mediaItem)
         player.seekTo(playbackPosition)
         player.prepare()
     }
+
+    /**
+     * Detect subtitle files (.srt, .vtt) with the same base name as the video file.
+     * Returns a list of SubtitleConfiguration for ExoPlayer.
+     */
+    @OptIn(UnstableApi::class)
+    private fun detectSubtitleFiles(videoPath: String): List<MediaItem.SubtitleConfiguration> {
+        val subtitleConfigs = mutableListOf<MediaItem.SubtitleConfiguration>()
+        
+        try {
+            val videoFile = File(videoPath)
+            val parentDir = videoFile.parentFile ?: return emptyList()
+            val baseName = videoFile.nameWithoutExtension
+            
+            // Check for .srt files
+            val srtFile = File(parentDir, "$baseName.srt")
+            if (srtFile.exists() && srtFile.canRead()) {
+                Timber.d("Found SRT subtitle: ${srtFile.absolutePath}")
+                subtitleConfigs.add(
+                    MediaItem.SubtitleConfiguration.Builder(Uri.fromFile(srtFile))
+                        .setMimeType(MimeTypes.APPLICATION_SUBRIP)
+                        .setLanguage("und") // Unknown language
+                        .setLabel("Subtitles (SRT)")
+                        .setSelectionFlags(C.SELECTION_FLAG_DEFAULT)
+                        .build()
+                )
+            }
+            
+            // Check for .vtt files
+            val vttFile = File(parentDir, "$baseName.vtt")
+            if (vttFile.exists() && vttFile.canRead()) {
+                Timber.d("Found VTT subtitle: ${vttFile.absolutePath}")
+                subtitleConfigs.add(
+                    MediaItem.SubtitleConfiguration.Builder(Uri.fromFile(vttFile))
+                        .setMimeType(MimeTypes.TEXT_VTT)
+                        .setLanguage("und")
+                        .setLabel("Subtitles (VTT)")
+                        .setSelectionFlags(if (srtFile.exists()) 0 else C.SELECTION_FLAG_DEFAULT)
+                        .build()
+                )
+            }
+            
+            // Check for language-specific subtitle files (e.g., video.en.srt, video.ru.srt)
+            val languageCodes = listOf("en", "ru", "uk", "es", "de", "fr", "it", "pt", "ja", "ko", "zh")
+            for (langCode in languageCodes) {
+                val langSrtFile = File(parentDir, "$baseName.$langCode.srt")
+                if (langSrtFile.exists() && langSrtFile.canRead()) {
+                    Timber.d("Found language-specific SRT subtitle: ${langSrtFile.absolutePath}")
+                    subtitleConfigs.add(
+                        MediaItem.SubtitleConfiguration.Builder(Uri.fromFile(langSrtFile))
+                            .setMimeType(MimeTypes.APPLICATION_SUBRIP)
+                            .setLanguage(langCode)
+                            .setLabel(getLanguageLabel(langCode))
+                            .build()
+                    )
+                }
+                
+                val langVttFile = File(parentDir, "$baseName.$langCode.vtt")
+                if (langVttFile.exists() && langVttFile.canRead()) {
+                    Timber.d("Found language-specific VTT subtitle: ${langVttFile.absolutePath}")
+                    subtitleConfigs.add(
+                        MediaItem.SubtitleConfiguration.Builder(Uri.fromFile(langVttFile))
+                            .setMimeType(MimeTypes.TEXT_VTT)
+                            .setLanguage(langCode)
+                            .setLabel(getLanguageLabel(langCode))
+                            .build()
+                    )
+                }
+            }
+        } catch (e: Exception) {
+            Timber.e(e, "Error detecting subtitle files")
+        }
+        
+        return subtitleConfigs
+    }
+
+    /**
+     * Get a human-readable label for a language code.
+     */
+    private fun getLanguageLabel(langCode: String): String {
+        return when (langCode) {
+            "en" -> "English"
+            "ru" -> "Русский"
+            "uk" -> "Українська"
+            "es" -> "Español"
+            "de" -> "Deutsch"
+            "fr" -> "Français"
+            "it" -> "Italiano"
+            "pt" -> "Português"
+            "ja" -> "日本語"
+            "ko" -> "한국어"
+            "zh" -> "中文"
+            else -> langCode.uppercase()
+        }
+    }
+
+    /**
+     * Enable or disable subtitles.
+     */
+    @OptIn(UnstableApi::class)
+    fun setSubtitlesEnabled(enabled: Boolean) {
+        subtitlesEnabled = enabled
+        val player = player ?: return
+        
+        player.trackSelectionParameters = player.trackSelectionParameters
+            .buildUpon()
+            .setTrackTypeDisabled(C.TRACK_TYPE_TEXT, !enabled)
+            .build()
+        
+        Timber.d("Subtitles enabled: $enabled")
+    }
+
+    /**
+     * Check if subtitles are currently enabled.
+     */
+    fun areSubtitlesEnabled(): Boolean = subtitlesEnabled
+
+    /**
+     * Get available subtitle track count.
+     */
+    @OptIn(UnstableApi::class)
+    fun getSubtitleTrackCount(): Int {
+        val player = player ?: return 0
+        val tracks = player.currentTracks
+        
+        return tracks.groups.count { group ->
+            group.type == C.TRACK_TYPE_TEXT && group.length > 0
+        }
+    }
+
+    /**
+     * Check if the current video has subtitle tracks available.
+     */
+    fun hasSubtitles(): Boolean = getSubtitleTrackCount() > 0
 
     /**
      * Start or resume playback.
@@ -192,6 +343,21 @@ class VideoPlayerManager @Inject constructor(
      * Get the total duration of the media.
      */
     fun getDuration(): Long = player?.duration ?: 0
+
+    /**
+     * Seek to a percentage of the total duration.
+     * @param percent 0-100
+     */
+    fun seekToPercent(percent: Int) {
+        player?.let {
+            val duration = it.duration
+            if (duration > 0) {
+                val position = (duration * percent.coerceIn(0, 100)) / 100
+                Timber.d("Seeking to $percent% ($position ms of $duration ms)")
+                seekTo(position)
+            }
+        }
+    }
 
     /**
      * Check if the player is currently playing.

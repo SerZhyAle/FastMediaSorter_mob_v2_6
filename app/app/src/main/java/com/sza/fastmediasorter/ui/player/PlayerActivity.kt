@@ -3,7 +3,9 @@ package com.sza.fastmediasorter.ui.player
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
+import android.media.AudioManager
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowInsetsController
@@ -22,6 +24,10 @@ import com.sza.fastmediasorter.R
 import com.sza.fastmediasorter.databinding.ActivityPlayerUnifiedBinding
 import com.sza.fastmediasorter.domain.model.MediaType
 import com.sza.fastmediasorter.ui.base.BaseActivity
+import com.sza.fastmediasorter.ui.dialog.OcrTranslationDialog
+import com.sza.fastmediasorter.ui.dialog.PdfToolsDialog
+import com.sza.fastmediasorter.ui.dialog.TranslationSettingsDialog
+import com.sza.fastmediasorter.integrations.GoogleLensHelper
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -65,12 +71,17 @@ class PlayerActivity : BaseActivity<ActivityPlayerUnifiedBinding>() {
 
     private val viewModel: PlayerViewModel by viewModels()
     private lateinit var pagerAdapter: MediaPagerAdapter
+    private lateinit var keyboardHandler: PlayerKeyboardHandler
+    private lateinit var audioManager: AudioManager
 
     @Inject
     lateinit var videoPlayerManager: VideoPlayerManager
 
     @Inject
     lateinit var audioPlayerManager: AudioPlayerManager
+
+    @Inject
+    lateinit var googleLensHelper: GoogleLensHelper
 
     override fun getViewBinding() = ActivityPlayerUnifiedBinding.inflate(layoutInflater)
 
@@ -79,6 +90,12 @@ class PlayerActivity : BaseActivity<ActivityPlayerUnifiedBinding>() {
 
         // Enable fullscreen mode for player only
         setupFullscreen()
+
+        // Initialize audio manager for volume control
+        audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
+
+        // Initialize keyboard handler
+        setupKeyboardHandler()
 
         initializeVideoPlayer()
         setupViewPager()
@@ -99,6 +116,148 @@ class PlayerActivity : BaseActivity<ActivityPlayerUnifiedBinding>() {
     private fun initializeVideoPlayer() {
         videoPlayerManager.initialize(this)
         audioPlayerManager.initialize(this)
+    }
+
+    /**
+     * Set up the keyboard handler for hardware keyboard support.
+     */
+    private fun setupKeyboardHandler() {
+        keyboardHandler = PlayerKeyboardHandler(object : PlayerKeyboardHandler.KeyboardActionListener {
+            override fun getCurrentMediaType(): MediaType? = viewModel.uiState.value.currentMediaType
+
+            // Navigation
+            override fun onNavigatePrevious() = navigateToPrevious()
+            override fun onNavigateNext() = navigateToNext()
+            override fun onNavigateFirst() {
+                binding.viewPager.setCurrentItem(0, true)
+            }
+            override fun onNavigateLast() {
+                binding.viewPager.setCurrentItem(pagerAdapter.itemCount - 1, true)
+            }
+
+            // Playback control
+            override fun onPlayPause() {
+                if (videoPlayerManager.isPlaying()) {
+                    videoPlayerManager.pause()
+                } else {
+                    videoPlayerManager.play()
+                }
+            }
+            override fun onVolumeUp() {
+                audioManager.adjustStreamVolume(
+                    AudioManager.STREAM_MUSIC,
+                    AudioManager.ADJUST_RAISE,
+                    AudioManager.FLAG_SHOW_UI
+                )
+            }
+            override fun onVolumeDown() {
+                audioManager.adjustStreamVolume(
+                    AudioManager.STREAM_MUSIC,
+                    AudioManager.ADJUST_LOWER,
+                    AudioManager.FLAG_SHOW_UI
+                )
+            }
+            override fun onMute() {
+                audioManager.adjustStreamVolume(
+                    AudioManager.STREAM_MUSIC,
+                    AudioManager.ADJUST_TOGGLE_MUTE,
+                    AudioManager.FLAG_SHOW_UI
+                )
+            }
+            override fun onSeekToPercent(percent: Int) {
+                videoPlayerManager.seekToPercent(percent)
+            }
+            override fun onSeekStart() {
+                videoPlayerManager.seekTo(0)
+            }
+            override fun onSeekEnd() {
+                videoPlayerManager.getDuration()?.let { duration ->
+                    videoPlayerManager.seekTo(duration - 1000) // 1 second before end
+                }
+            }
+
+            // Image controls
+            override fun onRotateImage() {
+                viewModel.onRotateClick()
+            }
+            override fun onBrightnessUp() {
+                // Brightness control could be implemented here
+                Snackbar.make(binding.root, R.string.brightness_up, Snackbar.LENGTH_SHORT).show()
+            }
+            override fun onBrightnessDown() {
+                // Brightness control could be implemented here
+                Snackbar.make(binding.root, R.string.brightness_down, Snackbar.LENGTH_SHORT).show()
+            }
+
+            // Slideshow
+            override fun onToggleSlideshow() {
+                viewModel.toggleSlideshow()
+            }
+            override fun onStartSlideshow() {
+                viewModel.onSlideshowClick()
+            }
+
+            // File operations
+            override fun onShowRenameDialog() {
+                viewModel.onRenameClick()
+            }
+            override fun onDeleteFile() {
+                viewModel.onDeleteClick()
+            }
+            override fun onShowFileInfo() {
+                viewModel.onInfoClick()
+            }
+            override fun onCopyToFirstDestination() {
+                viewModel.onCopyToFirstDestination()
+            }
+            override fun onMoveToFirstDestination() {
+                viewModel.onMoveToFirstDestination()
+            }
+
+            // UI control
+            override fun onToggleFullscreen() {
+                viewModel.toggleFullscreen()
+            }
+            override fun onExitPlayer() {
+                finish()
+            }
+            override fun onCloseOverlay(): Boolean {
+                // Try to close any visible overlay
+                return viewModel.onBackPressed()
+            }
+
+            // PDF/EPUB navigation
+            override fun onPreviousPage() {
+                viewModel.onPreviousPage()
+            }
+            override fun onNextPage() {
+                viewModel.onNextPage()
+            }
+            override fun onFirstPage() {
+                viewModel.onFirstPage()
+            }
+            override fun onLastPage() {
+                viewModel.onLastPage()
+            }
+
+            // Search and text
+            override fun onShowSearch() {
+                viewModel.onSearchTextClick()
+            }
+            override fun onCopyText() {
+                viewModel.onCopyTextClick()
+            }
+            override fun onSaveText() {
+                viewModel.onSaveTextClick()
+            }
+        })
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        if (event != null && keyboardHandler.onKeyDown(keyCode, event)) {
+            return true
+        }
+        return super.onKeyDown(keyCode, event)
     }
 
     private fun navigateToPrevious() {
@@ -575,6 +734,45 @@ class PlayerActivity : BaseActivity<ActivityPlayerUnifiedBinding>() {
             is PlayerUiEvent.NavigateBack -> {
                 finish()
             }
+            // Translation events
+            is PlayerUiEvent.ShowTranslationDialog -> {
+                showTranslationDialog(event.sourceLanguage, event.targetLanguage)
+            }
+            is PlayerUiEvent.ShowTranslationResult -> {
+                showTranslationResult(event.translatedText)
+            }
+            is PlayerUiEvent.ShowTranslationProgress -> {
+                showTranslationProgress(event.isLoading)
+            }
+            // OCR events
+            is PlayerUiEvent.ShowOcrDialog -> {
+                showOcrDialog(event.filePath)
+            }
+            // PDF events
+            is PlayerUiEvent.ShowPdfToolsDialog -> {
+                showPdfToolsDialog(event.filePath)
+            }
+            // Google Lens events
+            is PlayerUiEvent.ShareToGoogleLens -> {
+                shareToGoogleLens(event.filePath)
+            }
+            is PlayerUiEvent.ShowGoogleLensNotInstalled -> {
+                showGoogleLensNotInstalledDialog()
+            }
+            // Text editing events
+            is PlayerUiEvent.ShowTextEditorDialog -> {
+                showTextEditorDialog(event.filePath)
+            }
+            is PlayerUiEvent.RefreshCurrentFile -> {
+                refreshCurrentMediaPage()
+            }
+            is PlayerUiEvent.CopyToClipboard -> {
+                copyTextToClipboard(event.text)
+            }
+            // Lyrics events
+            is PlayerUiEvent.ShowLyricsDialog -> {
+                showLyricsDialog(event.filePath, event.artist, event.title)
+            }
         }
     }
 
@@ -736,6 +934,222 @@ class PlayerActivity : BaseActivity<ActivityPlayerUnifiedBinding>() {
             }
             .setNegativeButton(R.string.action_cancel, null)
             .show()
+    }
+
+    // ===== Translation methods =====
+
+    /**
+     * Show the translation settings dialog.
+     */
+    private fun showTranslationDialog(sourceLanguage: String?, targetLanguage: String?) {
+        val dialog = TranslationSettingsDialog.newInstance(sourceLanguage, targetLanguage)
+        dialog.setOnLanguagesSelectedListener { source, target ->
+            viewModel.performTranslation(source, target)
+        }
+        dialog.show(supportFragmentManager, TranslationSettingsDialog.TAG)
+    }
+
+    /**
+     * Show translation result in a dialog.
+     */
+    private fun showTranslationResult(translatedText: String) {
+        com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.translation_complete)
+            .setMessage(translatedText)
+            .setPositiveButton(R.string.action_ok, null)
+            .setNeutralButton(R.string.copy_to_clipboard) { _, _ ->
+                copyToClipboard(translatedText)
+            }
+            .show()
+    }
+
+    /**
+     * Show/hide translation progress indicator.
+     */
+    private fun showTranslationProgress(isLoading: Boolean) {
+        // Show a simple snackbar for now - could be enhanced with a ProgressDialog
+        if (isLoading) {
+            Snackbar.make(binding.root, R.string.downloading_translation_model, Snackbar.LENGTH_INDEFINITE)
+                .show()
+        }
+    }
+
+    /**
+     * Copy text to clipboard.
+     */
+    private fun copyToClipboard(text: String) {
+        val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
+        val clip = android.content.ClipData.newPlainText("Translation", text)
+        clipboard.setPrimaryClip(clip)
+        Snackbar.make(binding.root, R.string.copied_to_clipboard, Snackbar.LENGTH_SHORT).show()
+    }
+
+    // ===== OCR methods =====
+
+    /**
+     * Show the OCR dialog with the current file's image.
+     */
+    private fun showOcrDialog(filePath: String) {
+        lifecycleScope.launch {
+            try {
+                // Load bitmap from file
+                val file = java.io.File(filePath)
+                if (!file.exists()) {
+                    Snackbar.make(binding.root, R.string.error_file_not_found, Snackbar.LENGTH_SHORT).show()
+                    return@launch
+                }
+
+                // Load bitmap based on file type
+                val bitmap = loadBitmapForOcr(file)
+                if (bitmap != null) {
+                    val dialog = OcrTranslationDialog.newInstance(bitmap)
+                    dialog.show(supportFragmentManager, OcrTranslationDialog.TAG)
+                } else {
+                    Snackbar.make(binding.root, R.string.ocr_load_failed, Snackbar.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                Timber.e(e, "Failed to open OCR dialog")
+                Snackbar.make(binding.root, R.string.ocr_failed, Snackbar.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    /**
+     * Load a bitmap from file for OCR processing.
+     */
+    private fun loadBitmapForOcr(file: java.io.File): android.graphics.Bitmap? {
+        return try {
+            val options = android.graphics.BitmapFactory.Options().apply {
+                // First decode just bounds to check size
+                inJustDecodeBounds = true
+            }
+            android.graphics.BitmapFactory.decodeFile(file.absolutePath, options)
+
+            // Calculate sample size to reduce memory usage for very large images
+            val maxSize = 2048 // Max dimension for OCR
+            var sampleSize = 1
+            while (options.outWidth / sampleSize > maxSize || options.outHeight / sampleSize > maxSize) {
+                sampleSize *= 2
+            }
+
+            // Now decode with sample size
+            options.inJustDecodeBounds = false
+            options.inSampleSize = sampleSize
+            android.graphics.BitmapFactory.decodeFile(file.absolutePath, options)
+        } catch (e: Exception) {
+            Timber.e(e, "Failed to load bitmap for OCR")
+            null
+        }
+    }
+
+    // ===== PDF methods =====
+
+    /**
+     * Show the PDF tools dialog.
+     */
+    private fun showPdfToolsDialog(filePath: String) {
+        try {
+            val file = java.io.File(filePath)
+            if (!file.exists()) {
+                Snackbar.make(binding.root, R.string.error_file_not_found, Snackbar.LENGTH_SHORT).show()
+                return
+            }
+
+            val uri = androidx.core.content.FileProvider.getUriForFile(
+                this,
+                "${packageName}.provider",
+                file
+            )
+            val dialog = PdfToolsDialog.newInstance(uri)
+            dialog.show(supportFragmentManager, PdfToolsDialog.TAG)
+        } catch (e: Exception) {
+            Timber.e(e, "Failed to open PDF tools dialog")
+            Snackbar.make(binding.root, R.string.pdf_load_error, Snackbar.LENGTH_SHORT).show()
+        }
+    }
+
+    // ===== Google Lens methods =====
+
+    /**
+     * Share the current file to Google Lens for visual search.
+     */
+    private fun shareToGoogleLens(filePath: String) {
+        try {
+            val file = java.io.File(filePath)
+            if (!file.exists()) {
+                Snackbar.make(binding.root, R.string.error_file_not_found, Snackbar.LENGTH_SHORT).show()
+                return
+            }
+
+            // Check if Google Lens is available
+            if (!googleLensHelper.isGoogleLensAvailable(this)) {
+                showGoogleLensNotInstalledDialog()
+                return
+            }
+
+            // Share to Google Lens
+            val success = googleLensHelper.shareToGoogleLens(this, file)
+            if (!success) {
+                Snackbar.make(binding.root, R.string.google_lens_share_failed, Snackbar.LENGTH_SHORT).show()
+            }
+        } catch (e: Exception) {
+            Timber.e(e, "Failed to share to Google Lens")
+            Snackbar.make(binding.root, R.string.google_lens_share_failed, Snackbar.LENGTH_SHORT).show()
+        }
+    }
+
+    /**
+     * Show dialog when Google Lens is not installed.
+     */
+    private fun showGoogleLensNotInstalledDialog() {
+        com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.google_lens_not_installed_title)
+            .setMessage(R.string.google_lens_not_installed_message)
+            .setPositiveButton(R.string.install) { _, _ ->
+                googleLensHelper.openPlayStoreForGoogleLens(this)
+            }
+            .setNegativeButton(R.string.action_cancel, null)
+            .show()
+    }
+
+    /**
+     * Show full-screen text editor dialog.
+     */
+    private fun showTextEditorDialog(filePath: String) {
+        val dialog = com.sza.fastmediasorter.ui.dialog.TextEditorDialog.newInstance(filePath)
+        dialog.setOnSaveListener { success ->
+            if (success) {
+                // Refresh the current page to show updated content
+                refreshCurrentMediaPage()
+            }
+        }
+        dialog.show(supportFragmentManager, "text_editor")
+    }
+
+    /**
+     * Refresh the current media page (e.g., after editing a text file).
+     */
+    private fun refreshCurrentMediaPage() {
+        val currentPosition = binding.viewPager.currentItem
+        pagerAdapter.notifyItemChanged(currentPosition)
+    }
+
+    /**
+     * Copy text to system clipboard.
+     */
+    private fun copyTextToClipboard(text: String) {
+        val clipboard = getSystemService(android.content.Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
+        val clip = android.content.ClipData.newPlainText("Copied Text", text)
+        clipboard.setPrimaryClip(clip)
+        Snackbar.make(binding.root, R.string.text_copied, Snackbar.LENGTH_SHORT).show()
+    }
+
+    /**
+     * Show lyrics dialog for audio file.
+     */
+    private fun showLyricsDialog(filePath: String, artist: String?, title: String?) {
+        val dialog = com.sza.fastmediasorter.ui.dialog.LyricsDialog.newInstance(filePath, artist, title)
+        dialog.show(supportFragmentManager, "lyrics_dialog")
     }
 
     @Deprecated("Deprecated in Java")

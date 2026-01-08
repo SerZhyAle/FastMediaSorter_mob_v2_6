@@ -8,6 +8,7 @@ import com.sza.fastmediasorter.domain.model.MediaType
 import com.sza.fastmediasorter.domain.model.Result
 import com.sza.fastmediasorter.domain.repository.FileMetadataRepository
 import com.sza.fastmediasorter.domain.repository.PreferencesRepository
+import com.sza.fastmediasorter.translation.TranslationManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,7 +30,8 @@ import javax.inject.Inject
 class PlayerViewModel @Inject constructor(
     private val fileMetadataRepository: FileMetadataRepository,
     private val trashManager: TrashManager,
-    val preferencesRepository: PreferencesRepository
+    val preferencesRepository: PreferencesRepository,
+    private val translationManager: TranslationManager
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(PlayerUiState.Initial)
@@ -37,6 +39,11 @@ class PlayerViewModel @Inject constructor(
 
     private val _events = MutableSharedFlow<PlayerUiEvent>()
     val events = _events.asSharedFlow()
+
+    // Translation session settings
+    private var lastSourceLanguage: String? = null
+    private var lastTargetLanguage: String = "en" // Default to English
+    private var pendingTranslationContent: String? = null
 
     /**
      * Loads file list and sets initial position.
@@ -308,11 +315,110 @@ class PlayerViewModel @Inject constructor(
 
     /**
      * Translate current content.
+     * Shows translation settings dialog to select languages, then performs translation.
      */
     fun onTranslateClick() {
         viewModelScope.launch {
-            _events.emit(PlayerUiEvent.ShowSnackbar("Translation: Not yet implemented"))
+            val state = _uiState.value
+            val currentPath = state.files.getOrNull(state.currentIndex) ?: return@launch
+
+            // Get text content based on media type
+            val textContent = getTextContentForTranslation(currentPath, state.currentMediaType)
+            if (textContent.isNullOrBlank()) {
+                _events.emit(PlayerUiEvent.ShowSnackbar("No text content to translate"))
+                return@launch
+            }
+
+            // Store for later use after dialog
+            pendingTranslationContent = textContent
+
+            // Show translation settings dialog
+            _events.emit(
+                PlayerUiEvent.ShowTranslationDialog(
+                    contentToTranslate = textContent.take(500), // Show preview
+                    sourceLanguage = lastSourceLanguage,
+                    targetLanguage = lastTargetLanguage
+                )
+            )
         }
+    }
+
+    /**
+     * Get text content for translation based on media type.
+     * For images, this would return OCR text if available.
+     * For text files, this returns the file content.
+     * For PDF/EPUB, this returns the current page/chapter text.
+     */
+    private fun getTextContentForTranslation(filePath: String, mediaType: MediaType?): String? {
+        return try {
+            when (mediaType) {
+                MediaType.TXT -> {
+                    // Read text file content
+                    File(filePath).readText(Charsets.UTF_8).take(10000) // Limit to 10k chars
+                }
+                MediaType.PDF, MediaType.EPUB -> {
+                    // For now, return a placeholder - OCR or text extraction would be needed
+                    null
+                }
+                MediaType.IMAGE, MediaType.GIF -> {
+                    // Would need OCR results - return null for now
+                    null
+                }
+                else -> null
+            }
+        } catch (e: Exception) {
+            Timber.e(e, "Failed to read text content for translation")
+            null
+        }
+    }
+
+    /**
+     * Perform translation with selected languages.
+     * Called from the activity after user confirms language selection.
+     */
+    fun performTranslation(sourceLanguage: String?, targetLanguage: String) {
+        viewModelScope.launch {
+            val content = pendingTranslationContent
+            if (content.isNullOrBlank()) {
+                _events.emit(PlayerUiEvent.ShowSnackbar("No content to translate"))
+                return@launch
+            }
+
+            // Save language preferences for next time
+            lastSourceLanguage = sourceLanguage
+            lastTargetLanguage = targetLanguage
+
+            // Show loading
+            _events.emit(PlayerUiEvent.ShowTranslationProgress(true))
+
+            try {
+                val translatedText = translationManager.translate(
+                    text = content,
+                    sourceLanguage = sourceLanguage,
+                    targetLanguage = targetLanguage
+                )
+
+                _events.emit(PlayerUiEvent.ShowTranslationProgress(false))
+
+                if (translatedText != null) {
+                    _events.emit(PlayerUiEvent.ShowTranslationResult(translatedText))
+                    Timber.d("Translation successful: ${content.take(50)}... -> ${translatedText.take(50)}...")
+                } else {
+                    _events.emit(PlayerUiEvent.ShowSnackbar("Translation failed"))
+                }
+            } catch (e: Exception) {
+                _events.emit(PlayerUiEvent.ShowTranslationProgress(false))
+                _events.emit(PlayerUiEvent.ShowSnackbar("Translation error: ${e.message}"))
+                Timber.e(e, "Translation failed")
+            }
+        }
+    }
+
+    /**
+     * Set text content for translation from external source (e.g., OCR result).
+     */
+    fun setTextForTranslation(text: String) {
+        pendingTranslationContent = text
     }
 
     /**
@@ -335,10 +441,18 @@ class PlayerViewModel @Inject constructor(
 
     /**
      * Edit PDF (rotate, reorder pages).
+     * Opens PDF Tools dialog with page thumbnails and manipulation options.
      */
     fun onEditPdfClick() {
         viewModelScope.launch {
-            _events.emit(PlayerUiEvent.ShowSnackbar("PDF editing: Not yet implemented"))
+            val state = _uiState.value
+            val currentPath = state.files.getOrNull(state.currentIndex) ?: return@launch
+
+            if (state.currentMediaType == MediaType.PDF) {
+                _events.emit(PlayerUiEvent.ShowPdfToolsDialog(currentPath))
+            } else {
+                _events.emit(PlayerUiEvent.ShowSnackbar("PDF tools are only available for PDF files"))
+            }
         }
     }
 
@@ -353,10 +467,22 @@ class PlayerViewModel @Inject constructor(
 
     /**
      * OCR recognition for current file.
+     * Opens OCR dialog with current image/PDF page.
      */
     fun onOcrClick() {
         viewModelScope.launch {
-            _events.emit(PlayerUiEvent.ShowSnackbar("OCR: Not yet implemented"))
+            val state = _uiState.value
+            val currentPath = state.files.getOrNull(state.currentIndex) ?: return@launch
+
+            // OCR is supported for images, PDFs, and EPUBs
+            when (state.currentMediaType) {
+                MediaType.IMAGE, MediaType.GIF, MediaType.PDF, MediaType.EPUB -> {
+                    _events.emit(PlayerUiEvent.ShowOcrDialog(currentPath))
+                }
+                else -> {
+                    _events.emit(PlayerUiEvent.ShowSnackbar("OCR is not available for this file type"))
+                }
+            }
         }
     }
 
@@ -365,7 +491,10 @@ class PlayerViewModel @Inject constructor(
      */
     fun onGoogleLensClick() {
         viewModelScope.launch {
-            _events.emit(PlayerUiEvent.ShowSnackbar("Google Lens: Not yet implemented"))
+            val currentFile = _uiState.value.files.getOrNull(_uiState.value.currentIndex)
+            if (currentFile != null) {
+                _events.emit(PlayerUiEvent.ShareToGoogleLens(currentFile))
+            }
         }
     }
 
@@ -373,8 +502,28 @@ class PlayerViewModel @Inject constructor(
      * Show lyrics for audio file.
      */
     fun onLyricsClick() {
+        val state = _uiState.value
+        if (state.files.isEmpty() || state.currentIndex !in state.files.indices) {
+            return
+        }
+        
+        val currentFile = state.files[state.currentIndex]
+        val extension = currentFile.substringAfterLast('.', "")
+        val mediaType = getMediaType(extension)
+        
+        // Only show lyrics for audio files
+        if (mediaType != MediaType.AUDIO) {
+            viewModelScope.launch {
+                _events.emit(PlayerUiEvent.ShowSnackbar("Lyrics are only available for audio files"))
+            }
+            return
+        }
+        
+        // Extract title from file name
+        val title = java.io.File(currentFile).nameWithoutExtension
+        
         viewModelScope.launch {
-            _events.emit(PlayerUiEvent.ShowSnackbar("Lyrics: Not yet implemented"))
+            _events.emit(PlayerUiEvent.ShowLyricsDialog(currentFile, null, title))
         }
     }
 
@@ -465,20 +614,59 @@ class PlayerViewModel @Inject constructor(
     }
 
     /**
-     * Copy text to clipboard.
+     * Copy text content to clipboard.
      */
     fun onCopyTextClick() {
+        val state = _uiState.value
+        val currentPath = state.files.getOrNull(state.currentIndex) ?: return
+        
         viewModelScope.launch {
-            _events.emit(PlayerUiEvent.ShowSnackbar("Copy text: Not yet implemented"))
+            try {
+                val textContent = getTextContentForTranslation(currentPath, state.currentMediaType)
+                if (textContent.isNullOrBlank()) {
+                    _events.emit(PlayerUiEvent.ShowSnackbar("No text content to copy"))
+                    return@launch
+                }
+                
+                // Copy to clipboard - this will be handled by the Activity
+                pendingCopyText = textContent
+                _events.emit(PlayerUiEvent.CopyToClipboard(textContent))
+            } catch (e: Exception) {
+                Timber.e(e, "Error reading text content")
+                _events.emit(PlayerUiEvent.ShowSnackbar("Error reading text: ${e.message}"))
+            }
         }
     }
+    
+    // Store pending text for clipboard operation
+    private var pendingCopyText: String? = null
 
     /**
      * Enter text editing mode.
      */
     fun onEditTextClick() {
+        val state = _uiState.value
+        val currentPath = state.files.getOrNull(state.currentIndex) ?: return
+        
+        // Only allow editing for text files
+        if (state.currentMediaType != MediaType.TXT) {
+            viewModelScope.launch {
+                _events.emit(PlayerUiEvent.ShowSnackbar("Text editing is only available for text files"))
+            }
+            return
+        }
+        
+        // Check if file is writable
+        val file = File(currentPath)
+        if (!file.canWrite()) {
+            viewModelScope.launch {
+                _events.emit(PlayerUiEvent.ShowSnackbar("This file is read-only"))
+            }
+            return
+        }
+        
         viewModelScope.launch {
-            _events.emit(PlayerUiEvent.ShowSnackbar("Text editing: Not yet implemented"))
+            _events.emit(PlayerUiEvent.ShowTextEditorDialog(currentPath))
         }
     }
 
@@ -513,6 +701,78 @@ class PlayerViewModel @Inject constructor(
     fun toggleSlideshow() {
         viewModelScope.launch {
             _events.emit(PlayerUiEvent.ShowSnackbar("Slideshow: Not yet implemented"))
+        }
+    }
+
+    /**
+     * Rotate current image 90 degrees clockwise.
+     */
+    fun onRotateClick() {
+        viewModelScope.launch {
+            _events.emit(PlayerUiEvent.ShowSnackbar("Rotate: Not yet implemented"))
+        }
+    }
+
+    /**
+     * Copy current file to first destination.
+     */
+    fun onCopyToFirstDestination() {
+        viewModelScope.launch {
+            _events.emit(PlayerUiEvent.ShowSnackbar("Copy to destination: Not yet implemented"))
+        }
+    }
+
+    /**
+     * Move current file to first destination.
+     */
+    fun onMoveToFirstDestination() {
+        viewModelScope.launch {
+            _events.emit(PlayerUiEvent.ShowSnackbar("Move to destination: Not yet implemented"))
+        }
+    }
+
+    /**
+     * Navigate to previous page (PDF/EPUB).
+     */
+    fun onPreviousPage() {
+        viewModelScope.launch {
+            _events.emit(PlayerUiEvent.ShowSnackbar("Previous page: Not yet implemented"))
+        }
+    }
+
+    /**
+     * Navigate to next page (PDF/EPUB).
+     */
+    fun onNextPage() {
+        viewModelScope.launch {
+            _events.emit(PlayerUiEvent.ShowSnackbar("Next page: Not yet implemented"))
+        }
+    }
+
+    /**
+     * Navigate to first page (PDF/EPUB).
+     */
+    fun onFirstPage() {
+        viewModelScope.launch {
+            _events.emit(PlayerUiEvent.ShowSnackbar("First page: Not yet implemented"))
+        }
+    }
+
+    /**
+     * Navigate to last page (PDF/EPUB).
+     */
+    fun onLastPage() {
+        viewModelScope.launch {
+            _events.emit(PlayerUiEvent.ShowSnackbar("Last page: Not yet implemented"))
+        }
+    }
+
+    /**
+     * Save text file.
+     */
+    fun onSaveTextClick() {
+        viewModelScope.launch {
+            _events.emit(PlayerUiEvent.ShowSnackbar("Save text: Not yet implemented"))
         }
     }
 
