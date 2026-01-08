@@ -3,12 +3,16 @@ package com.sza.fastmediasorter.ui.main
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.tabs.TabLayout
 import com.sza.fastmediasorter.R
 import com.sza.fastmediasorter.databinding.ActivityMainBinding
 import com.sza.fastmediasorter.ui.base.BaseActivity
@@ -41,9 +45,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         super.onCreate(savedInstanceState)
         Timber.d("MainActivity onCreate")
 
-        setupToolbar()
+        setupControlButtons()
+        setupResourceTypeTabs()
         setupRecyclerView()
-        setupFab()
         observeUiState()
         observeEvents()
         
@@ -69,23 +73,87 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         }
     }
 
-    private fun setupToolbar() {
-        binding.toolbar.setOnMenuItemClickListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.action_search -> {
-                    viewModel.onSearchClick()
-                    true
-                }
-                R.id.action_favorites -> {
-                    viewModel.onFavoritesClick()
-                    true
-                }
-                R.id.action_settings -> {
-                    viewModel.onSettingsClick()
-                    true
-                }
-                else -> false
+    private fun setupControlButtons() {
+        with(binding) {
+            // Exit button
+            btnExit.setOnClickListener {
+                finishAffinity()
             }
+            
+            // Add resource
+            btnAddResource.setOnClickListener {
+                viewModel.onAddResourceClick()
+            }
+            
+            // Filter
+            btnFilter.setOnClickListener {
+                viewModel.onFilterClick()
+            }
+            
+            // Refresh
+            btnRefresh.setOnClickListener {
+                viewModel.refresh()
+                Toast.makeText(this@MainActivity, R.string.resources_refreshed, Toast.LENGTH_SHORT).show()
+            }
+            
+            // Settings
+            btnSettings.setOnClickListener {
+                viewModel.onSettingsClick()
+            }
+            
+            // Toggle view (grid/list)
+            btnToggleView.setOnClickListener {
+                viewModel.toggleViewMode()
+            }
+            
+            // Favorites
+            btnFavorites.setOnClickListener {
+                viewModel.onFavoritesClick()
+            }
+            
+            // Start player
+            btnStartPlayer.setOnClickListener {
+                viewModel.onStartPlayerClick()
+            }
+            
+            // Empty state click -> add resource
+            emptyStateView.setOnClickListener {
+                viewModel.onAddResourceClick()
+            }
+            
+            // Error retry
+            btnRetry.setOnClickListener {
+                viewModel.refresh()
+            }
+        }
+    }
+
+    private fun setupResourceTypeTabs() {
+        with(binding.tabResourceTypes) {
+            // Add tabs
+            addTab(newTab().setText(R.string.tab_all))
+            addTab(newTab().setText(R.string.tab_local))
+            addTab(newTab().setText(R.string.tab_smb))
+            addTab(newTab().setText(R.string.tab_ftp_sftp))
+            addTab(newTab().setText(R.string.tab_cloud))
+            
+            addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+                override fun onTabSelected(tab: TabLayout.Tab?) {
+                    val tabPosition = tab?.position ?: 0
+                    val resourceTab = when (tabPosition) {
+                        0 -> ResourceTab.ALL
+                        1 -> ResourceTab.LOCAL
+                        2 -> ResourceTab.SMB
+                        3 -> ResourceTab.FTP_SFTP
+                        4 -> ResourceTab.CLOUD
+                        else -> ResourceTab.ALL
+                    }
+                    viewModel.setActiveTab(resourceTab)
+                }
+                
+                override fun onTabUnselected(tab: TabLayout.Tab?) {}
+                override fun onTabReselected(tab: TabLayout.Tab?) {}
+            })
         }
     }
 
@@ -96,16 +164,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             onMoreClick = { resource -> viewModel.onResourceMoreClick(resource) }
         )
 
-        binding.recyclerViewResources.apply {
+        binding.rvResources.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = resourceAdapter
             setHasFixedSize(true)
-        }
-    }
-
-    private fun setupFab() {
-        binding.fabAddResource.setOnClickListener {
-            viewModel.onAddResourceClick()
         }
     }
 
@@ -118,11 +180,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             }
         }
         
-        // Observe favorites preference and show/hide menu item
+        // Observe favorites preference
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.preferencesRepository.enableFavorites.collect { enabled ->
-                    binding.toolbar.menu.findItem(R.id.action_favorites)?.isVisible = enabled
+                    binding.btnFavorites.isVisible = enabled
                 }
             }
         }
@@ -130,28 +192,91 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     private fun updateUi(state: MainUiState) {
         // Loading state
-        binding.progressBar.visibility = if (state.isLoading) View.VISIBLE else View.GONE
+        binding.progressBar.isVisible = state.isLoading
 
         // Empty state
-        binding.emptyStateLayout.visibility = if (state.showEmptyState) View.VISIBLE else View.GONE
+        val isEmpty = state.resources.isEmpty() && !state.isLoading
+        val hasError = state.errorMessage != null
+        
+        binding.emptyStateView.isVisible = isEmpty && !hasError
+        binding.errorStateView.isVisible = isEmpty && hasError
+        binding.rvResources.isVisible = !isEmpty
 
-        // RecyclerView
-        binding.recyclerViewResources.visibility = 
-            if (!state.isLoading && !state.showEmptyState) View.VISIBLE else View.GONE
+        // Update error message if present
+        state.errorMessage?.let { message ->
+            binding.tvErrorMessage.text = message
+        }
 
         // Update adapter
         resourceAdapter.submitList(state.resources)
         
-        // Update dynamic shortcuts with current resources
+        // Toggle view button visibility
+        binding.btnToggleView.isVisible = state.resources.size > 10 || state.isGridMode
+        
+        // Update toggle view icon
+        binding.btnToggleView.setImageResource(
+            if (state.isGridMode) R.drawable.ic_view_list else R.drawable.ic_view_grid
+        )
+        
+        // Update layout manager based on mode
+        updateLayoutManager(state.isGridMode)
+        
+        // Start player enabled only when resources exist
+        binding.btnStartPlayer.isEnabled = state.resources.isNotEmpty()
+        
+        // Update filter warning
+        updateFilterWarning(state)
+        
+        // Update dynamic shortcuts
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N_MR1) {
             ShortcutHelper.updateDynamicShortcuts(this, state.resources)
         }
-
-        // Error state
-        state.errorMessage?.let { message ->
-            Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG)
-                .setAction(R.string.action_retry) { viewModel.refresh() }
-                .show()
+    }
+    
+    private fun updateLayoutManager(isGridMode: Boolean) {
+        val currentLayoutManager = binding.rvResources.layoutManager
+        val screenWidthDp = resources.configuration.screenWidthDp
+        val isWideScreen = screenWidthDp >= 600
+        
+        if (isGridMode) {
+            val spanCount = if (isWideScreen) 5 else 3
+            if (currentLayoutManager !is GridLayoutManager || 
+                (currentLayoutManager as GridLayoutManager).spanCount != spanCount) {
+                binding.rvResources.layoutManager = GridLayoutManager(this, spanCount)
+            }
+        } else {
+            val spanCount = if (isWideScreen) 2 else 1
+            if (spanCount == 1) {
+                if (currentLayoutManager !is LinearLayoutManager || currentLayoutManager is GridLayoutManager) {
+                    binding.rvResources.layoutManager = LinearLayoutManager(this)
+                }
+            } else {
+                if (currentLayoutManager !is GridLayoutManager ||
+                    (currentLayoutManager as GridLayoutManager).spanCount != spanCount) {
+                    binding.rvResources.layoutManager = GridLayoutManager(this, spanCount)
+                }
+            }
+        }
+    }
+    
+    private fun updateFilterWarning(state: MainUiState) {
+        val filterParts = mutableListOf<String>()
+        
+        state.filterByType?.let { types ->
+            if (types.isNotEmpty()) {
+                filterParts.add("Type: ${types.joinToString(", ")}")
+            }
+        }
+        
+        state.filterByName?.let { name ->
+            if (name.isNotBlank()) {
+                filterParts.add("Name: '$name'")
+            }
+        }
+        
+        binding.tvFilterWarning.isVisible = filterParts.isNotEmpty()
+        if (filterParts.isNotEmpty()) {
+            binding.tvFilterWarning.text = getString(R.string.filter) + ": " + filterParts.joinToString(" | ")
         }
     }
 
@@ -196,6 +321,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             is MainUiEvent.NavigateToSearch -> {
                 Timber.d("Navigate to search")
                 startActivity(SearchActivity.createIntent(this))
+            }
+            is MainUiEvent.ScanProgress -> {
+                binding.scanProgressLayout.isVisible = true
+                binding.tvScanProgress.text = getString(R.string.scanning_resources)
+                binding.tvScanDetail.text = getString(R.string.files_scanned_count, event.scannedCount)
+            }
+            is MainUiEvent.ScanComplete -> {
+                binding.scanProgressLayout.isVisible = false
             }
         }
     }

@@ -2,6 +2,24 @@
 <resources>
     <!-- App Name -->
     <string name="app_name">FastMediaSorter</string>
+    
+    <!-- MainActivity Actions -->
+    <string name="exit">Exit</string>
+    <string name="filter">Filter</string>
+    <string name="refresh">Refresh</string>
+    <string name="toggle_view">Toggle View</string>
+    <string name="start_player">Start Player</string>
+    <string name="error">Error</string>
+    <string name="scanning_resources">Scanning resources…</string>
+    <string name="files_scanned_count">%d files scanned</string>
+    <string name="resources_refreshed">Resources refreshed</string>
+    
+    <!-- Resource Tabs -->
+    <string name="tab_all">All</string>
+    <string name="tab_local">Local</string>
+    <string name="tab_smb">SMB</string>
+    <string name="tab_ftp_sftp">S/FTP</string>
+    <string name="tab_cloud">Cloud</string>
 
     <!-- Common Actions -->
     <string name="action_add">Add</string>

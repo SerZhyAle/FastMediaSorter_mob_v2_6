@@ -156,4 +156,48 @@ class MainViewModel @Inject constructor(
         _uiState.update { it.copy(isLoading = true) }
         // Flow will automatically update when data changes
     }
+    
+    /**
+     * Toggle grid/list view mode.
+     */
+    fun toggleViewMode() {
+        _uiState.update { state ->
+            state.copy(isGridMode = !state.isGridMode)
+        }
+        Timber.d("View mode toggled: isGridMode=${_uiState.value.isGridMode}")
+    }
+    
+    /**
+     * Set active resource tab filter.
+     */
+    fun setActiveTab(tab: ResourceTab) {
+        Timber.d("Set active tab: $tab")
+        _uiState.update { state ->
+            state.copy(activeTab = tab)
+        }
+        // TODO: Apply tab filter to resources query
+    }
+    
+    /**
+     * Handle filter button click.
+     */
+    fun onFilterClick() {
+        Timber.d("Filter clicked")
+        // TODO: Open FilterResourceDialog
+    }
+    
+    /**
+     * Handle start player button click.
+     */
+    fun onStartPlayerClick() {
+        Timber.d("Start player clicked")
+        val resources = _uiState.value.resources
+        if (resources.isNotEmpty()) {
+            viewModelScope.launch {
+                // Start slideshow with first/random resource
+                _events.send(MainUiEvent.NavigateToBrowse(resources.first().id))
+            }
+        }
+    }
 }
+

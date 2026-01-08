@@ -17,11 +17,34 @@ data class MainUiState(
     val errorMessage: String? = null,
     
     /** Whether to show empty state */
-    val showEmptyState: Boolean = false
+    val showEmptyState: Boolean = false,
+    
+    /** Whether grid mode is active for resources */
+    val isGridMode: Boolean = false,
+    
+    /** Active resource tab filter */
+    val activeTab: ResourceTab = ResourceTab.ALL,
+    
+    /** Filter by resource types */
+    val filterByType: List<String>? = null,
+    
+    /** Filter by name */
+    val filterByName: String? = null
 ) {
     companion object {
         val Initial = MainUiState()
     }
+}
+
+/**
+ * Resource tab filter enum.
+ */
+enum class ResourceTab {
+    ALL,
+    LOCAL,
+    SMB,
+    FTP_SFTP,
+    CLOUD
 }
 
 /**
@@ -35,4 +58,8 @@ sealed class MainUiEvent {
     data object NavigateToSettings : MainUiEvent()
     data object NavigateToFavorites : MainUiEvent()
     data object NavigateToSearch : MainUiEvent()
+    
+    // Scan progress events
+    data class ScanProgress(val scannedCount: Int, val currentFile: String? = null) : MainUiEvent()
+    data object ScanComplete : MainUiEvent()
 }
