@@ -2,12 +2,16 @@ package com.sza.fastmediasorter.ui.player
 
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowInsetsController
+import android.widget.PopupMenu
 import androidx.activity.viewModels
 import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -196,13 +200,96 @@ class PlayerActivity : BaseActivity<ActivityPlayerUnifiedBinding>() {
             btnSlideshowCmd.setOnClickListener { viewModel.onSlideshowClick() }
             btnPreviousCmd.setOnClickListener { navigateToPrevious() }
             btnNextCmd.setOnClickListener { navigateToNext() }
+
+            // Overflow menu for portrait mode
+            btnOverflowMenu.setOnClickListener { showOverflowMenu() }
         }
+        
+        // Update overflow menu visibility based on orientation
+        updateOverflowMenuVisibility()
+    }
+
+    /**
+     * Show overflow menu with actions that don't fit in portrait mode.
+     */
+    private fun showOverflowMenu() {
+        val popup = PopupMenu(this, binding.btnOverflowMenu)
+        popup.menuInflater.inflate(R.menu.menu_player_overflow, popup.menu)
+
+        // Update fullscreen menu item based on state
+        val fullscreenItem = popup.menu.findItem(R.id.action_fullscreen)
+        fullscreenItem?.setTitle(
+            if (viewModel.uiState.value.isFullscreen) R.string.exit_fullscreen else R.string.action_fullscreen
+        )
+
+        // Show/hide slideshow based on media type
+        val slideshowItem = popup.menu.findItem(R.id.action_slideshow)
+        val mediaType = viewModel.uiState.value.currentMediaType
+        slideshowItem?.isVisible = mediaType == MediaType.IMAGE || mediaType == MediaType.GIF
+
+        popup.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.action_share -> {
+                    viewModel.onShareClick()
+                    true
+                }
+                R.id.action_info -> {
+                    viewModel.onInfoClick()
+                    true
+                }
+                R.id.action_fullscreen -> {
+                    viewModel.toggleFullscreen()
+                    true
+                }
+                R.id.action_slideshow -> {
+                    viewModel.onSlideshowClick()
+                    true
+                }
+                R.id.action_previous -> {
+                    navigateToPrevious()
+                    true
+                }
+                R.id.action_next -> {
+                    navigateToNext()
+                    true
+                }
+                else -> false
+            }
+        }
+
+        popup.show()
+    }
+
+    /**
+     * Update overflow menu visibility based on screen orientation.
+     * In portrait mode, show overflow menu and hide some buttons.
+     * In landscape mode, show all buttons and hide overflow menu.
+     */
+    private fun updateOverflowMenuVisibility() {
+        val isPortrait = resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
+        
+        with(binding) {
+            // Show overflow menu only in portrait
+            btnOverflowMenu.isVisible = isPortrait
+            
+            // Hide these buttons in portrait (they go into overflow menu)
+            btnShareCmd.isVisible = !isPortrait
+            btnInfoCmd.isVisible = !isPortrait
+            btnFullscreenCmd.isVisible = !isPortrait
+            // Previous/Next command buttons always visible
+        }
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        updateOverflowMenuVisibility()
     }
 
     /**
      * Update command panel button visibility based on current media type.
+     * Also disables edit/delete/rename buttons when file is read-only.
      */
-    private fun updateCommandPanelForMediaType(mediaType: MediaType?) {
+    private fun updateCommandPanelForMediaType(mediaType: MediaType?, isReadOnly: Boolean = false) {
         with(binding) {
             // Hide all type-specific buttons first
             btnSearchTextCmd.isVisible = false
@@ -271,6 +358,19 @@ class PlayerActivity : BaseActivity<ActivityPlayerUnifiedBinding>() {
                     // Generic file - minimal buttons
                 }
             }
+
+            // Disable modification buttons when file is read-only
+            val canModify = !isReadOnly
+            btnDeleteCmd.isEnabled = canModify
+            btnDeleteCmd.alpha = if (canModify) 1.0f else 0.4f
+            btnRenameCmd.isEnabled = canModify
+            btnRenameCmd.alpha = if (canModify) 1.0f else 0.4f
+            btnEditCmd.isEnabled = canModify
+            btnEditCmd.alpha = if (canModify) 1.0f else 0.4f
+            btnEditPdf.isEnabled = canModify
+            btnEditPdf.alpha = if (canModify) 1.0f else 0.4f
+            btnEditTextCmd.isEnabled = canModify
+            btnEditTextCmd.alpha = if (canModify) 1.0f else 0.4f
         }
     }
 
@@ -406,7 +506,7 @@ class PlayerActivity : BaseActivity<ActivityPlayerUnifiedBinding>() {
         updateFavoriteIcon(state.isFavorite)
 
         // Update command panel buttons based on current media type
-        updateCommandPanelForMediaType(state.currentMediaType)
+        updateCommandPanelForMediaType(state.currentMediaType, state.isCurrentFileReadOnly)
 
         // Update fullscreen icon
         binding.btnFullscreenCmd.setImageResource(
@@ -416,6 +516,27 @@ class PlayerActivity : BaseActivity<ActivityPlayerUnifiedBinding>() {
 
     private fun updateFavoriteIcon(isFavorite: Boolean) {
         binding.btnFavorite.setImageResource(
+            if (isFavorite) R.drawable.ic_favorite_filled else R.drawable.ic_favorite
+        )
+    }
+
+    /**
+     * Toggle system UI (status bar and navigation bar) visibility.
+     * When UI is hidden, the player enters immersive mode.
+     */
+    private fun toggleSystemUi(showUi: Boolean) {
+        val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
+        if (showUi) {
+            // Show system bars
+            windowInsetsController.show(WindowInsetsCompat.Type.systemBars())
+            windowInsetsController.systemBarsBehavior = 
+                WindowInsetsControllerCompat.BEHAVIOR_DEFAULT
+        } else {
+            // Hide system bars for immersive mode
+            windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
+            windowInsetsController.systemBarsBehavior = 
+                WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        }
     }
 
     private fun observeEvents() {

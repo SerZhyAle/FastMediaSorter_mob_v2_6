@@ -43,7 +43,10 @@ data class PlayerUiState(
     val isFullscreen: Boolean = false,
 
     /** Whether slideshow mode is active */
-    val isSlideshowActive: Boolean = false
+    val isSlideshowActive: Boolean = false,
+
+    /** Whether current file is from a read-only resource (disables edit, rename, delete) */
+    val isCurrentFileReadOnly: Boolean = false
 ) {
     companion object {
         val Initial = PlayerUiState()

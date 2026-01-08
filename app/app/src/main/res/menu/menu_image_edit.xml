@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_save"
+        android:icon="@drawable/ic_save"
+        android:title="@string/action_save"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_save_copy"
+        android:icon="@drawable/ic_save"
+        android:title="@string/action_save_copy"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_undo"
+        android:icon="@drawable/ic_undo"
+        android:title="@string/action_undo"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_reset"
+        android:icon="@drawable/ic_refresh"
+        android:title="@string/action_reset"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_rotate_left"
+        android:icon="@drawable/ic_rotate_left"
+        android:title="@string/action_rotate_left"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_rotate_right"
+        android:icon="@drawable/ic_rotate_right"
+        android:title="@string/action_rotate_right"
+        app:showAsAction="never" />
+
+</menu>

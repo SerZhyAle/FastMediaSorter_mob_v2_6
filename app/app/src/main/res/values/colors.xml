@@ -34,6 +34,9 @@
     <color name="colorSecondary">@color/amber_500</color>
     <color name="colorSecondaryDark">@color/amber_700</color>
     <color name="colorError">@color/red_500</color>
+    <color name="md_theme_error">@color/red_500</color>
+    <color name="md_theme_primary">@color/green_500</color>
+    <color name="md_theme_surfaceVariant">@color/gray_100</color>
 
     <!-- Surface Colors -->
     <color name="colorSurface">@color/white</color>

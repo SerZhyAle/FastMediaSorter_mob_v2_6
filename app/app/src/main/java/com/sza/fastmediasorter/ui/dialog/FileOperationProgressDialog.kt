@@ -145,7 +145,7 @@ class FileOperationProgressDialog : DialogFragment() {
         if (_binding == null) return
 
         binding.tvCurrentFile.text = message
-        binding.tvCurrentFile.setTextColor(requireContext().getColor(R.color.error))
+        binding.tvCurrentFile.setTextColor(requireContext().getColor(R.color.md_theme_error))
         binding.btnCancel.text = getString(R.string.action_close)
         binding.btnCancel.setOnClickListener { dismiss() }
     }

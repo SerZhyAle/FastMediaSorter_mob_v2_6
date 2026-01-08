@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/action_share"
+        android:icon="@drawable/ic_share"
+        android:title="@string/action_share" />
+
+    <item
+        android:id="@+id/action_info"
+        android:icon="@drawable/ic_info"
+        android:title="@string/file_info" />
+
+    <item
+        android:id="@+id/action_fullscreen"
+        android:icon="@drawable/ic_fullscreen"
+        android:title="@string/action_fullscreen" />
+
+    <item
+        android:id="@+id/action_slideshow"
+        android:icon="@drawable/ic_slideshow"
+        android:title="@string/action_slideshow" />
+
+    <item
+        android:id="@+id/action_previous"
+        android:icon="@drawable/ic_skip_previous"
+        android:title="@string/action_previous" />
+
+    <item
+        android:id="@+id/action_next"
+        android:icon="@drawable/ic_skip_next"
+        android:title="@string/action_next" />
+
+</menu>

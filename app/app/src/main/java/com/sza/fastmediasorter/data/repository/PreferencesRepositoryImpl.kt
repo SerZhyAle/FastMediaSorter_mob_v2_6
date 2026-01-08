@@ -45,6 +45,7 @@ class PreferencesRepositoryImpl @Inject constructor(
         val LOOP_SLIDESHOW = booleanPreferencesKey("loop_slideshow")
         val ENABLE_TOUCH_ZONES = booleanPreferencesKey("enable_touch_zones")
         val SHOW_ZONE_OVERLAY = booleanPreferencesKey("show_zone_overlay")
+        val ZONE_SENSITIVITY_MS = intPreferencesKey("zone_sensitivity_ms")
         val RESUME_FROM_LAST_POSITION = booleanPreferencesKey("resume_from_last_position")
         val AUTO_PLAY_VIDEOS = booleanPreferencesKey("auto_play_videos")
 
@@ -196,6 +197,17 @@ class PreferencesRepositoryImpl @Inject constructor(
         Timber.d("Setting show zone overlay: $show")
         context.dataStore.edit { prefs ->
             prefs[Keys.SHOW_ZONE_OVERLAY] = show
+        }
+    }
+
+    override val zoneSensitivityMs: Flow<Int> = context.dataStore.data.map { prefs ->
+        prefs[Keys.ZONE_SENSITIVITY_MS] ?: 200
+    }
+
+    override suspend fun setZoneSensitivityMs(ms: Int) {
+        Timber.d("Setting zone sensitivity: $ms ms")
+        context.dataStore.edit { prefs ->
+            prefs[Keys.ZONE_SENSITIVITY_MS] = ms.coerceIn(100, 500)
         }
     }
 

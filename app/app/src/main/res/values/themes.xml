@@ -89,6 +89,17 @@
         <item name="android:windowTranslucentNavigation">true</item>
     </style>
 
+    <!-- Full Screen Dialog Theme -->
+    <style name="Theme.FastMediaSorter.FullScreenDialog" parent="Theme.Material3.DayNight.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="colorPrimary">@color/green_500</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSurface">@color/white</item>
+        <item name="colorOnSurface">@color/gray_900</item>
+    </style>
+
     <!-- ExoPlayer Control Styles -->
     <style name="ExoMediaButton" parent="Widget.AppCompat.ImageButton">
         <item name="android:background">?attr/selectableItemBackgroundBorderless</item>

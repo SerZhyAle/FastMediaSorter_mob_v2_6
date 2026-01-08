@@ -91,6 +91,13 @@ interface PreferencesRepository {
     suspend fun setShowZoneOverlay(show: Boolean)
 
     /**
+     * Touch zone sensitivity in milliseconds (long-press delay).
+     * Range: 100-500ms, default: 200ms.
+     */
+    val zoneSensitivityMs: Flow<Int>
+    suspend fun setZoneSensitivityMs(ms: Int)
+
+    /**
      * Whether to resume video from last position.
      */
     val resumeFromLastPosition: Flow<Boolean>

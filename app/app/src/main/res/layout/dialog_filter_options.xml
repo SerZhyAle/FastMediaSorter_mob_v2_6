@@ -42,64 +42,64 @@
     <androidx.gridlayout.widget.GridLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:columnCount="2"
-        app:useDefaultMargins="true">
+        android:columnCount="2"
+        android:useDefaultMargins="true">
 
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/cbImages"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/media_type_images"
-            app:layout_columnWeight="1" />
+            android:layout_columnWeight="1" />
 
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/cbVideos"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/media_type_videos"
-            app:layout_columnWeight="1" />
+            android:layout_columnWeight="1" />
 
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/cbAudio"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/media_type_audio"
-            app:layout_columnWeight="1" />
+            android:layout_columnWeight="1" />
 
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/cbGifs"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/media_type_gifs"
-            app:layout_columnWeight="1" />
+            android:layout_columnWeight="1" />
 
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/cbPdf"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/media_type_pdf"
-            app:layout_columnWeight="1" />
+            android:layout_columnWeight="1" />
 
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/cbText"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/media_type_text"
-            app:layout_columnWeight="1" />
+            android:layout_columnWeight="1" />
 
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/cbEpub"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/media_type_epub"
-            app:layout_columnWeight="1" />
+            android:layout_columnWeight="1" />
 
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/cbOther"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/media_type_other"
-            app:layout_columnWeight="1" />
+            android:layout_columnWeight="1" />
 
     </androidx.gridlayout.widget.GridLayout>
 

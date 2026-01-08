@@ -5,7 +5,6 @@ import android.net.Uri
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.sza.fastmediasorter.R
-import com.sza.fastmediasorter.domain.model.MediaItem
 
 /**
  * Utility class for common dialog operations.
@@ -189,6 +188,11 @@ object DialogUtils {
     }
 }
 
+// TODO: BrowseDialogHelper and PlayerDialogHelper are commented out until
+// all referenced dialog classes are properly implemented with matching signatures.
+// See: SortOptionsDialog, FilterOptionsDialog, DestinationPickerDialog, NetworkCredentialsDialog
+
+/*
 /**
  * Helper class for BrowseActivity dialogs.
  * Centralizes dialog creation and handling for the browse screen.
@@ -460,3 +464,4 @@ class PlayerDialogHelper(
         fun onRepeatModeChanged(mode: PlayerSettingsDialog.RepeatMode)
     }
 }
+*/ // End of commented-out BrowseDialogHelper and PlayerDialogHelper
