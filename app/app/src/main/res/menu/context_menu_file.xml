@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_open"
+        android:title="@string/open"
+        android:icon="@drawable/ic_play"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_open_with"
+        android:title="@string/open_with"
+        android:icon="@drawable/ic_open_with"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_rename"
+        android:title="@string/rename"
+        android:icon="@drawable/ic_rename"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_copy"
+        android:title="@string/copy"
+        android:icon="@drawable/ic_copy"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_move"
+        android:title="@string/move"
+        android:icon="@drawable/ic_move"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_delete"
+        android:title="@string/delete"
+        android:icon="@drawable/ic_delete"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_share"
+        android:title="@string/share"
+        android:icon="@drawable/ic_share"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_info"
+        android:title="@string/info"
+        android:icon="@drawable/ic_info"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_add_favorite"
+        android:title="@string/add_to_favorites"
+        android:icon="@drawable/ic_favorite_border"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_remove_favorite"
+        android:title="@string/remove_from_favorites"
+        android:icon="@drawable/ic_favorite"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_set_wallpaper"
+        android:title="@string/set_as_wallpaper"
+        android:icon="@drawable/ic_wallpaper"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_rotate"
+        android:title="@string/rotate"
+        android:icon="@drawable/ic_rotate"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_extract_audio"
+        android:title="@string/extract_audio"
+        android:icon="@drawable/ic_audio"
+        app:showAsAction="never" />
+
+</menu>

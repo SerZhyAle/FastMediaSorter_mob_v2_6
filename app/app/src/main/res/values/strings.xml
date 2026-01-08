@@ -731,6 +731,12 @@
     <string name="lyrics_source_online">Online</string>
     <string name="lyrics_synced">Synchronized</string>
     <string name="lyrics_unsynced">Unsynchronized</string>
+    
+    <!-- Context Menu Strings -->
+    <string name="set_as_wallpaper">Set as Wallpaper</string>
+    <string name="extract_audio">Extract Audio</string>
+    <string name="open">Open</string>
+    <string name="info">Info</string>
 </resources>
 
 
