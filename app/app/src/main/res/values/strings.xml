@@ -104,6 +104,21 @@
     <string name="network_share">Network Share</string>
     <string name="cloud_storage">Cloud Storage</string>
 
+    <!-- Cloud Folder Picker -->
+    <string name="cloud_folder_picker_title">Select Folder</string>
+    <string name="cloud_folder_empty">This folder is empty</string>
+    <string name="cloud_folder_select">Select This Folder</string>
+    <string name="cloud_folder_include_subdirs">Include subdirectories</string>
+    <string name="cloud_folder_retry">Retry</string>
+    <string name="cloud_folder_navigate">Open folder</string>
+    <string name="select_folder">Select Folder</string>
+    <string name="add_as_destination">Add as destination</string>
+    <string name="scan_subdirectories">Scan subdirectories</string>
+    <string name="no_folders_found">No folders found</string>
+    <string name="breadcrumb_path">Path: %1$s</string>
+    <string name="folder">Folder</string>
+    <string name="navigate_into_folder">Open folder</string>
+
     <!-- Resource Types -->
     <string name="type_local">Local</string>
     <string name="type_smb">SMB/Windows Share</string>

@@ -218,4 +218,49 @@ class AddResourceViewModel @Inject constructor(
                 }
         }
     }
+
+    /**
+     * Handle cloud folder selection from folder picker activities
+     */
+    fun onCloudFolderSelected(
+        resourceType: ResourceType,
+        folderId: String,
+        folderName: String,
+        folderPath: String,
+        isDestination: Boolean,
+        scanSubdirectories: Boolean
+    ) {
+        viewModelScope.launch {
+            // Build cloud resource path
+            val cloudPath = when (resourceType) {
+                ResourceType.GOOGLE_DRIVE -> "gdrive://$folderId"
+                ResourceType.ONEDRIVE -> "onedrive://$folderId"
+                ResourceType.DROPBOX -> "dropbox://$folderId"
+                else -> return@launch
+            }
+
+            Timber.d("Adding cloud resource: type=$resourceType, path=$cloudPath, name=$folderName")
+
+            val result = addResourceUseCase(
+                name = folderName,
+                path = cloudPath,
+                type = resourceType,
+                sortMode = SortMode.DATE_DESC,
+                displayMode = DisplayMode.GRID,
+                isReadOnly = false,
+                isDestination = isDestination,
+                workWithAllFiles = scanSubdirectories
+            )
+
+            result
+                .onSuccess { resourceId ->
+                    Timber.d("Cloud resource added with ID: $resourceId")
+                    _events.emit(AddResourceEvent.ResourceAdded(resourceId))
+                }
+                .onError { message, _, _ ->
+                    Timber.e("Failed to add cloud resource: $message")
+                    _events.emit(AddResourceEvent.ShowError("Failed to add cloud folder: $message"))
+                }
+        }
+    }
 }

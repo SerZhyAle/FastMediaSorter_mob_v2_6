@@ -34,14 +34,17 @@ android {
         applicationId = "com.sza.fastmediasorter"
         minSdk = 28
         targetSdk = 35
-        versionCode = 26010801
-        versionName = "2.60.1080.120"
+        versionCode = 26010809
+        versionName = "2.60.1080.947"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         // Inject Keys from local.properties
         buildConfigField("String", "GOOGLE_CLIENT_ID", "\"${localProperties.getProperty("GOOGLE_CLIENT_ID", "")}\"")
         buildConfigField("String", "DROPBOX_KEY", "\"${localProperties.getProperty("DROPBOX_KEY", "")}\"")
+        
+        // Manifest placeholders for OAuth redirects
+        manifestPlaceholders["dropboxKey"] = localProperties.getProperty("DROPBOX_KEY", "")
     }
 
     signingConfigs {

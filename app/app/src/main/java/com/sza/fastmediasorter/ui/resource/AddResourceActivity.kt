@@ -16,6 +16,10 @@ import com.sza.fastmediasorter.databinding.ActivityAddResourceBinding
 import com.sza.fastmediasorter.domain.model.NetworkType
 import com.sza.fastmediasorter.domain.model.ResourceType
 import com.sza.fastmediasorter.ui.base.BaseActivity
+import com.sza.fastmediasorter.ui.cloudfolders.BaseCloudFolderPickerActivity
+import com.sza.fastmediasorter.ui.cloudfolders.DropboxFolderPickerActivity
+import com.sza.fastmediasorter.ui.cloudfolders.GoogleDriveFolderPickerActivity
+import com.sza.fastmediasorter.ui.cloudfolders.OneDriveFolderPickerActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -38,6 +42,30 @@ class AddResourceActivity : BaseActivity<ActivityAddResourceBinding>() {
             contentResolver.takePersistableUriPermission(uri, takeFlags)
             
             viewModel.onFolderSelected(uri)
+        }
+    }
+
+    private val googleDriveLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            result.data?.let { handleCloudFolderResult(it, ResourceType.GOOGLE_DRIVE) }
+        }
+    }
+
+    private val oneDriveLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            result.data?.let { handleCloudFolderResult(it, ResourceType.ONEDRIVE) }
+        }
+    }
+
+    private val dropboxLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            result.data?.let { handleCloudFolderResult(it, ResourceType.DROPBOX) }
         }
     }
 
@@ -76,18 +104,52 @@ class AddResourceActivity : BaseActivity<ActivityAddResourceBinding>() {
             showNetworkCredentialsDialog(ResourceType.FTP)
         }
 
-        // Cloud storage (not yet implemented)
+        // Cloud storage
         binding.cardGoogleDrive.setOnClickListener {
-            showNotYetImplemented(ResourceType.GOOGLE_DRIVE)
+            launchGoogleDriveFolderPicker()
         }
         
         binding.cardOneDrive.setOnClickListener {
-            showNotYetImplemented(ResourceType.ONEDRIVE)
+            launchOneDriveFolderPicker()
         }
         
         binding.cardDropbox.setOnClickListener {
-            showNotYetImplemented(ResourceType.DROPBOX)
+            launchDropboxFolderPicker()
         }
+    }
+
+    private fun launchGoogleDriveFolderPicker() {
+        val intent = GoogleDriveFolderPickerActivity.createIntent(this, isDestination = false)
+        googleDriveLauncher.launch(intent)
+    }
+
+    private fun launchOneDriveFolderPicker() {
+        val intent = OneDriveFolderPickerActivity.createIntent(this, isDestination = false)
+        oneDriveLauncher.launch(intent)
+    }
+
+    private fun launchDropboxFolderPicker() {
+        val intent = DropboxFolderPickerActivity.createIntent(this, isDestination = false)
+        dropboxLauncher.launch(intent)
+    }
+
+    private fun handleCloudFolderResult(data: Intent, resourceType: ResourceType) {
+        val folderId = data.getStringExtra(BaseCloudFolderPickerActivity.RESULT_FOLDER_ID) ?: return
+        val folderName = data.getStringExtra(BaseCloudFolderPickerActivity.RESULT_FOLDER_NAME) ?: "Unknown"
+        val folderPath = data.getStringExtra(BaseCloudFolderPickerActivity.RESULT_FOLDER_PATH) ?: ""
+        val isDestination = data.getBooleanExtra(BaseCloudFolderPickerActivity.RESULT_IS_DESTINATION, false)
+        val scanSubdirectories = data.getBooleanExtra(BaseCloudFolderPickerActivity.RESULT_SCAN_SUBDIRECTORIES, true)
+
+        Timber.d("Cloud folder selected: type=$resourceType, id=$folderId, name=$folderName, path=$folderPath")
+        
+        viewModel.onCloudFolderSelected(
+            resourceType = resourceType,
+            folderId = folderId,
+            folderName = folderName,
+            folderPath = folderPath,
+            isDestination = isDestination,
+            scanSubdirectories = scanSubdirectories
+        )
     }
 
     private fun openFolderPicker() {

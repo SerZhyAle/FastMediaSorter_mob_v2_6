@@ -105,6 +105,36 @@
             android:windowSoftInputMode="stateVisible|adjustResize"
             android:parentActivityName=".ui.main.MainActivity" />
 
+        <!-- Cloud Folder Picker Activities -->
+        <activity
+            android:name=".ui.cloudfolders.GoogleDriveFolderPickerActivity"
+            android:exported="false"
+            android:theme="@style/Theme.FastMediaSorter"
+            android:parentActivityName=".ui.resource.AddResourceActivity" />
+
+        <activity
+            android:name=".ui.cloudfolders.OneDriveFolderPickerActivity"
+            android:exported="false"
+            android:theme="@style/Theme.FastMediaSorter"
+            android:parentActivityName=".ui.resource.AddResourceActivity" />
+
+        <activity
+            android:name=".ui.cloudfolders.DropboxFolderPickerActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:theme="@style/Theme.FastMediaSorter"
+            android:parentActivityName=".ui.resource.AddResourceActivity">
+            <!-- Dropbox OAuth redirect -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="db-${dropboxKey}"
+                    android:host="oauth2redirect" />
+            </intent-filter>
+        </activity>
+
         <!-- FileProvider for sharing files -->
         <provider
             android:name="androidx.core.content.FileProvider"
