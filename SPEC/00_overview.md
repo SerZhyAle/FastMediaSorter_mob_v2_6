@@ -7,27 +7,103 @@ WelcomeActivity (first launch only)
     ↓
 MainActivity
     ├→ AddResourceActivity
-    │   ├→ GoogleDriveFolderPickerActivity
-    │   ├→ OneDriveFolderPickerActivity
-    │   └→ DropboxFolderPickerActivity
-    ├→ EditResourceActivity
-    │   └→ ColorPickerDialog
-    ├→ BrowseActivity
-    │   ├→ PlayerActivity
-    │   └→ Dialogs: Copy/Move/Delete/Rename/FileInfo/Filter/Sort
-    ├→ PlayerActivity (random slideshow)
-    │   └→ Dialogs: PlayerSettings/ImageEdit/GifEditor/Copy/Move/Delete/Rename/FileInfo
-    └→ SettingsActivity
-        └→ 4 Fragments (General/Media/Playback/Destinations)
+    │   ├→ GoogleDriveFolderPickerActivity ✅
+    │   ├→ OneDriveFolderPickerActivity ✅
+    │   └→ DropboxFolderPickerActivity ✅
+    ├→ EditResourceActivity ✅
+    │   └→ ColorPickerDialog ✅
+    ├→ BrowseActivity ✅
+    │   ├→ PlayerActivity ✅
+    │   └→ Dialogs: Copy/Move/Delete/Rename/FileInfo/Filter/Sort ✅
+    ├→ FavoritesActivity ✅
+    ├→ SearchActivity ✅
+    ├→ PlayerActivity (random slideshow) ✅
+    │   └→ Dialogs: PlayerSettings/ImageEdit/GifEditor/TextEditor/Lyrics/PdfTools/OcrTranslation ✅
+    └→ SettingsActivity ✅
+        └→ 5 Fragments (General/Playback/Images/Video/Audio/Documents/Destinations/Network) ✅
 
 Widget Flow (separate from main app):
-    ResourceLaunchWidgetConfigActivity (launcher → widget setup)
+    ResourceLaunchWidgetConfigActivity ✅ (launcher → widget setup)
         ↓ (selects resource)
-    Widget on home screen → taps widget → BrowseActivity
+    Widget on home screen → taps widget → BrowseActivity ✅
+    
+    FavoritesWidget ✅ (home screen → shows favorites list → PlayerActivity)
+    ContinueReadingWidget ✅ (home screen → launches slideshow)
 
 Note: All activities extend BaseActivity<VB> which provides ViewBinding, locale support,
 screen awake management, configuration change handling, and touch event logging.
 ```
+
+---
+
+## ⚠️ Remaining Implementation Items (Deferred/Low Priority)
+
+### 1. AddResourceActivity Enhancements (Step 4 - Partial)
+- [ ] PIN code protection for resources (6-digit validation)
+- [ ] Media type checkboxes grid (IMAGE/VIDEO/AUDIO/GIF/TEXT/PDF/EPUB filter)
+- [ ] Batch resource adding with RecyclerView
+- [ ] Preselected tab routing (EXTRA_PRESELECTED_TAB)
+
+### 2. EPUB Advanced Features (Step 9 - Deferred)
+**Status**: Basic WebView-based EPUB viewing works. Advanced features require epub4j library.
+- [ ] Chapter navigation (Previous/Next chapter buttons)
+- [ ] Table of Contents dialog with chapter list
+- [ ] Font size control slider (6-144px)
+- [ ] Font family selection (Serif/Sans/Mono)
+- [ ] Chapter position save/restore
+- [ ] Cross-chapter full-text search
+
+### 3. In-Document Search (Step 10 - Deferred)
+**Status**: Search buttons wired but functionality not implemented. Requires PDF text extraction.
+- [ ] PDF text extraction and search
+- [ ] EPUB cross-chapter search
+- [ ] Text file search with highlighting
+- [ ] Search result highlighting (yellow background)
+- [ ] Prev/Next navigation between results
+- [ ] Search result counter (e.g., "3 of 15")
+
+### 4. Text File Syntax Highlighting (Step 13 - Partial)
+- [ ] Syntax highlighting for common file types (JSON, XML, Kotlin, Java, Python, etc.)
+
+### 5. Widget Enhancements (Step 17 - Partial)
+**Status**: Core widget functionality complete.
+- [ ] Widget configuration activity for Favorites
+- [ ] Widget update logic when favorites change (requires FavoritesDao integration)
+- [ ] Widget preview images for home screen picker
+
+### 6. Audiobook Mode Enhancements (Step 18 - Partial)
+**Status**: Core audiobook features complete (position save/restore, speed control).
+- [ ] Sleep timer for audiobooks
+- [ ] Audiobook-specific command panel layout
+- [ ] Bookmarks functionality
+
+### 7. Album Art Enhancements (Step 19 - Partial)
+**Status**: Core album art features complete (iTunes API, embedded ID3, fallback generation).
+- [ ] Manual cover art search dialog
+- [ ] Display cover art in audio player UI
+- [ ] Display cover art in browse grid thumbnails
+- [ ] Cover art download progress indicator
+
+### 8. WelcomeActivity Enhancements (Step 20 - Partial)
+**Status**: Version display complete.
+- [ ] Visual resource types grid on Page 2 (icons for Local/SMB/SFTP/FTP/Cloud)
+- [ ] Interactive touch zones demonstration on Page 3 (show 3x3 grid with actions)
+- [ ] Enhanced Page 4 with destination setup instructions (visual guide)
+- [ ] Animated transitions between pages
+- [ ] "Don't show again" checkbox
+- [ ] Landscape orientation layouts
+
+### 9. Cloud Integration Polish (Epic 5 - Requires API Keys)
+**Status**: OAuth flows and folder pickers complete. Needs API key configuration.
+- [ ] Configure API keys in Google/Microsoft/Dropbox developer consoles
+- [ ] Test cloud file operations end-to-end
+- [ ] Add cloud-specific error handling
+
+### 10. Release Engineering (Epic 8 - In Progress)
+**Status**: Production hardening complete (R8, ProGuard, signing).
+- [ ] Capture Play Store screenshots (8 required)
+- [ ] Test signed APK on multiple devices
+- [ ] Host Privacy Policy HTML files online
 
 ---
 
