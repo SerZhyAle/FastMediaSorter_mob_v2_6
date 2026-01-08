@@ -125,6 +125,10 @@
     <string name="breadcrumb_path">Path: %1$s</string>
     <string name="folder">Folder</string>
     <string name="navigate_into_folder">Open folder</string>
+    <string name="scan">Scan</string>
+    <string name="browse">Browse</string>
+    <string name="discovering_network_devices">Discovering network devices…</string>
+    <string name="select_ssh_key_file">Select SSH key file</string>
 
     <!-- Resource Types -->
     <string name="type_local">Local</string>

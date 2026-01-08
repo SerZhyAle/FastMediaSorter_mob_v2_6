@@ -111,16 +111,20 @@ class NetworkCredentialsDialog : DialogFragment() {
                 binding.tilDomain.visibility = View.VISIBLE
                 binding.tilShareName.visibility = View.VISIBLE
                 binding.groupSshKey.visibility = View.GONE
+                binding.groupSshKeyPath.visibility = View.GONE
             }
             NetworkType.SFTP -> {
                 binding.tilDomain.visibility = View.GONE
                 binding.tilShareName.visibility = View.GONE
                 binding.groupSshKey.visibility = View.VISIBLE
+                // SSH key path visibility is controlled by switch
+                binding.groupSshKeyPath.visibility = View.GONE
             }
             NetworkType.FTP -> {
                 binding.tilDomain.visibility = View.GONE
                 binding.tilShareName.visibility = View.GONE
                 binding.groupSshKey.visibility = View.GONE
+                binding.groupSshKeyPath.visibility = View.GONE
             }
             else -> {
                 // Not supported in this dialog
@@ -132,7 +136,17 @@ class NetworkCredentialsDialog : DialogFragment() {
         // SSH key toggle (SFTP only)
         binding.switchSshKey.setOnCheckedChangeListener { _, isChecked ->
             binding.tilPassword.visibility = if (isChecked) View.GONE else View.VISIBLE
-            binding.tilSshKeyPath.visibility = if (isChecked) View.VISIBLE else View.GONE
+            binding.groupSshKeyPath.visibility = if (isChecked) View.VISIBLE else View.GONE
+        }
+        
+        // Network scan button
+        binding.btnScanNetwork.setOnClickListener {
+            showNetworkDiscoveryDialog()
+        }
+        
+        // SSH key browse button
+        binding.btnBrowseSshKey.setOnClickListener {
+            openSshKeyFilePicker()
         }
         
         // Auto-generate resource name from server
@@ -142,6 +156,31 @@ class NetworkCredentialsDialog : DialogFragment() {
                 binding.etName.setText(generateDefaultName(serverText))
             }
         }
+    }
+    
+    private fun showNetworkDiscoveryDialog() {
+        val protocol = when (networkType) {
+            NetworkType.SMB -> com.sza.fastmediasorter.ui.dialog.NetworkDiscoveryDialog.Protocol.SMB
+            NetworkType.FTP -> com.sza.fastmediasorter.ui.dialog.NetworkDiscoveryDialog.Protocol.FTP
+            NetworkType.SFTP -> com.sza.fastmediasorter.ui.dialog.NetworkDiscoveryDialog.Protocol.SFTP
+            else -> com.sza.fastmediasorter.ui.dialog.NetworkDiscoveryDialog.Protocol.ALL
+        }
+        
+        val discoveryDialog = com.sza.fastmediasorter.ui.dialog.NetworkDiscoveryDialog.newInstance(protocol)
+        discoveryDialog.onDeviceSelected = { device ->
+            binding.etServer.setText(device.address)
+            if (device.shares.isNotEmpty() && networkType == NetworkType.SMB) {
+                binding.etShareName.setText(device.shares.first())
+            }
+        }
+        discoveryDialog.show(parentFragmentManager, com.sza.fastmediasorter.ui.dialog.NetworkDiscoveryDialog.TAG)
+    }
+    
+    private fun openSshKeyFilePicker() {
+        // Note: This requires activity result handling, which is complex in a DialogFragment.
+        // For now, users can manually type the path. A full implementation would need
+        // to use registerForActivityResult or delegate to the host activity.
+        Timber.d("SSH key file picker not yet fully implemented")
     }
 
     private fun submitCredentials() {
