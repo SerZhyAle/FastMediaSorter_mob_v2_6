@@ -20,6 +20,14 @@
     <string name="tab_smb">SMB</string>
     <string name="tab_ftp_sftp">S/FTP</string>
     <string name="tab_cloud">Cloud</string>
+    
+    <!-- BrowseActivity Actions -->
+    <string name="back">Back</string>
+    <string name="sort">Sort</string>
+    <string name="play">Play</string>
+    <string name="stop">Stop</string>
+    <string name="scroll_to_top">Scroll to top</string>
+    <string name="scroll_to_bottom">Scroll to bottom</string>
 
     <!-- Common Actions -->
     <string name="action_add">Add</string>

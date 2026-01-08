@@ -21,7 +21,17 @@ data class BrowseUiState(
     
     // Selection mode state
     val isSelectionMode: Boolean = false,
-    val selectedFiles: Set<String> = emptySet()
+    val selectedFiles: Set<String> = emptySet(),
+    
+    // Filter state
+    val activeFilterCount: Int = 0,
+    val filterDescription: String? = null,
+    
+    // Undo support
+    val hasUndoStack: Boolean = false,
+    
+    // Scan progress
+    val scannedCount: Int = 0
 ) {
     companion object {
         val Initial = BrowseUiState()
@@ -56,4 +66,5 @@ sealed class BrowseUiEvent {
     data class ShowSortDialog(val currentSortMode: SortMode) : BrowseUiEvent()
     data class ShowFileInfo(val filePath: String) : BrowseUiEvent()
     data class RecordResourceVisit(val resource: Resource) : BrowseUiEvent()
+    data object ShowFilterDialog : BrowseUiEvent()
 }

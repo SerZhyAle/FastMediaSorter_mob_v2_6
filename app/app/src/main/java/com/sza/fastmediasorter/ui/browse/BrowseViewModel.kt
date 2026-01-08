@@ -424,4 +424,79 @@ class BrowseViewModel @Inject constructor(
             _events.emit(BrowseUiEvent.ShowSnackbar(message))
         }
     }
+    
+    /**
+     * Deselect all files.
+     */
+    fun onDeselectAllClick() {
+        _uiState.update { 
+            it.copy(isSelectionMode = false, selectedFiles = emptySet())
+        }
+        Timber.d("Deselect all clicked")
+    }
+    
+    /**
+     * Start player/slideshow from current folder.
+     */
+    fun onPlayClick() {
+        viewModelScope.launch {
+            val files = _uiState.value.displayedFiles
+            if (files.isNotEmpty()) {
+                val filePaths = files.map { it.path }
+                _events.emit(BrowseUiEvent.NavigateToPlayer(filePaths.first(), filePaths, 0))
+            }
+        }
+    }
+    
+    /**
+     * Show filter dialog.
+     */
+    fun onFilterClick() {
+        viewModelScope.launch {
+            _events.emit(BrowseUiEvent.ShowFilterDialog)
+        }
+    }
+    
+    /**
+     * Show rename dialog for selected files.
+     */
+    fun onRenameClick() {
+        viewModelScope.launch {
+            val selectedFiles = _uiState.value.selectedFiles.toList()
+            if (selectedFiles.isNotEmpty()) {
+                // TODO: Emit ShowRenameDialog event
+                Timber.d("Rename clicked: ${selectedFiles.size} files")
+            }
+        }
+    }
+    
+    /**
+     * Share selected files.
+     */
+    fun onShareClick() {
+        viewModelScope.launch {
+            val selectedFiles = _uiState.value.selectedFiles.toList()
+            if (selectedFiles.isNotEmpty()) {
+                // TODO: Emit ShowShareSheet event
+                Timber.d("Share clicked: ${selectedFiles.size} files")
+            }
+        }
+    }
+    
+    /**
+     * Undo last operation.
+     */
+    fun onUndoClick() {
+        undoLastDelete()
+    }
+    
+    /**
+     * Stop ongoing scan operation.
+     */
+    fun stopScan() {
+        loadingJob?.cancel()
+        _uiState.update { it.copy(isLoading = false) }
+        Timber.d("Scan stopped by user")
+    }
 }
+

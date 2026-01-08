@@ -1,16 +1,16 @@
 package com.sza.fastmediasorter.ui.browse
 
 import android.os.Bundle
-import android.view.View
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.SearchView
+import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.sza.fastmediasorter.R
 import com.sza.fastmediasorter.databinding.ActivityBrowseBinding
@@ -42,61 +42,72 @@ class BrowseActivity : BaseActivity<ActivityBrowseBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         
-        setupToolbar()
+        setupControlButtons()
         setupRecyclerView()
-        setupSelectionToolbar()
+        setupOperationsPanel()
+        setupScrollButtons()
         setupBackPressHandler()
         observeUiState()
         observeEvents()
 
-        // Load files if resource ID passed via intent (for non-SavedStateHandle use)
+        // Load files if resource ID passed via intent
         val resourceId = intent.getLongExtra(EXTRA_RESOURCE_ID, -1)
         if (resourceId != -1L) {
             viewModel.loadFiles(resourceId)
         }
     }
 
-    private fun setupToolbar() {
-        binding.toolbar.setNavigationOnClickListener {
-            viewModel.onBackPressed()
-        }
-
-        // Setup SearchView
-        val searchItem = binding.toolbar.menu.findItem(R.id.action_search)
-        val searchView = searchItem?.actionView as? SearchView
-        searchView?.apply {
-            queryHint = getString(R.string.search_hint)
-            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String?): Boolean {
-                    return true
-                }
-
-                override fun onQueryTextChange(newText: String?): Boolean {
-                    viewModel.onSearchQueryChanged(newText ?: "")
-                    return true
-                }
-            })
-            setOnCloseListener {
-                viewModel.clearSearch()
-                false
+    private fun setupControlButtons() {
+        with(binding) {
+            // Back
+            btnBack.setOnClickListener {
+                viewModel.onBackPressed()
             }
-        }
-
-        binding.toolbar.setOnMenuItemClickListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.action_sort -> {
-                    viewModel.onSortClick()
-                    true
-                }
-                R.id.action_view_mode -> {
-                    viewModel.onViewModeClick()
-                    true
-                }
-                R.id.action_select_all -> {
-                    viewModel.onSelectAllClick()
-                    true
-                }
-                else -> false
+            
+            // Sort
+            btnSort.setOnClickListener {
+                viewModel.onSortClick()
+            }
+            
+            // Filter
+            btnFilter.setOnClickListener {
+                viewModel.onFilterClick()
+            }
+            
+            // Refresh
+            btnRefresh.setOnClickListener {
+                viewModel.refresh()
+                Toast.makeText(this@BrowseActivity, R.string.refresh, Toast.LENGTH_SHORT).show()
+            }
+            
+            // Toggle View
+            btnToggleView.setOnClickListener {
+                viewModel.onViewModeClick()
+            }
+            
+            // Select All
+            btnSelectAll.setOnClickListener {
+                viewModel.onSelectAllClick()
+            }
+            
+            // Deselect All
+            btnDeselectAll.setOnClickListener {
+                viewModel.onDeselectAllClick()
+            }
+            
+            // Play
+            btnPlay.setOnClickListener {
+                viewModel.onPlayClick()
+            }
+            
+            // Error Retry
+            btnRetry.setOnClickListener {
+                viewModel.refresh()
+            }
+            
+            // Stop scan
+            btnStopScan.setOnClickListener {
+                viewModel.stopScan()
             }
         }
     }
@@ -107,18 +118,67 @@ class BrowseActivity : BaseActivity<ActivityBrowseBinding>() {
             onItemLongClick = { mediaFile -> viewModel.onFileLongClick(mediaFile) }
         )
 
-        binding.fileList.apply {
+        binding.rvMediaFiles.apply {
             layoutManager = GridLayoutManager(this@BrowseActivity, 3)
             adapter = this@BrowseActivity.adapter
             setHasFixedSize(true)
+            
+            // Scroll listener for scroll buttons visibility
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    updateScrollButtonsVisibility()
+                }
+            })
         }
     }
 
-    private fun setupSelectionToolbar() {
-        binding.btnInfo.setOnClickListener { viewModel.onInfoClick() }
-        binding.btnMove.setOnClickListener { viewModel.onMoveClick() }
-        binding.btnCopy.setOnClickListener { viewModel.onCopyClick() }
-        binding.btnDelete.setOnClickListener { viewModel.onDeleteClick() }
+    private fun setupOperationsPanel() {
+        with(binding) {
+            btnCopy.setOnClickListener { viewModel.onCopyClick() }
+            btnMove.setOnClickListener { viewModel.onMoveClick() }
+            btnRename.setOnClickListener { viewModel.onRenameClick() }
+            btnDelete.setOnClickListener { viewModel.onDeleteClick() }
+            btnUndo.setOnClickListener { viewModel.onUndoClick() }
+            btnShare.setOnClickListener { viewModel.onShareClick() }
+        }
+    }
+
+    private fun setupScrollButtons() {
+        binding.fabScrollToTop.setOnClickListener {
+            binding.rvMediaFiles.smoothScrollToPosition(0)
+        }
+        binding.fabScrollToBottom.setOnClickListener {
+            val lastPosition = adapter.itemCount - 1
+            if (lastPosition >= 0) {
+                binding.rvMediaFiles.smoothScrollToPosition(lastPosition)
+            }
+        }
+    }
+
+    private fun updateScrollButtonsVisibility() {
+        val layoutManager = binding.rvMediaFiles.layoutManager
+        val itemCount = adapter.itemCount
+        
+        // Only show buttons if more than 20 items
+        if (itemCount <= 20) {
+            binding.fabScrollToTop.isVisible = false
+            binding.fabScrollToBottom.isVisible = false
+            return
+        }
+        
+        val firstVisiblePosition = when (layoutManager) {
+            is GridLayoutManager -> layoutManager.findFirstVisibleItemPosition()
+            is LinearLayoutManager -> layoutManager.findFirstVisibleItemPosition()
+            else -> 0
+        }
+        val lastVisiblePosition = when (layoutManager) {
+            is GridLayoutManager -> layoutManager.findLastVisibleItemPosition()
+            is LinearLayoutManager -> layoutManager.findLastVisibleItemPosition()
+            else -> itemCount - 1
+        }
+        
+        binding.fabScrollToTop.isVisible = firstVisiblePosition > 10
+        binding.fabScrollToBottom.isVisible = lastVisiblePosition < itemCount - 10
     }
 
     private fun setupBackPressHandler() {
@@ -140,58 +200,83 @@ class BrowseActivity : BaseActivity<ActivityBrowseBinding>() {
     }
 
     private fun updateUi(state: BrowseUiState) {
-        // Update toolbar title based on selection mode
-        if (state.isSelectionMode) {
-            binding.toolbar.title = getString(R.string.selected_count, state.selectedCount)
-            binding.toolbar.setNavigationIcon(R.drawable.ic_close)
-        } else {
-            binding.toolbar.title = state.resourceName.ifEmpty { getString(R.string.files) }
-            binding.toolbar.setNavigationIcon(R.drawable.ic_arrow_back)
-        }
-
-        // Selection toolbar visibility
-        binding.selectionBottomBar.visibility = if (state.isSelectionMode) View.VISIBLE else View.GONE
-        binding.selectionCount.text = getString(R.string.selected_count, state.selectedCount)
+        // Update resource info
+        val selectionInfo = if (state.selectedCount > 0) 
+            " • ${state.selectedCount} selected" 
+        else ""
+        binding.tvResourceInfo.text = "${state.resourceName}${selectionInfo}"
         
-        // Info button only enabled when exactly one file selected
-        binding.btnInfo.isEnabled = state.selectedCount == 1
-        binding.btnInfo.alpha = if (state.selectedCount == 1) 1.0f else 0.5f
-
-        // Loading state
-        binding.progressBar.visibility = if (state.isLoading) View.VISIBLE else View.GONE
-
+        // Filter badge
+        val filterCount = state.activeFilterCount
+        binding.tvFilterBadge.isVisible = filterCount > 0
+        if (filterCount > 0) {
+            binding.tvFilterBadge.text = filterCount.toString()
+        }
+        
+        // Filter warning
+        binding.tvFilterWarning.isVisible = state.filterDescription != null
+        state.filterDescription?.let { binding.tvFilterWarning.text = "⚠ $it" }
+        
+        // Operations panel - show buttons when files selected
+        val hasSelection = state.selectedCount > 0
+        binding.btnCopy.isVisible = hasSelection
+        binding.btnMove.isVisible = hasSelection
+        binding.btnRename.isVisible = hasSelection
+        binding.btnDelete.isVisible = hasSelection
+        binding.btnShare.isVisible = hasSelection
+        
+        // Undo button
+        binding.btnUndo.isVisible = state.hasUndoStack
+        
+        // Loading/Progress state
+        binding.layoutProgress.isVisible = state.isLoading
+        if (state.isLoading) {
+            binding.tvProgressMessage.text = getString(R.string.loading) + 
+                if (state.scannedCount > 0) " (${state.scannedCount})" else ""
+            binding.btnStopScan.isVisible = state.scannedCount > 1000
+        }
+        
         // Empty state
-        binding.emptyStateLayout.visibility = if (state.showEmptyState) View.VISIBLE else View.GONE
+        binding.emptyStateView.isVisible = state.showEmptyState && !state.isLoading
+        
+        // Error state
+        binding.errorStateView.isVisible = state.errorMessage != null && !state.isLoading
+        state.errorMessage?.let { binding.tvErrorMessage.text = it }
+        
+        // RecyclerView visibility
+        binding.rvMediaFiles.isVisible = !state.isLoading && !state.showEmptyState && state.errorMessage == null
+        
+        // Layout manager based on view mode
+        updateLayoutManager(state.isGridView)
+        
+        // Toggle view button icon
+        binding.btnToggleView.setImageResource(
+            if (state.isGridView) R.drawable.ic_view_list else R.drawable.ic_view_grid
+        )
 
-        // RecyclerView
-        binding.fileList.visibility = 
-            if (!state.isLoading && !state.showEmptyState) View.VISIBLE else View.GONE
-
-        // Update layout manager based on view mode
-        val layoutManager = if (state.isGridView) {
-            GridLayoutManager(this, 3)
-        } else {
-            LinearLayoutManager(this)
-        }
-        if (binding.fileList.layoutManager?.javaClass != layoutManager.javaClass) {
-            binding.fileList.layoutManager = layoutManager
-        }
-
-        // Update adapter with selection state and displayed files (filtered if search active)
+        // Update adapter
         adapter.setSelectionMode(state.isSelectionMode, state.selectedFiles)
         adapter.submitList(state.displayedFiles)
         
-        // Show "no search results" message when search is active but no matches
-        if (state.showNoSearchResults) {
-            binding.emptyStateLayout.visibility = View.VISIBLE
-            binding.fileList.visibility = View.GONE
-        }
-
-        // Error state
-        state.errorMessage?.let { message ->
-            Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG)
-                .setAction(R.string.action_retry) { viewModel.refresh() }
-                .show()
+        // Update scroll buttons after list update
+        updateScrollButtonsVisibility()
+    }
+    
+    private fun updateLayoutManager(isGridView: Boolean) {
+        val currentLayoutManager = binding.rvMediaFiles.layoutManager
+        val screenWidthDp = resources.configuration.screenWidthDp
+        val isWideScreen = screenWidthDp >= 600
+        
+        if (isGridView) {
+            val spanCount = if (isWideScreen) 5 else 3
+            if (currentLayoutManager !is GridLayoutManager ||
+                (currentLayoutManager as GridLayoutManager).spanCount != spanCount) {
+                binding.rvMediaFiles.layoutManager = GridLayoutManager(this, spanCount)
+            }
+        } else {
+            if (currentLayoutManager !is LinearLayoutManager || currentLayoutManager is GridLayoutManager) {
+                binding.rvMediaFiles.layoutManager = LinearLayoutManager(this)
+            }
         }
     }
 
@@ -238,8 +323,10 @@ class BrowseActivity : BaseActivity<ActivityBrowseBinding>() {
                 showFileInfoDialog(event.filePath)
             }
             is BrowseUiEvent.RecordResourceVisit -> {
-                // Record resource visit for dynamic shortcuts
                 ShortcutHelper.recordResourceVisit(this, event.resource)
+            }
+            is BrowseUiEvent.ShowFilterDialog -> {
+                showFilterDialog()
             }
         }
     }
@@ -274,7 +361,7 @@ class BrowseActivity : BaseActivity<ActivityBrowseBinding>() {
     }
 
     private fun showDeleteConfirmationDialog(count: Int) {
-        AlertDialog.Builder(this)
+        androidx.appcompat.app.AlertDialog.Builder(this)
             .setTitle(R.string.delete_confirmation_title)
             .setMessage(getString(R.string.delete_confirmation_message, count))
             .setPositiveButton(R.string.action_delete) { _, _ ->
@@ -282,5 +369,10 @@ class BrowseActivity : BaseActivity<ActivityBrowseBinding>() {
             }
             .setNegativeButton(R.string.action_cancel, null)
             .show()
+    }
+    
+    private fun showFilterDialog() {
+        // TODO: Implement FilterDialog
+        Timber.d("Show filter dialog")
     }
 }
