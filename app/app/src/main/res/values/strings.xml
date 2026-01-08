@@ -680,6 +680,18 @@
     <string name="files_progress_default">Processing files…</string>
     <string name="speed_calculating">Calculating speed…</string>
     <string name="time_remaining_calculating">Calculating time…</string>
+    
+    <!-- Translation Strings -->
+    <string name="translation_dialog_title">Translation Settings</string>
+    <string name="source_language">Source Language</string>
+    <string name="target_language">Target Language</string>
+    <string name="swap_languages">Swap languages</string>
+    <string name="translate">Translate</string>
+    <string name="auto_detect">Auto-detect</string>
+    <string name="translation_models_info">Translation models are downloaded on first use and require Wi-Fi by default.</string>
+    <string name="downloading_translation_model">Downloading translation model…</string>
+    <string name="translation_failed">Translation failed</string>
+    <string name="language_detection_failed">Could not detect language</string>
 </resources>
 
 
