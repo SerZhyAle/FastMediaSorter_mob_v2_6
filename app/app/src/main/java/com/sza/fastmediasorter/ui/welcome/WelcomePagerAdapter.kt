@@ -21,7 +21,12 @@ class WelcomePagerAdapter : RecyclerView.Adapter<WelcomePagerAdapter.WelcomeView
             descriptionRes = R.string.welcome_description_2
         ),
         WelcomePage(
-            iconRes = R.mipmap.ic_launcher, // Reuse icon for now
+            iconRes = R.drawable.ic_touch_zones_guide,
+            titleRes = R.string.welcome_title_3_touch_zones,
+            descriptionRes = R.string.welcome_description_3_touch_zones
+        ),
+        WelcomePage(
+            iconRes = R.mipmap.ic_launcher,
             titleRes = R.string.welcome_title_3,
             descriptionRes = R.string.welcome_description_3
         ),

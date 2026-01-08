@@ -41,7 +41,7 @@ class BrowseActivity : BaseActivity<ActivityBrowseBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        
+
         setupControlButtons()
         setupRecyclerView()
         setupOperationsPanel()
@@ -63,48 +63,48 @@ class BrowseActivity : BaseActivity<ActivityBrowseBinding>() {
             btnBack.setOnClickListener {
                 viewModel.onBackPressed()
             }
-            
+
             // Sort
             btnSort.setOnClickListener {
                 viewModel.onSortClick()
             }
-            
+
             // Filter
             btnFilter.setOnClickListener {
                 viewModel.onFilterClick()
             }
-            
+
             // Refresh
             btnRefresh.setOnClickListener {
                 viewModel.refresh()
                 Toast.makeText(this@BrowseActivity, R.string.refresh, Toast.LENGTH_SHORT).show()
             }
-            
+
             // Toggle View
             btnToggleView.setOnClickListener {
                 viewModel.onViewModeClick()
             }
-            
+
             // Select All
             btnSelectAll.setOnClickListener {
                 viewModel.onSelectAllClick()
             }
-            
+
             // Deselect All
             btnDeselectAll.setOnClickListener {
                 viewModel.onDeselectAllClick()
             }
-            
+
             // Play
             btnPlay.setOnClickListener {
                 viewModel.onPlayClick()
             }
-            
+
             // Error Retry
             btnRetry.setOnClickListener {
                 viewModel.refresh()
             }
-            
+
             // Stop scan
             btnStopScan.setOnClickListener {
                 viewModel.stopScan()
@@ -122,7 +122,7 @@ class BrowseActivity : BaseActivity<ActivityBrowseBinding>() {
             layoutManager = GridLayoutManager(this@BrowseActivity, 3)
             adapter = this@BrowseActivity.adapter
             setHasFixedSize(true)
-            
+
             // Scroll listener for scroll buttons visibility
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -158,14 +158,14 @@ class BrowseActivity : BaseActivity<ActivityBrowseBinding>() {
     private fun updateScrollButtonsVisibility() {
         val layoutManager = binding.rvMediaFiles.layoutManager
         val itemCount = adapter.itemCount
-        
+
         // Only show buttons if more than 20 items
         if (itemCount <= 20) {
             binding.fabScrollToTop.isVisible = false
             binding.fabScrollToBottom.isVisible = false
             return
         }
-        
+
         val firstVisiblePosition = when (layoutManager) {
             is GridLayoutManager -> layoutManager.findFirstVisibleItemPosition()
             is LinearLayoutManager -> layoutManager.findFirstVisibleItemPosition()
@@ -176,7 +176,7 @@ class BrowseActivity : BaseActivity<ActivityBrowseBinding>() {
             is LinearLayoutManager -> layoutManager.findLastVisibleItemPosition()
             else -> itemCount - 1
         }
-        
+
         binding.fabScrollToTop.isVisible = firstVisiblePosition > 10
         binding.fabScrollToBottom.isVisible = lastVisiblePosition < itemCount - 10
     }
@@ -201,22 +201,22 @@ class BrowseActivity : BaseActivity<ActivityBrowseBinding>() {
 
     private fun updateUi(state: BrowseUiState) {
         // Update resource info
-        val selectionInfo = if (state.selectedCount > 0) 
-            " • ${state.selectedCount} selected" 
+        val selectionInfo = if (state.selectedCount > 0)
+            " • ${state.selectedCount} selected"
         else ""
         binding.tvResourceInfo.text = "${state.resourceName}${selectionInfo}"
-        
+
         // Filter badge
         val filterCount = state.activeFilterCount
         binding.tvFilterBadge.isVisible = filterCount > 0
         if (filterCount > 0) {
             binding.tvFilterBadge.text = filterCount.toString()
         }
-        
+
         // Filter warning
         binding.tvFilterWarning.isVisible = state.filterDescription != null
         state.filterDescription?.let { binding.tvFilterWarning.text = "⚠ $it" }
-        
+
         // Operations panel - show buttons when files selected
         val hasSelection = state.selectedCount > 0
         binding.btnCopy.isVisible = hasSelection
@@ -224,31 +224,31 @@ class BrowseActivity : BaseActivity<ActivityBrowseBinding>() {
         binding.btnRename.isVisible = hasSelection
         binding.btnDelete.isVisible = hasSelection
         binding.btnShare.isVisible = hasSelection
-        
+
         // Undo button
         binding.btnUndo.isVisible = state.hasUndoStack
-        
+
         // Loading/Progress state
         binding.layoutProgress.isVisible = state.isLoading
         if (state.isLoading) {
-            binding.tvProgressMessage.text = getString(R.string.loading) + 
+            binding.tvProgressMessage.text = getString(R.string.loading) +
                 if (state.scannedCount > 0) " (${state.scannedCount})" else ""
             binding.btnStopScan.isVisible = state.scannedCount > 1000
         }
-        
+
         // Empty state
         binding.emptyStateView.isVisible = state.showEmptyState && !state.isLoading
-        
+
         // Error state
         binding.errorStateView.isVisible = state.errorMessage != null && !state.isLoading
         state.errorMessage?.let { binding.tvErrorMessage.text = it }
-        
+
         // RecyclerView visibility
         binding.rvMediaFiles.isVisible = !state.isLoading && !state.showEmptyState && state.errorMessage == null
-        
+
         // Layout manager based on view mode
         updateLayoutManager(state.isGridView)
-        
+
         // Toggle view button icon
         binding.btnToggleView.setImageResource(
             if (state.isGridView) R.drawable.ic_view_list else R.drawable.ic_view_grid
@@ -257,16 +257,16 @@ class BrowseActivity : BaseActivity<ActivityBrowseBinding>() {
         // Update adapter
         adapter.setSelectionMode(state.isSelectionMode, state.selectedFiles)
         adapter.submitList(state.displayedFiles)
-        
+
         // Update scroll buttons after list update
         updateScrollButtonsVisibility()
     }
-    
+
     private fun updateLayoutManager(isGridView: Boolean) {
         val currentLayoutManager = binding.rvMediaFiles.layoutManager
         val screenWidthDp = resources.configuration.screenWidthDp
         val isWideScreen = screenWidthDp >= 600
-        
+
         if (isGridView) {
             val spanCount = if (isWideScreen) 5 else 3
             if (currentLayoutManager !is GridLayoutManager ||
@@ -326,7 +326,7 @@ class BrowseActivity : BaseActivity<ActivityBrowseBinding>() {
                 ShortcutHelper.recordResourceVisit(this, event.resource)
             }
             is BrowseUiEvent.ShowFilterDialog -> {
-                showFilterDialog()
+                showFilterDialogWithFilters(event.currentFilters)
             }
         }
     }
@@ -370,9 +370,16 @@ class BrowseActivity : BaseActivity<ActivityBrowseBinding>() {
             .setNegativeButton(R.string.action_cancel, null)
             .show()
     }
-    
+
     private fun showFilterDialog() {
-        // TODO: Implement FilterDialog
-        Timber.d("Show filter dialog")
+        showFilterDialogWithFilters(viewModel.getCurrentFilters())
+    }
+
+    private fun showFilterDialogWithFilters(currentFilters: Set<com.sza.fastmediasorter.domain.model.MediaType>) {
+        val dialog = FilterOptionsDialog.newInstance(currentFilters)
+        dialog.onFiltersApplied = { selectedTypes ->
+            viewModel.applyMediaTypeFilters(selectedTypes)
+        }
+        dialog.show(supportFragmentManager, FilterOptionsDialog.TAG)
     }
 }

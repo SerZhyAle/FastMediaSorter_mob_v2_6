@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <!-- Color Preview -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardColorPreview"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        app:cardCornerRadius="8dp"
+        app:strokeWidth="1dp"
+        app:strokeColor="?colorOutline"
+        android:layout_marginBottom="16dp">
+
+        <View
+            android:id="@+id/viewColorPreview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#FF5722" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Preset Colors -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/preset_colors"
+        android:textAppearance="?textAppearanceLabelMedium"
+        android:layout_marginBottom="8dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvPresetColors"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="8"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Custom Color Input -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/custom_color"
+        android:textAppearance="?textAppearanceLabelMedium"
+        android:layout_marginBottom="8dp" />
+
+    <!-- RGB Sliders -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="24dp"
+            android:layout_height="wrap_content"
+            android:text="R"
+            android:textColor="@color/red"
+            android:textStyle="bold" />
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/sliderRed"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:valueFrom="0"
+            android:valueTo="255"
+            android:value="255"
+            app:thumbColor="@color/red"
+            app:trackColorActive="@color/red" />
+
+        <TextView
+            android:id="@+id/tvRedValue"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:text="255"
+            android:gravity="end" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="24dp"
+            android:layout_height="wrap_content"
+            android:text="G"
+            android:textColor="@color/green"
+            android:textStyle="bold" />
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/sliderGreen"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:valueFrom="0"
+            android:valueTo="255"
+            android:value="87"
+            app:thumbColor="@color/green"
+            app:trackColorActive="@color/green" />
+
+        <TextView
+            android:id="@+id/tvGreenValue"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:text="87"
+            android:gravity="end" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="24dp"
+            android:layout_height="wrap_content"
+            android:text="B"
+            android:textColor="@color/blue"
+            android:textStyle="bold" />
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/sliderBlue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:valueFrom="0"
+            android:valueTo="255"
+            android:value="34"
+            app:thumbColor="@color/blue"
+            app:trackColorActive="@color/blue" />
+
+        <TextView
+            android:id="@+id/tvBlueValue"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:text="34"
+            android:gravity="end" />
+
+    </LinearLayout>
+
+    <!-- Hex Input -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilHexColor"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:hint="@string/hex_color"
+        app:prefixText="#">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etHexColor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textCapCharacters"
+            android:maxLength="6"
+            android:text="FF5722" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+</LinearLayout>

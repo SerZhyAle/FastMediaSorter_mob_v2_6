@@ -48,6 +48,11 @@
 
     <!-- Destination Badge Colors (for resource destinations) -->
     <color name="destination_green">#4CAF50</color>
+    
+    <!-- Basic Colors for ColorPickerDialog -->
+    <color name="red">#F44336</color>
+    <color name="green">#4CAF50</color>
+    <color name="blue">#2196F3</color>
     <color name="destination_blue">#2196F3</color>
     <color name="destination_orange">#FF9800</color>
     <color name="destination_purple">#9C27B0</color>

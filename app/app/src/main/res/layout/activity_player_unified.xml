@@ -1,0 +1,541 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black"
+    tools:context=".ui.player.PlayerActivity">
+
+    <!-- ViewPager for media content - main display area -->
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@android:color/black"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Top Command Panel - HorizontalScrollView with all action buttons -->
+    <HorizontalScrollView
+        android:id="@+id/topCommandPanel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="#80000000"
+        android:scrollbars="none"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingHorizontal="4dp"
+            android:paddingVertical="4dp"
+            android:gravity="center_vertical">
+
+            <!-- Universal: Back button -->
+            <ImageButton
+                android:id="@+id/btnBack"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/action_back"
+                android:src="@drawable/ic_arrow_back"
+                android:padding="4dp"
+                app:tint="@android:color/white" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="24dp"
+                android:layout_marginHorizontal="8dp"
+                android:background="#40FFFFFF" />
+
+            <!-- Text file buttons (visibility controlled programmatically) -->
+            <ImageButton
+                android:id="@+id/btnSearchTextCmd"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/action_search"
+                android:src="@drawable/ic_search"
+                android:padding="4dp"
+                android:visibility="gone"
+                app:tint="@android:color/white"
+                tools:visibility="visible" />
+
+            <ImageButton
+                android:id="@+id/btnTranslateTextCmd"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/action_translate"
+                android:src="@drawable/ic_translate"
+                android:padding="4dp"
+                android:visibility="gone"
+                app:tint="@android:color/white"
+                tools:visibility="visible" />
+
+            <ImageButton
+                android:id="@+id/btnTextSettingsCmd"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/action_text_settings"
+                android:src="@drawable/ic_book"
+                android:padding="4dp"
+                android:visibility="gone"
+                app:tint="@android:color/white"
+                tools:visibility="visible" />
+
+            <!-- PDF file buttons -->
+            <ImageButton
+                android:id="@+id/btnSearchPdfCmd"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/action_search"
+                android:src="@drawable/ic_search"
+                android:padding="4dp"
+                android:visibility="gone"
+                app:tint="@android:color/white" />
+
+            <ImageButton
+                android:id="@+id/btnEditPdf"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/action_edit"
+                android:src="@drawable/ic_edit"
+                android:padding="4dp"
+                android:visibility="gone"
+                app:tint="@android:color/white" />
+
+            <ImageButton
+                android:id="@+id/btnTranslatePdfCmd"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/action_translate"
+                android:src="@drawable/ic_translate"
+                android:padding="4dp"
+                android:visibility="gone"
+                app:tint="@android:color/white" />
+
+            <ImageButton
+                android:id="@+id/btnPdfTextSettingsCmd"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/action_text_settings"
+                android:src="@drawable/ic_book"
+                android:padding="4dp"
+                android:visibility="gone"
+                app:tint="@android:color/white" />
+
+            <TextView
+                android:id="@+id/btnOcrPdfCmd"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:gravity="center"
+                android:paddingHorizontal="8dp"
+                android:text="OCR"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <ImageButton
+                android:id="@+id/btnGoogleLensPdfCmd"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/action_google_lens"
+                android:src="@drawable/ic_google_lens"
+                android:padding="4dp"
+                android:visibility="gone"
+                app:tint="@android:color/white" />
+
+            <!-- EPUB buttons -->
+            <ImageButton
+                android:id="@+id/btnSearchEpubCmd"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/action_search"
+                android:src="@drawable/ic_search"
+                android:padding="4dp"
+                android:visibility="gone"
+                app:tint="@android:color/white" />
+
+            <ImageButton
+                android:id="@+id/btnTranslateEpubCmd"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/action_translate"
+                android:src="@drawable/ic_translate"
+                android:padding="4dp"
+                android:visibility="gone"
+                app:tint="@android:color/white" />
+
+            <ImageButton
+                android:id="@+id/btnEpubTextSettingsCmd"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/action_text_settings"
+                android:src="@drawable/ic_book"
+                android:padding="4dp"
+                android:visibility="gone"
+                app:tint="@android:color/white" />
+
+            <ImageButton
+                android:id="@+id/btnOcrEpubCmd"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/action_ocr"
+                android:src="@drawable/ic_ocr"
+                android:padding="4dp"
+                android:visibility="gone"
+                app:tint="@android:color/white" />
+
+            <!-- Image/GIF buttons -->
+            <ImageButton
+                android:id="@+id/btnTranslateImageCmd"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/action_translate"
+                android:src="@drawable/ic_translate"
+                android:padding="4dp"
+                android:visibility="gone"
+                app:tint="@android:color/white" />
+
+            <ImageButton
+                android:id="@+id/btnImageTextSettingsCmd"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/action_text_settings"
+                android:src="@drawable/ic_book"
+                android:padding="4dp"
+                android:visibility="gone"
+                app:tint="@android:color/white" />
+
+            <ImageButton
+                android:id="@+id/btnOcrImageCmd"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/action_ocr"
+                android:src="@drawable/ic_ocr"
+                android:padding="4dp"
+                android:visibility="gone"
+                app:tint="@android:color/white" />
+
+            <ImageButton
+                android:id="@+id/btnGoogleLensImageCmd"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/action_google_lens"
+                android:src="@drawable/ic_google_lens"
+                android:padding="4dp"
+                android:visibility="gone"
+                app:tint="@android:color/white" />
+
+            <!-- Audio buttons -->
+            <ImageButton
+                android:id="@+id/btnLyricsCmd"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/action_lyrics"
+                android:src="@drawable/ic_lyrics"
+                android:padding="4dp"
+                android:visibility="gone"
+                app:tint="@android:color/white" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="24dp"
+                android:layout_marginHorizontal="8dp"
+                android:background="#40FFFFFF" />
+
+            <!-- Common file operations -->
+            <ImageButton
+                android:id="@+id/btnRenameCmd"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/action_rename"
+                android:src="@drawable/ic_edit"
+                android:padding="4dp"
+                app:tint="@android:color/white" />
+
+            <ImageButton
+                android:id="@+id/btnEditCmd"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/action_edit"
+                android:src="@drawable/ic_edit"
+                android:padding="4dp"
+                android:visibility="gone"
+                app:tint="@android:color/white" />
+
+            <ImageButton
+                android:id="@+id/btnCopyTextCmd"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/action_copy"
+                android:src="@drawable/ic_content_copy"
+                android:padding="4dp"
+                android:visibility="gone"
+                app:tint="@android:color/white" />
+
+            <ImageButton
+                android:id="@+id/btnEditTextCmd"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/action_edit"
+                android:src="@drawable/ic_edit"
+                android:padding="4dp"
+                android:visibility="gone"
+                app:tint="@android:color/white" />
+
+            <ImageButton
+                android:id="@+id/btnUndoCmd"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/action_undo"
+                android:src="@drawable/ic_undo"
+                android:padding="4dp"
+                app:tint="@android:color/white" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="24dp"
+                android:layout_marginHorizontal="8dp"
+                android:background="#40FFFFFF" />
+
+            <!-- Right-side buttons -->
+            <ImageButton
+                android:id="@+id/btnDeleteCmd"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/action_delete"
+                android:src="@drawable/ic_delete"
+                android:padding="4dp"
+                app:tint="@android:color/white" />
+
+            <ImageButton
+                android:id="@+id/btnFavorite"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/action_favorite"
+                android:src="@drawable/ic_favorite_outline"
+                android:padding="4dp"
+                app:tint="@android:color/white" />
+
+            <ImageButton
+                android:id="@+id/btnShareCmd"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/action_share"
+                android:src="@drawable/ic_share"
+                android:padding="4dp"
+                app:tint="@android:color/white" />
+
+            <ImageButton
+                android:id="@+id/btnInfoCmd"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/action_info"
+                android:src="@drawable/ic_info"
+                android:padding="4dp"
+                app:tint="@android:color/white" />
+
+            <ImageButton
+                android:id="@+id/btnFullscreenCmd"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/action_fullscreen"
+                android:src="@drawable/ic_fullscreen"
+                android:padding="4dp"
+                app:tint="@android:color/white" />
+
+            <ImageButton
+                android:id="@+id/btnSlideshowCmd"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/action_slideshow"
+                android:src="@drawable/ic_slideshow"
+                android:padding="4dp"
+                android:visibility="gone"
+                app:tint="@android:color/white" />
+
+            <ImageButton
+                android:id="@+id/btnPreviousCmd"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/action_previous"
+                android:src="@drawable/ic_arrow_back"
+                android:padding="4dp"
+                app:tint="@android:color/white" />
+
+            <ImageButton
+                android:id="@+id/btnNextCmd"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/action_next"
+                android:src="@drawable/ic_arrow_forward"
+                android:padding="4dp"
+                app:tint="@android:color/white" />
+
+            <ImageButton
+                android:id="@+id/btnOverflowMenu"
+                android:layout_width="72dp"
+                android:layout_height="36dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/action_more_options"
+                android:src="@drawable/ic_more_vert"
+                android:scaleType="center"
+                android:visibility="gone"
+                app:tint="@android:color/white" />
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <!-- Title bar overlay (file name and position) -->
+    <LinearLayout
+        android:id="@+id/titleBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="#80000000"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/topCommandPanel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:visibility="visible">
+
+        <TextView
+            android:id="@+id/tvFileName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="middle"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            tools:text="photo_20260108_154530.jpg" />
+
+        <TextView
+            android:id="@+id/tvFilePosition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#AAAAAA"
+            android:textSize="12sp"
+            tools:text="1 / 25" />
+
+    </LinearLayout>
+
+    <!-- Loading indicator -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:visibility="visible" />
+
+    <!-- Bottom controls container (navigation) -->
+    <LinearLayout
+        android:id="@+id/controlsContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#80000000"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingVertical="16dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:visibility="visible">
+
+        <!-- Previous button -->
+        <ImageButton
+            android:id="@+id/btnPrevious"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_marginEnd="32dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/action_previous"
+            android:src="@drawable/ic_skip_previous"
+            app:tint="@android:color/white" />
+
+        <!-- Play/Pause for slideshow -->
+        <ImageButton
+            android:id="@+id/btnPlayPause"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/action_play_pause"
+            android:src="@drawable/ic_play_circle"
+            android:visibility="gone"
+            app:tint="@android:color/white" />
+
+        <!-- Next button -->
+        <ImageButton
+            android:id="@+id/btnNext"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_marginStart="32dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/action_next"
+            android:src="@drawable/ic_skip_next"
+            app:tint="@android:color/white" />
+
+    </LinearLayout>
+
+    <!-- Touch zones overlay - for gesture detection -->
+    <com.sza.fastmediasorter.ui.player.views.TouchZoneOverlayView
+        android:id="@+id/touchZonesOverlay"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="visible"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

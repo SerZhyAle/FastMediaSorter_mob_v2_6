@@ -1,6 +1,7 @@
 package com.sza.fastmediasorter.ui.browse
 
 import com.sza.fastmediasorter.domain.model.MediaFile
+import com.sza.fastmediasorter.domain.model.MediaType
 import com.sza.fastmediasorter.domain.model.Resource
 import com.sza.fastmediasorter.domain.model.SortMode
 
@@ -18,18 +19,19 @@ data class BrowseUiState(
     val errorMessage: String? = null,
     val sortMode: SortMode = SortMode.NAME_ASC,
     val searchQuery: String = "",
-    
+
     // Selection mode state
     val isSelectionMode: Boolean = false,
     val selectedFiles: Set<String> = emptySet(),
-    
+
     // Filter state
     val activeFilterCount: Int = 0,
     val filterDescription: String? = null,
-    
+    val mediaTypeFilters: Set<MediaType> = emptySet(),
+
     // Undo support
     val hasUndoStack: Boolean = false,
-    
+
     // Scan progress
     val scannedCount: Int = 0
 ) {
@@ -39,18 +41,31 @@ data class BrowseUiState(
 
     val selectedCount: Int get() = selectedFiles.size
     val allSelected: Boolean get() = selectedFiles.size == displayedFiles.size && displayedFiles.isNotEmpty()
-    
+
     /**
-     * Files to display (filtered if search active, otherwise all files).
+     * Files to display - applies search filter and media type filters.
      */
-    val displayedFiles: List<MediaFile> get() = 
-        if (searchQuery.isBlank()) files else filteredFiles
-    
+    val displayedFiles: List<MediaFile> get() {
+        var result = if (searchQuery.isBlank()) files else filteredFiles
+
+        // Apply media type filter if active
+        if (mediaTypeFilters.isNotEmpty()) {
+            result = result.filter { it.type in mediaTypeFilters }
+        }
+
+        return result
+    }
+
     /**
      * True if search is active but no results found.
      */
-    val showNoSearchResults: Boolean get() = 
+    val showNoSearchResults: Boolean get() =
         searchQuery.isNotBlank() && filteredFiles.isEmpty() && files.isNotEmpty()
+
+    /**
+     * True if media type filter is active.
+     */
+    val hasActiveFilter: Boolean get() = mediaTypeFilters.isNotEmpty()
 }
 
 /**
@@ -66,5 +81,5 @@ sealed class BrowseUiEvent {
     data class ShowSortDialog(val currentSortMode: SortMode) : BrowseUiEvent()
     data class ShowFileInfo(val filePath: String) : BrowseUiEvent()
     data class RecordResourceVisit(val resource: Resource) : BrowseUiEvent()
-    data object ShowFilterDialog : BrowseUiEvent()
+    data class ShowFilterDialog(val currentFilters: Set<MediaType>) : BrowseUiEvent()
 }

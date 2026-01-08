@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="60dp"
+    android:layout_height="60dp"
+    android:layout_margin="2dp">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardFrame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardCornerRadius="4dp"
+        app:strokeWidth="2dp"
+        app:strokeColor="@android:color/transparent"
+        app:cardElevation="2dp">
+
+        <ImageView
+            android:id="@+id/ivFrame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:contentDescription="@string/gif_preview"
+            tools:src="@drawable/ic_gif" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/tvFrameNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:padding="2dp"
+        android:textSize="10sp"
+        android:textColor="@color/white"
+        android:background="#80000000"
+        tools:text="1" />
+
+</FrameLayout>

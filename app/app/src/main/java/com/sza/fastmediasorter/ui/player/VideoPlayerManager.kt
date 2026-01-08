@@ -17,7 +17,7 @@ import javax.inject.Singleton
 /**
  * Manager class to handle ExoPlayer lifecycle and operations.
  * Encapsulates all video playback logic separate from Activity.
- * 
+ *
  * Injected as singleton but player is initialized/released per activity lifecycle.
  */
 @Singleton
@@ -27,7 +27,7 @@ class VideoPlayerManager @Inject constructor(
     private var player: ExoPlayer? = null
     private var currentPlayerView: PlayerView? = null
     private var currentMediaPath: String? = null
-    
+
     private var playbackPosition: Long = 0
     private var playWhenReady: Boolean = true
     private var wasPlaying: Boolean = false
@@ -90,7 +90,7 @@ class VideoPlayerManager @Inject constructor(
      */
     fun loadVideo(filePath: String, startPosition: Long = 0) {
         Timber.d("Loading video: $filePath at position: $startPosition")
-        
+
         val player = player ?: run {
             Timber.w("Player not initialized")
             return
@@ -111,9 +111,9 @@ class VideoPlayerManager @Inject constructor(
         } else {
             Uri.fromFile(File(filePath))
         }
-        
+
         val mediaItem = MediaItem.fromUri(uri)
-        
+
         player.setMediaItem(mediaItem)
         player.seekTo(playbackPosition)
         player.prepare()
@@ -169,6 +169,17 @@ class VideoPlayerManager @Inject constructor(
         player?.let {
             val newPosition = (it.currentPosition - amountMs).coerceAtLeast(0)
             seekTo(newPosition)
+        }
+    }
+
+    /**
+     * Seek relative to current position (positive for forward, negative for backward).
+     */
+    fun seekRelative(amountMs: Long) {
+        if (amountMs >= 0) {
+            seekForward(amountMs)
+        } else {
+            seekBackward(-amountMs)
         }
     }
 

@@ -8,13 +8,15 @@ import android.view.WindowInsets
 import android.view.WindowInsetsController
 import androidx.activity.viewModels
 import androidx.core.view.WindowCompat
+import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.snackbar.Snackbar
 import com.sza.fastmediasorter.R
-import com.sza.fastmediasorter.databinding.ActivityPlayerBinding
+import com.sza.fastmediasorter.databinding.ActivityPlayerUnifiedBinding
+import com.sza.fastmediasorter.domain.model.MediaType
 import com.sza.fastmediasorter.ui.base.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -25,14 +27,14 @@ import javax.inject.Inject
 /**
  * Activity for displaying and navigating through media files.
  * Uses ViewPager2 for horizontal swiping between files.
- * 
+ *
  * Supports:
  * - Image viewing with Glide
  * - Video playback with ExoPlayer
  * - Audio playback (future)
  */
 @AndroidEntryPoint
-class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
+class PlayerActivity : BaseActivity<ActivityPlayerUnifiedBinding>() {
 
     companion object {
         private const val EXTRA_FILE_PATHS = "EXTRA_FILE_PATHS"
@@ -59,25 +61,26 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
 
     private val viewModel: PlayerViewModel by viewModels()
     private lateinit var pagerAdapter: MediaPagerAdapter
-    
+
     @Inject
     lateinit var videoPlayerManager: VideoPlayerManager
-    
+
     @Inject
     lateinit var audioPlayerManager: AudioPlayerManager
 
-    override fun getViewBinding() = ActivityPlayerBinding.inflate(layoutInflater)
+    override fun getViewBinding() = ActivityPlayerUnifiedBinding.inflate(layoutInflater)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         // Enable fullscreen mode for player only
         setupFullscreen()
-        
+
         initializeVideoPlayer()
         setupViewPager()
-        setupToolbar()
+        setupCommandPanel()
         setupControls()
+        setupTouchZones()
         observeUiState()
         observeEvents()
 
@@ -140,6 +143,175 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
         }
     }
 
+    /**
+     * Set up the top command panel with all action buttons.
+     * Button visibility is controlled based on current media type.
+     */
+    private fun setupCommandPanel() {
+        with(binding) {
+            // Universal buttons
+            btnBack.setOnClickListener { finish() }
+
+            // Text file buttons
+            btnSearchTextCmd.setOnClickListener { viewModel.onSearchTextClick() }
+            btnTranslateTextCmd.setOnClickListener { viewModel.onTranslateClick() }
+            btnTextSettingsCmd.setOnClickListener { viewModel.onTextSettingsClick() }
+
+            // PDF buttons
+            btnSearchPdfCmd.setOnClickListener { viewModel.onSearchPdfClick() }
+            btnEditPdf.setOnClickListener { viewModel.onEditPdfClick() }
+            btnTranslatePdfCmd.setOnClickListener { viewModel.onTranslateClick() }
+            btnPdfTextSettingsCmd.setOnClickListener { viewModel.onTextSettingsClick() }
+            btnOcrPdfCmd.setOnClickListener { viewModel.onOcrClick() }
+            btnGoogleLensPdfCmd.setOnClickListener { viewModel.onGoogleLensClick() }
+
+            // EPUB buttons
+            btnSearchEpubCmd.setOnClickListener { viewModel.onSearchEpubClick() }
+            btnTranslateEpubCmd.setOnClickListener { viewModel.onTranslateClick() }
+            btnEpubTextSettingsCmd.setOnClickListener { viewModel.onTextSettingsClick() }
+            btnOcrEpubCmd.setOnClickListener { viewModel.onOcrClick() }
+
+            // Image buttons
+            btnTranslateImageCmd.setOnClickListener { viewModel.onTranslateClick() }
+            btnImageTextSettingsCmd.setOnClickListener { viewModel.onTextSettingsClick() }
+            btnOcrImageCmd.setOnClickListener { viewModel.onOcrClick() }
+            btnGoogleLensImageCmd.setOnClickListener { viewModel.onGoogleLensClick() }
+
+            // Audio button
+            btnLyricsCmd.setOnClickListener { viewModel.onLyricsClick() }
+
+            // Common file operation buttons
+            btnRenameCmd.setOnClickListener { viewModel.onRenameClick() }
+            btnEditCmd.setOnClickListener { viewModel.onEditClick() }
+            btnCopyTextCmd.setOnClickListener { viewModel.onCopyTextClick() }
+            btnEditTextCmd.setOnClickListener { viewModel.onEditTextClick() }
+            btnUndoCmd.setOnClickListener { viewModel.onUndoClick() }
+
+            // Right-side buttons
+            btnDeleteCmd.setOnClickListener { viewModel.onDeleteClick() }
+            btnFavorite.setOnClickListener { viewModel.onFavoriteClick() }
+            btnShareCmd.setOnClickListener { viewModel.onShareClick() }
+            btnInfoCmd.setOnClickListener { viewModel.onInfoClick() }
+            btnFullscreenCmd.setOnClickListener { viewModel.toggleFullscreen() }
+            btnSlideshowCmd.setOnClickListener { viewModel.onSlideshowClick() }
+            btnPreviousCmd.setOnClickListener { navigateToPrevious() }
+            btnNextCmd.setOnClickListener { navigateToNext() }
+        }
+    }
+
+    /**
+     * Update command panel button visibility based on current media type.
+     */
+    private fun updateCommandPanelForMediaType(mediaType: MediaType?) {
+        with(binding) {
+            // Hide all type-specific buttons first
+            btnSearchTextCmd.isVisible = false
+            btnTranslateTextCmd.isVisible = false
+            btnTextSettingsCmd.isVisible = false
+            btnSearchPdfCmd.isVisible = false
+            btnEditPdf.isVisible = false
+            btnTranslatePdfCmd.isVisible = false
+            btnPdfTextSettingsCmd.isVisible = false
+            btnOcrPdfCmd.isVisible = false
+            btnGoogleLensPdfCmd.isVisible = false
+            btnSearchEpubCmd.isVisible = false
+            btnTranslateEpubCmd.isVisible = false
+            btnEpubTextSettingsCmd.isVisible = false
+            btnOcrEpubCmd.isVisible = false
+            btnTranslateImageCmd.isVisible = false
+            btnImageTextSettingsCmd.isVisible = false
+            btnOcrImageCmd.isVisible = false
+            btnGoogleLensImageCmd.isVisible = false
+            btnLyricsCmd.isVisible = false
+            btnEditCmd.isVisible = false
+            btnCopyTextCmd.isVisible = false
+            btnEditTextCmd.isVisible = false
+            btnSlideshowCmd.isVisible = false
+
+            // Show buttons based on media type
+            when (mediaType) {
+                MediaType.IMAGE, MediaType.GIF -> {
+                    btnTranslateImageCmd.isVisible = true
+                    btnImageTextSettingsCmd.isVisible = true
+                    btnOcrImageCmd.isVisible = true
+                    btnGoogleLensImageCmd.isVisible = true
+                    btnEditCmd.isVisible = true
+                    btnSlideshowCmd.isVisible = true
+                }
+                MediaType.VIDEO -> {
+                    // Video has minimal buttons, mainly playback controls
+                }
+                MediaType.AUDIO -> {
+                    btnLyricsCmd.isVisible = true
+                }
+                MediaType.PDF -> {
+                    btnSearchPdfCmd.isVisible = true
+                    btnEditPdf.isVisible = true
+                    btnTranslatePdfCmd.isVisible = true
+                    btnPdfTextSettingsCmd.isVisible = true
+                    btnOcrPdfCmd.isVisible = true
+                    btnGoogleLensPdfCmd.isVisible = true
+                    btnCopyTextCmd.isVisible = true
+                }
+                MediaType.EPUB -> {
+                    btnSearchEpubCmd.isVisible = true
+                    btnTranslateEpubCmd.isVisible = true
+                    btnEpubTextSettingsCmd.isVisible = true
+                    btnOcrEpubCmd.isVisible = true
+                    btnCopyTextCmd.isVisible = true
+                }
+                MediaType.TXT -> {
+                    btnSearchTextCmd.isVisible = true
+                    btnTranslateTextCmd.isVisible = true
+                    btnTextSettingsCmd.isVisible = true
+                    btnCopyTextCmd.isVisible = true
+                    btnEditTextCmd.isVisible = true
+                }
+                else -> {
+                    // Generic file - minimal buttons
+                }
+            }
+        }
+    }
+
+    /**
+     * Set up the touch zones overlay for gesture navigation.
+     */
+    private fun setupTouchZones() {
+        binding.touchZonesOverlay.zoneTapListener = object : com.sza.fastmediasorter.ui.player.views.TouchZoneOverlayView.OnZoneTapListener {
+            override fun onPreviousFile() {
+                navigateToPrevious()
+            }
+
+            override fun onNextFile() {
+                navigateToNext()
+            }
+
+            override fun onToggleUi() {
+                viewModel.toggleUiVisibility()
+            }
+
+            override fun onSeekBackward() {
+                videoPlayerManager.seekRelative(-10_000) // Seek back 10 seconds
+            }
+
+            override fun onSeekForward() {
+                videoPlayerManager.seekRelative(10_000) // Seek forward 10 seconds
+            }
+
+            override fun onPlayPause() {
+                if (videoPlayerManager.isPlaying()) {
+                    videoPlayerManager.pause()
+                } else {
+                    videoPlayerManager.play()
+                }
+            }
+        }
+
+        // Set initial label visibility (could be controlled by settings)
+        binding.touchZonesOverlay.showLabels = false
+    }
+
     override fun onResume() {
         super.onResume()
         // Resume video playback if any
@@ -161,34 +333,6 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
         audioPlayerManager.release()
     }
 
-    private fun setupToolbar() {
-        binding.toolbar.setNavigationOnClickListener {
-            finish()
-        }
-
-        binding.toolbar.setOnMenuItemClickListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.action_favorite -> {
-                    viewModel.onFavoriteClick()
-                    true
-                }
-                R.id.action_share -> {
-                    viewModel.onShareClick()
-                    true
-                }
-                R.id.action_delete -> {
-                    viewModel.onDeleteClick()
-                    true
-                }
-                R.id.action_info -> {
-                    viewModel.onInfoClick()
-                    true
-                }
-                else -> false
-            }
-        }
-    }
-
     private fun setupControls() {
         // Previous button
         binding.btnPrevious.setOnClickListener {
@@ -198,6 +342,11 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
         // Next button
         binding.btnNext.setOnClickListener {
             viewModel.onNextClick()
+        }
+
+        // Play/Pause button for slideshow
+        binding.btnPlayPause.setOnClickListener {
+            viewModel.toggleSlideshow()
         }
     }
 
@@ -209,28 +358,28 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
                 }
             }
         }
-        
-        // Observe favorites preference and show/hide menu item
+
+        // Observe favorites preference
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.preferencesRepository.enableFavorites.collect { enabled ->
-                    binding.toolbar.menu.findItem(R.id.action_favorite)?.isVisible = enabled
+                    binding.btnFavorite.isVisible = enabled
                 }
             }
         }
     }
 
     private fun updateUi(state: PlayerUiState) {
-        // Update toolbar title with current position
-        binding.toolbar.title = state.currentFileName
-        binding.toolbar.subtitle = if (state.totalCount > 0) {
+        // Update title bar
+        binding.tvFileName.text = state.currentFileName
+        binding.tvFilePosition.text = if (state.totalCount > 0) {
             "${state.currentIndex + 1} / ${state.totalCount}"
-        } else null
+        } else ""
 
         // Update media list
         if (state.files.isNotEmpty()) {
             pagerAdapter.submitList(state.files)
-            
+
             // Set current page if different
             if (binding.viewPager.currentItem != state.currentIndex) {
                 binding.viewPager.setCurrentItem(state.currentIndex, false)
@@ -243,7 +392,8 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
 
         // Toggle UI visibility
         val uiVisible = state.isUiVisible
-        binding.toolbar.visibility = if (uiVisible) View.VISIBLE else View.GONE
+        binding.topCommandPanel.visibility = if (uiVisible) View.VISIBLE else View.GONE
+        binding.titleBar.visibility = if (uiVisible) View.VISIBLE else View.GONE
         binding.controlsContainer.visibility = if (uiVisible) View.VISIBLE else View.GONE
 
         // Update fullscreen mode
@@ -254,26 +404,18 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
 
         // Update favorite icon
         updateFavoriteIcon(state.isFavorite)
-    }
 
-    private fun updateFavoriteIcon(isFavorite: Boolean) {
-        val menuItem = binding.toolbar.menu.findItem(R.id.action_favorite)
-        menuItem?.setIcon(
-            if (isFavorite) R.drawable.ic_favorite_filled
-            else R.drawable.ic_favorite_outline
+        // Update command panel buttons based on current media type
+        updateCommandPanelForMediaType(state.currentMediaType)
+
+        // Update fullscreen icon
+        binding.btnFullscreenCmd.setImageResource(
+            if (state.isFullscreen) R.drawable.ic_fullscreen_exit else R.drawable.ic_fullscreen
         )
     }
 
-    private fun toggleSystemUi(visible: Boolean) {
-        val controller = window.insetsController ?: return
-        if (visible) {
-            controller.show(WindowInsets.Type.systemBars())
-            controller.systemBarsBehavior = WindowInsetsController.BEHAVIOR_DEFAULT
-        } else {
-            controller.hide(WindowInsets.Type.systemBars())
-            controller.systemBarsBehavior = 
-                WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-        }
+    private fun updateFavoriteIcon(isFavorite: Boolean) {
+        binding.btnFavorite.setImageResource(
     }
 
     private fun observeEvents() {
@@ -306,12 +448,63 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
             is PlayerUiEvent.ShowContextMenu -> {
                 showContextMenu(event.filePath)
             }
+            is PlayerUiEvent.ShowRenameDialog -> {
+                showRenameDialog(event.filePath)
+            }
             is PlayerUiEvent.NavigateBack -> {
                 finish()
             }
         }
     }
-    
+
+    private fun showRenameDialog(filePath: String) {
+        val file = java.io.File(filePath)
+        val currentName = file.nameWithoutExtension
+
+        val dialogView = layoutInflater.inflate(R.layout.dialog_rename, null)
+        val editText = dialogView.findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.etNewName)
+        val inputLayout = dialogView.findViewById<com.google.android.material.textfield.TextInputLayout>(R.id.tilNewName)
+
+        // Pre-fill with current name and select all
+        editText.setText(currentName)
+        editText.selectAll()
+
+        val dialog = com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.rename_title)
+            .setView(dialogView)
+            .setPositiveButton(R.string.action_ok, null) // Set null initially to override later
+            .setNegativeButton(R.string.action_cancel, null)
+            .create()
+
+        dialog.setOnShowListener {
+            val positiveButton = dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE)
+            positiveButton.setOnClickListener {
+                val newName = editText.text?.toString()?.trim() ?: ""
+
+                // Validate input
+                when {
+                    newName.isEmpty() -> {
+                        inputLayout.error = getString(R.string.rename_error_empty)
+                    }
+                    newName.contains(Regex("[\\\\/:*?\"<>|]")) -> {
+                        inputLayout.error = getString(R.string.rename_error_invalid)
+                    }
+                    else -> {
+                        inputLayout.error = null
+                        viewModel.renameFile(filePath, newName)
+                        dialog.dismiss()
+                    }
+                }
+            }
+
+            // Focus on the EditText and show keyboard
+            editText.requestFocus()
+            dialog.window?.setSoftInputMode(android.view.WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
+        }
+
+        dialog.show()
+    }
+
     private fun showContextMenu(filePath: String) {
         val menuItems = arrayOf(
             getString(R.string.share),
@@ -320,7 +513,7 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
             getString(R.string.open_with),
             getString(R.string.action_cancel)
         )
-        
+
         androidx.appcompat.app.AlertDialog.Builder(this)
             .setTitle(java.io.File(filePath).name)
             .setItems(menuItems) { _, which ->
@@ -334,7 +527,7 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
             }
             .show()
     }
-    
+
     private fun openWith(filePath: String) {
         try {
             val file = java.io.File(filePath)
@@ -343,14 +536,14 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
                 "${packageName}.fileprovider",
                 file
             )
-            
+
             val mimeType = contentResolver.getType(uri) ?: "*/*"
-            
+
             val intent = android.content.Intent(android.content.Intent.ACTION_VIEW).apply {
                 setDataAndType(uri, mimeType)
                 addFlags(android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION)
             }
-            
+
             val chooser = android.content.Intent.createChooser(intent, getString(R.string.open_with))
             startActivity(chooser)
         } catch (e: Exception) {
@@ -372,15 +565,15 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
                 "${packageName}.fileprovider",
                 file
             )
-            
+
             val mimeType = getMimeType(file.extension.lowercase())
-            
+
             val intent = Intent(Intent.ACTION_SEND).apply {
                 type = mimeType
                 putExtra(Intent.EXTRA_STREAM, uri)
                 addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             }
-            
+
             startActivity(Intent.createChooser(intent, getString(R.string.share)))
         } catch (e: Exception) {
             Timber.e(e, "Failed to share file")
@@ -413,7 +606,7 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
 
     private fun showDeleteConfirmationDialog(filePath: String) {
         val fileName = java.io.File(filePath).name
-        
+
         androidx.appcompat.app.AlertDialog.Builder(this)
             .setTitle(R.string.delete_confirmation_title)
             .setMessage(getString(R.string.delete_single_file_message, fileName))

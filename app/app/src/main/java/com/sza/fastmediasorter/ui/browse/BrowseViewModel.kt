@@ -66,10 +66,10 @@ class BrowseViewModel @Inject constructor(
             when (val resourceResult = getResourcesUseCase.getById(resourceId)) {
                 is Result.Success -> {
                     val resource = resourceResult.data
-                    
+
                     // Emit event to record resource visit (for shortcuts)
                     _events.emit(BrowseUiEvent.RecordResourceVisit(resource))
-                    
+
                     // Load files from the resource
                     when (val filesResult = getMediaFilesUseCase(resourceId)) {
                         is Result.Success -> {
@@ -99,7 +99,7 @@ class BrowseViewModel @Inject constructor(
                     }
                 }
                 is Result.Error -> {
-                    _uiState.update { 
+                    _uiState.update {
                         it.copy(isLoading = false, errorMessage = resourceResult.message)
                     }
                 }
@@ -134,7 +134,7 @@ class BrowseViewModel @Inject constructor(
         val state = _uiState.value
         if (!state.isSelectionMode) {
             // Enter selection mode and select this file
-            _uiState.update { 
+            _uiState.update {
                 it.copy(
                     isSelectionMode = true,
                     selectedFiles = setOf(mediaFile.path)
@@ -154,7 +154,7 @@ class BrowseViewModel @Inject constructor(
             } else {
                 state.selectedFiles + mediaFile.path
             }
-            
+
             // Exit selection mode if nothing selected
             if (newSelection.isEmpty()) {
                 state.copy(isSelectionMode = false, selectedFiles = emptySet())
@@ -165,7 +165,7 @@ class BrowseViewModel @Inject constructor(
     }
 
     fun exitSelectionMode() {
-        _uiState.update { 
+        _uiState.update {
             it.copy(isSelectionMode = false, selectedFiles = emptySet())
         }
     }
@@ -216,13 +216,13 @@ class BrowseViewModel @Inject constructor(
     fun confirmDelete() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
-            
+
             val selectedPaths = _uiState.value.selectedFiles.toList()
             val selectedFiles = _uiState.value.files.filter { it.path in selectedPaths }
-            
+
             var successCount = 0
             var failCount = 0
-            
+
             for (file in selectedFiles) {
                 when (trashManager.moveToTrash(file)) {
                     is Result.Success -> successCount++
@@ -233,10 +233,10 @@ class BrowseViewModel @Inject constructor(
                     is Result.Loading -> { /* Ignore */ }
                 }
             }
-            
+
             exitSelectionMode()
             refresh()
-            
+
             // Show undo snackbar
             if (successCount > 0) {
                 val message = if (failCount == 0) {
@@ -273,7 +273,7 @@ class BrowseViewModel @Inject constructor(
         viewModelScope.launch {
             val recentlyDeleted = trashManager.getRecentlyDeleted().take(count)
             var restoredCount = 0
-            
+
             for (trashedFile in recentlyDeleted) {
                 when (trashManager.restoreFromTrash(trashedFile)) {
                     is Result.Success -> restoredCount++
@@ -281,7 +281,7 @@ class BrowseViewModel @Inject constructor(
                     is Result.Loading -> { /* Ignore */ }
                 }
             }
-            
+
             if (restoredCount > 0) {
                 refresh()
                 _events.emit(BrowseUiEvent.ShowSnackbar("$restoredCount file(s) restored"))
@@ -321,8 +321,8 @@ class BrowseViewModel @Inject constructor(
                 file.name.contains(query, ignoreCase = true)
             }
         }
-        
-        _uiState.update { 
+
+        _uiState.update {
             it.copy(
                 searchQuery = query,
                 filteredFiles = filteredFiles
@@ -334,7 +334,7 @@ class BrowseViewModel @Inject constructor(
      * Clear search query.
      */
     fun clearSearch() {
-        _uiState.update { 
+        _uiState.update {
             it.copy(searchQuery = "", filteredFiles = emptyList())
         }
     }
@@ -342,7 +342,7 @@ class BrowseViewModel @Inject constructor(
     fun onSortModeSelected(sortMode: SortMode) {
         val currentFiles = _uiState.value.files
         val sortedFiles = sortFiles(currentFiles, sortMode)
-        _uiState.update { 
+        _uiState.update {
             it.copy(
                 sortMode = sortMode,
                 files = sortedFiles
@@ -378,27 +378,27 @@ class BrowseViewModel @Inject constructor(
     fun executeFileOperation(filePaths: List<String>, destinationDir: String, isMove: Boolean) {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
-            
+
             var successCount = 0
             var failCount = 0
-            
+
             for (filePath in filePaths) {
                 val fileName = File(filePath).name
                 val destinationPath = "$destinationDir/$fileName"
-                
+
                 // Create a simple MediaFile for the operation
                 val sourceFile = _uiState.value.files.find { it.path == filePath }
                 if (sourceFile == null) {
                     failCount++
                     continue
                 }
-                
+
                 val result = if (isMove) {
                     fileOperationStrategy.move(sourceFile, destinationPath)
                 } else {
                     fileOperationStrategy.copy(sourceFile, destinationPath)
                 }
-                
+
                 when (result) {
                     is Result.Success -> successCount++
                     is Result.Error -> {
@@ -408,11 +408,11 @@ class BrowseViewModel @Inject constructor(
                     is Result.Loading -> { /* Ignore loading state */ }
                 }
             }
-            
+
             // Exit selection mode and refresh
             exitSelectionMode()
             refresh()
-            
+
             // Show result message
             val message = if (isMove) {
                 if (failCount == 0) "$successCount file(s) moved"
@@ -424,17 +424,17 @@ class BrowseViewModel @Inject constructor(
             _events.emit(BrowseUiEvent.ShowSnackbar(message))
         }
     }
-    
+
     /**
      * Deselect all files.
      */
     fun onDeselectAllClick() {
-        _uiState.update { 
+        _uiState.update {
             it.copy(isSelectionMode = false, selectedFiles = emptySet())
         }
         Timber.d("Deselect all clicked")
     }
-    
+
     /**
      * Start player/slideshow from current folder.
      */
@@ -447,16 +447,41 @@ class BrowseViewModel @Inject constructor(
             }
         }
     }
-    
+
     /**
      * Show filter dialog.
      */
     fun onFilterClick() {
         viewModelScope.launch {
-            _events.emit(BrowseUiEvent.ShowFilterDialog)
+            _events.emit(BrowseUiEvent.ShowFilterDialog(_uiState.value.mediaTypeFilters))
         }
     }
-    
+
+    /**
+     * Get current active media type filters.
+     */
+    fun getCurrentFilters(): Set<com.sza.fastmediasorter.domain.model.MediaType> {
+        return _uiState.value.mediaTypeFilters
+    }
+
+    /**
+     * Apply media type filters to the file list.
+     */
+    fun applyMediaTypeFilters(selectedTypes: Set<com.sza.fastmediasorter.domain.model.MediaType>) {
+        _uiState.update { state ->
+            state.copy(mediaTypeFilters = selectedTypes)
+        }
+        viewModelScope.launch {
+            if (selectedTypes.isEmpty()) {
+                _events.emit(BrowseUiEvent.ShowSnackbar("Filter cleared"))
+            } else {
+                val typeNames = selectedTypes.joinToString(", ") { it.name }
+                _events.emit(BrowseUiEvent.ShowSnackbar("Filtering: $typeNames"))
+            }
+        }
+        Timber.d("Applied media type filters: $selectedTypes")
+    }
+
     /**
      * Show rename dialog for selected files.
      */
@@ -469,7 +494,7 @@ class BrowseViewModel @Inject constructor(
             }
         }
     }
-    
+
     /**
      * Share selected files.
      */
@@ -482,14 +507,14 @@ class BrowseViewModel @Inject constructor(
             }
         }
     }
-    
+
     /**
      * Undo last operation.
      */
     fun onUndoClick() {
         undoLastDelete()
     }
-    
+
     /**
      * Stop ongoing scan operation.
      */
