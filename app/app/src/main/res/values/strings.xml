@@ -753,14 +753,6 @@
     <string name="open">Open</string>
     <string name="info">Info</string>
     
-    <!-- PIN Dialog -->
-    <string name="enter_pin">Enter PIN</string>
-    <string name="pin_hint">Enter %1$d-digit PIN</string>
-    <string name="attempts_remaining">%1$d attempts remaining</string>
-    <string name="pin_incorrect">Incorrect PIN</string>
-    <string name="pin_length_error">PIN must be %1$d digits</string>
-    <string name="action_submit">Submit</string>
-    
     <!-- Log View Dialog -->
     <string name="debug_logs">Debug Logs</string>
     <string name="search_logs">Search logs…</string>
@@ -859,6 +851,25 @@
     <string name="widget_continue_reading_description">Resume slideshow from last position</string>
     <string name="continue_reading">Continue\nReading</string>
     <string name="media_type">Media Type</string>
-</resources>
 
-
+    <!-- PIN Code Protection -->
+    <string name="set_pin_code">Set PIN Code</string>
+    <string name="change_pin_code">Change PIN Code</string>
+    <string name="enter_pin_code">Enter PIN Code</string>
+    <string name="enter_pin">Enter PIN</string>
+    <string name="pin_hint">Enter %1$d-digit PIN</string>
+    <string name="attempts_remaining">%1$d attempts remaining</string>
+    <string name="action_submit">Submit</string>
+    <string name="pin_code">PIN Code</string>
+    <string name="confirm_pin_code">Confirm PIN Code</string>
+    <string name="remove_pin">Remove PIN</string>
+    <string name="pin_hint_length">Enter a PIN with %1$d to %2$d digits</string>
+    <string name="pin_too_short">PIN must be at least %1$d digits</string>
+    <string name="pin_length_error">PIN must be %1$d digits</string>
+    <string name="pin_mismatch">PINs do not match</string>
+    <string name="pin_incorrect">Incorrect PIN</string>
+    <string name="pin_protection">PIN Protection</string>
+    <string name="enable_pin_protection">Enable PIN Protection</string>
+    <string name="pin_protection_desc">Require PIN code to access this resource</string>
+    <string name="supported_media_types">Supported Media Types</string>
+    <string name="media_type_filter_desc">Select which file types to show from this resource</string></resources>

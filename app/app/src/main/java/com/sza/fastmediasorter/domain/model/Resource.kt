@@ -39,7 +39,13 @@ data class Resource(
     val workWithAllFiles: Boolean = false,
 
     /** Whether the resource is read-only (no modifications allowed) */
-    val isReadOnly: Boolean = false
+    val isReadOnly: Boolean = false,
+    
+    /** PIN code for resource protection (4-12 digits, null if not protected) */
+    val pinCode: String? = null,
+    
+    /** Supported media types bitmask: 1=IMAGE, 2=VIDEO, 4=AUDIO, 8=GIF, 16=TEXT, 32=PDF, 64=EPUB, 0=ALL */
+    val supportedMediaTypes: Int = 0
 )
 
 /**

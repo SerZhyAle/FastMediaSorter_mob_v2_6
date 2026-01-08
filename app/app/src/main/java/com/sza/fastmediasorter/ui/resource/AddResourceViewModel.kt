@@ -63,7 +63,9 @@ class AddResourceViewModel @Inject constructor(
         path: String, 
         isReadOnly: Boolean, 
         isDestination: Boolean, 
-        workWithAllFiles: Boolean
+        workWithAllFiles: Boolean,
+        pinCode: String? = null,
+        supportedMediaTypes: Int = 0
     ) {
         viewModelScope.launch {
             // Use the AddResourceUseCase with new params
@@ -75,7 +77,9 @@ class AddResourceViewModel @Inject constructor(
                 displayMode = DisplayMode.GRID,
                 isReadOnly = isReadOnly,
                 isDestination = isDestination,
-                workWithAllFiles = workWithAllFiles
+                workWithAllFiles = workWithAllFiles,
+                pinCode = pinCode,
+                supportedMediaTypes = supportedMediaTypes
             )
 
             result

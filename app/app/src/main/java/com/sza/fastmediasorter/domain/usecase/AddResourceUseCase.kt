@@ -28,6 +28,8 @@ class AddResourceUseCase @Inject constructor(
      * @param sortMode Initial sort mode
      * @param displayMode Initial display mode
      * @param workWithAllFiles Whether to include non-media files
+     * @param pinCode PIN code for resource protection (4-12 digits, null if not protected)
+     * @param supportedMediaTypes Bitmask of supported media types (0 = all types)
      * @return Result containing the new resource ID or error
      */
     suspend operator fun invoke(
@@ -39,7 +41,9 @@ class AddResourceUseCase @Inject constructor(
         displayMode: DisplayMode = DisplayMode.GRID,
         workWithAllFiles: Boolean = false,
         isDestination: Boolean = false,
-        isReadOnly: Boolean = false
+        isReadOnly: Boolean = false,
+        pinCode: String? = null,
+        supportedMediaTypes: Int = 0
     ): Result<Long> {
         // Validate input
         if (name.isBlank()) {
@@ -77,7 +81,9 @@ class AddResourceUseCase @Inject constructor(
                 displayMode = displayMode,
                 workWithAllFiles = workWithAllFiles,
                 isDestination = isDestination,
-                isReadOnly = isReadOnly
+                isReadOnly = isReadOnly,
+                pinCode = pinCode,
+                supportedMediaTypes = supportedMediaTypes
             )
 
             val id = resourceRepository.insertResource(resource)

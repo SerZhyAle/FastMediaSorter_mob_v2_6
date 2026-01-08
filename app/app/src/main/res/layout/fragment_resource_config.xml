@@ -68,6 +68,112 @@
         android:textColor="?attr/colorOnSurfaceVariant"
         android:layout_marginBottom="24dp"/>
 
+    <!-- PIN Protection Section -->
+    <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/switchPinProtection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/enable_pin_protection"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/pin_protection_desc"
+        android:textAppearance="?attr/textAppearanceCaption"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        android:layout_marginBottom="8dp"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnSetPin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/set_pin_code"
+        android:visibility="gone"
+        style="@style/Widget.Material3.Button.OutlinedButton"
+        android:layout_marginBottom="24dp"/>
+
+    <!-- Media Type Filters Section -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/supported_media_types"
+        android:textAppearance="?attr/textAppearanceSubtitle1"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/media_type_filter_desc"
+        android:textAppearance="?attr/textAppearanceCaption"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        android:layout_marginBottom="8dp"/>
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chipGroupMediaTypes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        app:singleSelection="false"
+        app:selectionRequired="false">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/media_type_images"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:checked="true"/>
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipVideo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/media_type_videos"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:checked="true"/>
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipAudio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/media_type_audio"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:checked="true"/>
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipGif"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/media_type_gifs"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:checked="true"/>
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/media_type_text"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:checked="true"/>
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipPdf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/media_type_pdf"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:checked="true"/>
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipEpub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/media_type_epub"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:checked="true"/>
+    </com.google.android.material.chip.ChipGroup>
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnSave"
         android:layout_width="match_parent"

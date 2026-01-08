@@ -237,13 +237,15 @@ class AddResourceActivity : BaseActivity<ActivityAddResourceBinding>() {
     
     private fun showConfigDialog(name: String, path: String) {
         val dialog = ResourceConfigBottomSheet.newInstance(name, path)
-        dialog.setOnConfirmListener { isReadOnly, isDestination, scanAll ->
+        dialog.setOnConfirmListener { isReadOnly, isDestination, scanAll, pinCode, supportedMediaTypes ->
             viewModel.onConfigConfirmed(
                 name = name,
                 path = path,
                 isReadOnly = isReadOnly,
                 isDestination = isDestination,
-                workWithAllFiles = scanAll
+                workWithAllFiles = scanAll,
+                pinCode = pinCode,
+                supportedMediaTypes = supportedMediaTypes
             )
         }
         dialog.show(supportFragmentManager, "ResourceConfigBottomSheet")

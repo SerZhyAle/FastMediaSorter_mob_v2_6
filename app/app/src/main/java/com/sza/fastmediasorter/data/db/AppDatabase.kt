@@ -16,6 +16,8 @@ import com.sza.fastmediasorter.data.db.entity.ResourceEntity
  * 
  * Version History:
  * - v1: Initial schema with Resources, Credentials, FileMetadata, OperationHistory
+ * - v2: Added isReadOnly to ResourceEntity
+ * - v3: Added pinCode and supportedMediaTypes to ResourceEntity
  */
 @Database(
     entities = [
@@ -24,7 +26,7 @@ import com.sza.fastmediasorter.data.db.entity.ResourceEntity
         FileMetadataEntity::class,
         FileOperationHistoryEntity::class
     ],
-    version = 2,
+    version = 3,
     exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {

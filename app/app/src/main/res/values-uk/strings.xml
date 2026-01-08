@@ -419,4 +419,20 @@
     <string name="widget_continue_reading_description">Продовжити слайдшоу з останньої позиції</string>
     <string name="continue_reading">Продовжити\nперегляд</string>
     <string name="media_type">Тип медіа</string>
-</resources>
+
+    <!-- PIN Code Protection -->
+    <string name="set_pin_code">Встановити PIN-код</string>
+    <string name="change_pin_code">Змінити PIN-код</string>
+    <string name="enter_pin_code">Введіть PIN-код</string>
+    <string name="pin_code">PIN-код</string>
+    <string name="confirm_pin_code">Підтвердіть PIN-код</string>
+    <string name="remove_pin">Видалити PIN</string>
+    <string name="pin_hint_length">Введіть PIN від %1$d до %2$d цифр</string>
+    <string name="pin_too_short">PIN повинен містити мінімум %1$d цифр</string>
+    <string name="pin_mismatch">PIN-коди не співпадають</string>
+    <string name="pin_incorrect">Невірний PIN-код</string>
+    <string name="pin_protection">Захист PIN-кодом</string>
+    <string name="enable_pin_protection">Увімкнути захист PIN-кодом</string>
+    <string name="pin_protection_desc">Вимагати PIN-код для доступу до цього ресурсу</string>
+    <string name="supported_media_types">Підтримувані типи медіа</string>
+    <string name="media_type_filter_desc">Виберіть, які типи файлів показувати з цього ресурсу</string></resources>

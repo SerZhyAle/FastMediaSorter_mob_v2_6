@@ -79,7 +79,9 @@ class ResourceRepositoryImpl @Inject constructor(
             destinationColor = destinationColor,
 
             workWithAllFiles = workWithAllFiles,
-            isReadOnly = isReadOnly
+            isReadOnly = isReadOnly,
+            pinCode = pinCode,
+            supportedMediaTypes = supportedMediaTypes
         )
     }
 
@@ -97,7 +99,9 @@ class ResourceRepositoryImpl @Inject constructor(
             destinationColor = destinationColor,
 
             workWithAllFiles = workWithAllFiles,
-            isReadOnly = isReadOnly
+            isReadOnly = isReadOnly,
+            pinCode = pinCode,
+            supportedMediaTypes = supportedMediaTypes
         )
     }
 }

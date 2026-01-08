@@ -3,6 +3,7 @@ package com.sza.fastmediasorter.di
 import android.content.Context
 import androidx.room.Room
 import com.sza.fastmediasorter.data.db.AppDatabase
+import com.sza.fastmediasorter.data.db.MIGRATION_2_3
 import com.sza.fastmediasorter.data.db.dao.FileMetadataDao
 import com.sza.fastmediasorter.data.db.dao.FileOperationHistoryDao
 import com.sza.fastmediasorter.data.db.dao.NetworkCredentialsDao
@@ -31,6 +32,7 @@ object DatabaseModule {
             AppDatabase::class.java,
             DATABASE_NAME
         )
+            .addMigrations(MIGRATION_2_3)
             .fallbackToDestructiveMigration() // TODO: Add proper migrations for production
             .build()
     }
