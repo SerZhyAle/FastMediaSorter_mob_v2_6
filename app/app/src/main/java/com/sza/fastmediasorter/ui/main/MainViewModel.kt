@@ -3,6 +3,7 @@ package com.sza.fastmediasorter.ui.main
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sza.fastmediasorter.domain.model.Resource
+import com.sza.fastmediasorter.domain.repository.PreferencesRepository
 import com.sza.fastmediasorter.domain.repository.ResourceRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -24,7 +25,8 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val resourceRepository: ResourceRepository
+    private val resourceRepository: ResourceRepository,
+    val preferencesRepository: PreferencesRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(MainUiState.Initial)

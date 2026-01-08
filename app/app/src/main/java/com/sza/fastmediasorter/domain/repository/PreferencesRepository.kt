@@ -52,6 +52,12 @@ interface PreferencesRepository {
     val preventSleepDuringPlayback: Flow<Boolean>
     suspend fun setPreventSleepDuringPlayback(prevent: Boolean)
 
+    /**
+     * Whether favorites feature is enabled.
+     */
+    val enableFavorites: Flow<Boolean>
+    suspend fun setEnableFavorites(enable: Boolean)
+
     // ==================== Playback Settings ====================
 
     /**

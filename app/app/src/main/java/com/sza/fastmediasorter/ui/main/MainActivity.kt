@@ -117,6 +117,15 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                 }
             }
         }
+        
+        // Observe favorites preference and show/hide menu item
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.preferencesRepository.enableFavorites.collect { enabled ->
+                    binding.toolbar.menu.findItem(R.id.action_favorites)?.isVisible = enabled
+                }
+            }
+        }
     }
 
     private fun updateUi(state: MainUiState) {

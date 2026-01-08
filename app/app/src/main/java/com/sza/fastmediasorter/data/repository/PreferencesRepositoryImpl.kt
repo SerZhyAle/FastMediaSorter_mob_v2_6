@@ -37,6 +37,7 @@ class PreferencesRepositoryImpl @Inject constructor(
         val CONFIRM_DELETE = booleanPreferencesKey("confirm_delete")
         val CONFIRM_MOVE = booleanPreferencesKey("confirm_move")
         val PREVENT_SLEEP = booleanPreferencesKey("prevent_sleep_during_playback")
+        val ENABLE_FAVORITES = booleanPreferencesKey("enable_favorites")
 
         // Playback Settings
         val SLIDESHOW_INTERVAL = intPreferencesKey("slideshow_interval")
@@ -127,6 +128,17 @@ class PreferencesRepositoryImpl @Inject constructor(
         Timber.d("Setting prevent sleep during playback: $prevent")
         context.dataStore.edit { prefs ->
             prefs[Keys.PREVENT_SLEEP] = prevent
+        }
+    }
+
+    override val enableFavorites: Flow<Boolean> = context.dataStore.data.map { prefs ->
+        prefs[Keys.ENABLE_FAVORITES] ?: false
+    }
+
+    override suspend fun setEnableFavorites(enable: Boolean) {
+        Timber.d("Setting enable favorites: $enable")
+        context.dataStore.edit { prefs ->
+            prefs[Keys.ENABLE_FAVORITES] = enable
         }
     }
 

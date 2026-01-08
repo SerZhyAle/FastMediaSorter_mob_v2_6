@@ -12,12 +12,13 @@
         android:id="@+id/action_favorites"
         android:icon="@drawable/ic_favorite"
         android:title="@string/favorites"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"
+        android:visible="false" />
 
     <item
         android:id="@+id/action_settings"
         android:icon="@drawable/ic_settings"
         android:title="@string/action_settings"
-        app:showAsAction="never" />
+        app:showAsAction="ifRoom" />
 
 </menu>
