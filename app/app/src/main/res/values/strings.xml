@@ -853,6 +853,12 @@
     <string name="cannot_save_truncated">Cannot save changes to a truncated file. The file is too large to edit.</string>
     <string name="file_saved_successfully">File saved successfully</string>
     <string name="save_failed_message">Failed to save file: %1$s</string>
+
+    <!-- Widget Strings -->
+    <string name="widget_favorites_description">Quick access to favorite media files</string>
+    <string name="widget_continue_reading_description">Resume slideshow from last position</string>
+    <string name="continue_reading">Continue\nReading</string>
+    <string name="media_type">Media Type</string>
 </resources>
 
 

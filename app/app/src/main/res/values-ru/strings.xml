@@ -413,5 +413,10 @@
     <string name="subtitles_disabled">Субтитры отключены</string>
     <string name="no_subtitles_available">Субтитры недоступны</string>
     <string name="subtitles_hint">Поместите файл .srt или .vtt с таким же именем как видеофайл для субтитров</string>
-</resources>
 
+    <!-- Widget Strings -->
+    <string name="widget_favorites_description">Быстрый доступ к избранным файлам</string>
+    <string name="widget_continue_reading_description">Продолжить слайдшоу с последней позиции</string>
+    <string name="continue_reading">Продолжить\nпросмотр</string>
+    <string name="media_type">Тип медиа</string>
+</resources>
