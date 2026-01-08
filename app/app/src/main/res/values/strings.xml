@@ -692,6 +692,21 @@
     <string name="downloading_translation_model">Downloading translation model…</string>
     <string name="translation_failed">Translation failed</string>
     <string name="language_detection_failed">Could not detect language</string>
+    <string name="translation_complete">Translation complete</string>
+    <string name="translation_error">Translation error: %1$s</string>
+    <string name="translating">Translating…</string>
+    <string name="show_original">Show Original</string>
+    <string name="show_translation">Show Translation</string>
+    
+    <!-- OCR Strings -->
+    <string name="ocr_title">Text Recognition (OCR)</string>
+    <string name="ocr_processing">Recognizing text…</string>
+    <string name="ocr_complete">Found %1$d text blocks in %2$dms</string>
+    <string name="ocr_complete_no_text">Recognition complete</string>
+    <string name="ocr_no_text_found">No text found in image</string>
+    <string name="ocr_error">OCR error: %1$s</string>
+    <string name="ocr_failed">Text recognition failed</string>
+    <string name="text_copied">Text copied to clipboard</string>
 </resources>
 
 
