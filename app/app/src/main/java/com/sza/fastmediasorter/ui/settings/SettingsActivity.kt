@@ -26,7 +26,7 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>() {
 
     private val viewModel: SettingsViewModel by viewModels()
 
-    private val tabTitles = listOf("General", "Media", "Playback", "Destinations")
+    private val tabTitles = listOf("General", "Media", "Playback", "Destinations", "Network")
 
     override fun getViewBinding(): ActivitySettingsBinding =
         ActivitySettingsBinding.inflate(layoutInflater)

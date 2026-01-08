@@ -37,7 +37,9 @@ class AddResourceUseCase @Inject constructor(
         credentialsId: String? = null,
         sortMode: SortMode = SortMode.DATE_DESC,
         displayMode: DisplayMode = DisplayMode.GRID,
-        workWithAllFiles: Boolean = false
+        workWithAllFiles: Boolean = false,
+        isDestination: Boolean = false,
+        isReadOnly: Boolean = false
     ): Result<Long> {
         // Validate input
         if (name.isBlank()) {
@@ -73,7 +75,9 @@ class AddResourceUseCase @Inject constructor(
                 credentialsId = credentialsId,
                 sortMode = sortMode,
                 displayMode = displayMode,
-                workWithAllFiles = workWithAllFiles
+                workWithAllFiles = workWithAllFiles,
+                isDestination = isDestination,
+                isReadOnly = isReadOnly
             )
 
             val id = resourceRepository.insertResource(resource)
@@ -105,7 +109,10 @@ class AddResourceUseCase @Inject constructor(
             path = path,
             type = ResourceType.LOCAL,
             sortMode = SortMode.DATE_DESC,
-            displayMode = DisplayMode.GRID
+            displayMode = DisplayMode.GRID,
+            workWithAllFiles = false,
+            isDestination = false,
+            isReadOnly = false
         )
     }
 }

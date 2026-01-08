@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     tools:context=".ui.settings.GeneralSettingsFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="@dimen/spacing_medium">
+        android:padding="16dp">
 
         <!-- Appearance Section -->
         <TextView
@@ -21,14 +21,14 @@
             android:textStyle="bold"
             android:textSize="14sp"
             android:textColor="?colorPrimary"
-            android:layout_marginBottom="@dimen/spacing_small"/>
+            android:layout_marginBottom="8dp"/>
 
         <!-- Language Dropdown -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/inputLayoutLanguage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_medium"
+            android:layout_marginBottom="16dp"
             android:hint="@string/language"
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
 
@@ -36,8 +36,7 @@
                 android:id="@+id/dropdownLanguage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="none"
-                android:editable="false"/>
+                android:inputType="none"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -48,14 +47,14 @@
             android:text="@string/theme"
             android:textSize="12sp"
             android:textColor="?colorOnSurfaceVariant"
-            android:layout_marginBottom="@dimen/spacing_tiny"/>
+            android:layout_marginBottom="4dp"/>
 
         <RadioGroup
             android:id="@+id/radioGroupTheme"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginBottom="@dimen/spacing_medium">
+            android:layout_marginBottom="16dp">
 
             <com.google.android.material.radiobutton.MaterialRadioButton
                 android:id="@+id/radioLight"
@@ -85,7 +84,7 @@
             android:id="@+id/inputLayoutDisplayMode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_medium"
+            android:layout_marginBottom="16dp"
             android:hint="@string/default_view_mode"
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
 
@@ -93,8 +92,7 @@
                 android:id="@+id/dropdownDisplayMode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="none"
-                android:editable="false"/>
+                android:inputType="none"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -103,7 +101,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="?colorOutline"
-            android:layout_marginVertical="@dimen/spacing_medium"/>
+            android:layout_marginVertical="8dp"/>
 
         <!-- Behavior Section -->
         <TextView
@@ -113,7 +111,7 @@
             android:textStyle="bold"
             android:textSize="14sp"
             android:textColor="?colorPrimary"
-            android:layout_marginBottom="@dimen/spacing_small"/>
+            android:layout_marginBottom="8dp"/>
 
         <!-- Show Hidden Files -->
         <LinearLayout
@@ -121,7 +119,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:layout_marginBottom="@dimen/spacing_small">
+            android:layout_marginBottom="8dp">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -144,7 +142,7 @@
 
             </LinearLayout>
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
+            <com.google.android.material.materialswitch.MaterialSwitch
                 android:id="@+id/switchShowHiddenFiles"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -157,7 +155,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:layout_marginBottom="@dimen/spacing_small">
+            android:layout_marginBottom="8dp">
 
             <TextView
                 android:layout_width="0dp"
@@ -166,7 +164,7 @@
                 android:text="@string/confirm_delete"
                 android:textSize="14sp"/>
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
+            <com.google.android.material.materialswitch.MaterialSwitch
                 android:id="@+id/switchConfirmDelete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -179,7 +177,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:layout_marginBottom="@dimen/spacing_small">
+            android:layout_marginBottom="8dp">
 
             <TextView
                 android:layout_width="0dp"
@@ -188,43 +186,29 @@
                 android:text="@string/confirm_move"
                 android:textSize="14sp"/>
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
+            <com.google.android.material.materialswitch.MaterialSwitch
                 android:id="@+id/switchConfirmMove"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
         </LinearLayout>
 
-        <!-- Prevent Sleep During Playback -->
+        <!-- Prevent Sleep -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:layout_marginBottom="@dimen/spacing_medium">
+            android:layout_marginBottom="16dp">
 
-            <LinearLayout
+            <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="vertical">
+                android:text="@string/prevent_sleep"
+                android:textSize="14sp"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/prevent_sleep"
-                    android:textSize="14sp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/prevent_sleep_description"
-                    android:textSize="12sp"
-                    android:textColor="?colorOnSurfaceVariant"/>
-
-            </LinearLayout>
-
-            <com.google.android.material.switchmaterial.SwitchMaterial
+            <com.google.android.material.materialswitch.MaterialSwitch
                 android:id="@+id/switchPreventSleep"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -236,7 +220,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="?colorOutline"
-            android:layout_marginVertical="@dimen/spacing_medium"/>
+            android:layout_marginVertical="8dp"/>
 
         <!-- Cache Section -->
         <TextView
@@ -246,7 +230,7 @@
             android:textStyle="bold"
             android:textSize="14sp"
             android:textColor="?colorPrimary"
-            android:layout_marginBottom="@dimen/spacing_small"/>
+            android:layout_marginBottom="8dp"/>
 
         <!-- Cache Size Display -->
         <TextView
@@ -254,7 +238,7 @@
             android:layout_height="wrap_content"
             android:text="@string/current_cache_size"
             android:textSize="14sp"
-            android:layout_marginBottom="@dimen/spacing_tiny"/>
+            android:layout_marginBottom="4dp"/>
 
         <TextView
             android:id="@+id/tvCacheSize"
@@ -263,7 +247,7 @@
             android:textSize="12sp"
             android:textColor="?colorOnSurfaceVariant"
             tools:text="256 MB"
-            android:layout_marginBottom="@dimen/spacing_medium"/>
+            android:layout_marginBottom="16dp"/>
 
         <!-- Clear Cache Button -->
         <com.google.android.material.button.MaterialButton
@@ -286,7 +270,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?colorOutline"
-                android:layout_marginVertical="@dimen/spacing_medium"/>
+                android:layout_marginVertical="16dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -295,7 +279,7 @@
                 android:textStyle="bold"
                 android:textSize="14sp"
                 android:textColor="?colorError"
-                android:layout_marginBottom="@dimen/spacing_small"/>
+                android:layout_marginBottom="8dp"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnGenerateStressData"
@@ -310,4 +294,4 @@
 
     </LinearLayout>
 
-</androidx.core.widget.NestedScrollView>
+</ScrollView>

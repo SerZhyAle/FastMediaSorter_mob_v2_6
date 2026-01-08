@@ -3,9 +3,11 @@ package com.sza.fastmediasorter.ui.resource
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sza.fastmediasorter.domain.model.DisplayMode
 import com.sza.fastmediasorter.domain.model.NetworkCredentials
 import com.sza.fastmediasorter.domain.model.NetworkType
 import com.sza.fastmediasorter.domain.model.ResourceType
+import com.sza.fastmediasorter.domain.model.SortMode
 import com.sza.fastmediasorter.domain.usecase.AddResourceUseCase
 import com.sza.fastmediasorter.domain.usecase.SaveNetworkCredentialsUseCase
 import com.sza.fastmediasorter.domain.usecase.TestNetworkConnectionUseCase
@@ -26,6 +28,7 @@ sealed class AddResourceEvent {
     data class ConnectionTesting(val message: String) : AddResourceEvent()
     data class ConnectionSuccess(val message: String) : AddResourceEvent()
     data class ConnectionFailed(val message: String) : AddResourceEvent()
+    data class ShowConfig(val name: String, val path: String, val uri: Uri) : AddResourceEvent()
 }
 
 /**
@@ -48,11 +51,31 @@ class AddResourceViewModel @Inject constructor(
             val folderPath = uri.toString()
 
             Timber.d("Selected folder: $folderName at $folderPath")
-
-            // Use the AddResourceUseCase
-            val result = addResourceUseCase.addLocalFolder(
-                name = folderName,
-                path = folderPath
+            
+            // Previously: saved immediately.
+            // Now: Emit ShowConfig event.
+            _events.emit(AddResourceEvent.ShowConfig(folderName, folderPath, uri))
+        }
+    }
+    
+    fun onConfigConfirmed(
+        name: String, 
+        path: String, 
+        isReadOnly: Boolean, 
+        isDestination: Boolean, 
+        workWithAllFiles: Boolean
+    ) {
+        viewModelScope.launch {
+            // Use the AddResourceUseCase with new params
+            val result = addResourceUseCase(
+                name = name,
+                path = path,
+                type = ResourceType.LOCAL,
+                sortMode = SortMode.DATE_DESC,
+                displayMode = DisplayMode.GRID,
+                isReadOnly = isReadOnly,
+                isDestination = isDestination,
+                workWithAllFiles = workWithAllFiles
             )
 
             result
@@ -145,6 +168,11 @@ class AddResourceViewModel @Inject constructor(
                                 NetworkType.FTP -> ResourceType.FTP
                                 else -> return@onSuccess
                             }
+                            
+                            // Network resources imply read-write unless specified otherwise, but we could add config here too.
+                            // For now, defaulting network resources to implicit defaults or we could invoke the same config flow?
+                            // User request specifically mentioned "adding LOCAL resources". 
+                            // I will keep network flow as is for now to minimize scope creep unless requested.
 
                             // Add resource
                             addResourceUseCase(

@@ -10,7 +10,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
  */
 class SettingsPagerAdapter(activity: FragmentActivity) : FragmentStateAdapter(activity) {
 
-    override fun getItemCount(): Int = 4
+    override fun getItemCount(): Int = 5
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
@@ -18,6 +18,7 @@ class SettingsPagerAdapter(activity: FragmentActivity) : FragmentStateAdapter(ac
             1 -> MediaSettingsFragment()
             2 -> PlaybackSettingsFragment()
             3 -> DestinationsSettingsFragment()
+            4 -> NetworkSettingsFragment()
             else -> GeneralSettingsFragment()
         }
     }

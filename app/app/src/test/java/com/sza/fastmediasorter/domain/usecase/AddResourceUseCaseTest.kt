@@ -125,7 +125,8 @@ class AddResourceUseCaseTest {
             type = ResourceType.LOCAL,
             sortMode = SortMode.NAME_ASC,
             displayMode = DisplayMode.GRID,
-            workWithAllFiles = false
+            workWithAllFiles = false,
+            isReadOnly = false
         )
         whenever(resourceRepository.getResourceByPath(path)).thenReturn(existingResource)
 

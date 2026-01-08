@@ -24,7 +24,7 @@ import com.sza.fastmediasorter.data.db.entity.ResourceEntity
         FileMetadataEntity::class,
         FileOperationHistoryEntity::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {

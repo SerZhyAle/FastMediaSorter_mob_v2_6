@@ -167,6 +167,23 @@ class AddResourceActivity : BaseActivity<ActivityAddResourceBinding>() {
             is AddResourceEvent.ConnectionFailed -> {
                 Snackbar.make(binding.root, event.message, Snackbar.LENGTH_LONG).show()
             }
+            is AddResourceEvent.ShowConfig -> {
+                showConfigDialog(event.name, event.path)
+            }
         }
+    }
+    
+    private fun showConfigDialog(name: String, path: String) {
+        val dialog = ResourceConfigBottomSheet.newInstance(name, path)
+        dialog.setOnConfirmListener { isReadOnly, isDestination, scanAll ->
+            viewModel.onConfigConfirmed(
+                name = name,
+                path = path,
+                isReadOnly = isReadOnly,
+                isDestination = isDestination,
+                workWithAllFiles = scanAll
+            )
+        }
+        dialog.show(supportFragmentManager, "ResourceConfigBottomSheet")
     }
 }

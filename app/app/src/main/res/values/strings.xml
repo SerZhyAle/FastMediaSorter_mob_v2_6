@@ -38,14 +38,26 @@
     <string name="operation_in_progress">Operation in progress…</string>
 
     <!-- Welcome/Onboarding -->
-    <string name="welcome_title">Welcome to FastMediaSorter</string>
-    <string name="welcome_subtitle">Organize your media files easily</string>
-    <string name="welcome_description">FastMediaSorter helps you organize photos, videos, and audio files from local folders and network sources.\n\nTo get started, we need permission to access your media files.</string>
+    <string name="welcome_title_1">Welcome to FastMediaSorter</string>
+    <string name="welcome_description_1">FastMediaSorter helps you organize photos, videos, and audio files from local folders and network sources.</string>
+
+    <string name="welcome_title_2">Resource Types</string>
+    <string name="welcome_description_2">Connect to local folders, Window/Samba shares (SMB), FTP/SFTP servers, and cloud storage (Google Drive, Dropbox, OneDrive). Browse them all in one place!</string>
+    
+    <string name="welcome_title_3">Touch Zones</string>
+    <string name="welcome_description_3">Control full-screen slideshows easily. Tap left/right edges to navigate. Use gestures to play/pause videos or zoom images.</string>
+    
+    <string name="welcome_title_4">Destinations &amp; Permissions</string>
+    <string name="welcome_description_4">Set up "Destinations" for one-tap move/copy operations using the Floating Action Button.\n\nTo begin, we need storage access permissions.</string>
+
     <string name="permissions_required">Storage permissions required</string>
     <string name="permissions_description">To browse and manage your files, we need access to your storage.</string>
     <string name="grant_permission">Grant Permission</string>
     <string name="grant_permissions">Grant Permissions</string>
     <string name="skip">Skip</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+    <string name="finish">Finish</string>
     <string name="get_started">Get Started</string>
     <string name="cancel">Cancel</string>
     <string name="permission_required_title">Permission Required</string>
@@ -123,6 +135,15 @@
     <string name="confirm_delete_message">This will move the file to trash.</string>
     <string name="confirm_delete_permanent">This action cannot be undone.</string>
 
+    <string name="configure_resource">Configure Resource</string>
+    <string name="resource_read_only">Read-only</string>
+    <string name="resource_read_only_desc">Files cannot be deleted or modified in this folder.</string>
+    <string name="resource_as_destination">Set as Destination</string>
+    <string name="resource_as_destination_desc">Show this folder in the Floating Action Button menu for quick move/copy.</string>
+    <string name="scan_all_files">Scan all files</string>
+    <string name="scan_all_files_desc">Include non-media files (documents, archives, etc.) in the list.</string>
+    <string name="add_resource_confirm">Add Resource</string>
+    
     <!-- Settings -->
     <string name="settings">Settings</string>
     <string name="general">General</string>
@@ -130,6 +151,62 @@
     <string name="dark_mode">Dark Mode</string>
     <string name="language">Language</string>
     <string name="system_default">System Default</string>
+    
+    <!-- General Settings - Extended -->
+    <string name="enable_favorites">Enable Favorites</string>
+    <string name="prevent_sleep">Prevent sleep during playback</string>
+    <string name="small_controls">Compact mode</string>
+    <string name="enable_safe_mode">Enable Safe Mode</string>
+    <string name="confirm_delete">Confirm before delete</string>
+    <string name="confirm_move">Confirm before move</string>
+    <string name="tooltip_safe_mode_title">Safe Mode</string>
+    <string name="tooltip_safe_mode_message">Confirm before destructive operations. When enabled, app asks for confirmation before deleting or moving files.</string>
+    
+    <!-- Network Parallelism -->
+    <string name="network_parallelism_title">Network Parallelism</string>
+    <string name="network_parallelism_summary">Number of parallel threads for network operations (SMB, FTP, SFTP)</string>
+    
+    <!-- Default Credentials -->
+    <string name="default_user">Default User</string>
+    <string name="default_password">Default Password</string>
+    
+    <!-- Export/Import -->
+    <string name="export_settings">Export Settings</string>
+    <string name="import_settings">Import Settings</string>
+    <string name="export_import_file_info">Using file: Downloads/FastMediaSorter_export.xml</string>
+    <string name="export_success">Settings exported successfully</string>
+    <string name="export_failed">Export failed: %s</string>
+    <string name="import_success">Settings imported successfully</string>
+    <string name="import_failed">Import failed: %s</string>
+    
+    <!-- Permissions -->
+    <string name="grant_local_files_permission">Grant Local Files Permission</string>
+    <string name="grant_network_permission">Grant Network Permission</string>
+    <string name="storage_permissions_granted">Storage permissions already granted</string>
+    
+    <!-- Logs -->
+    <string name="show_log">Show Log</string>
+    <string name="show_current_session_log">Session Log</string>
+    <string name="log_copied">Log copied to clipboard</string>
+    
+    <!-- Cache Management -->
+    <string name="cache_size_limit">Cache Size Limit (MB)</string>
+    <string name="auto_calculate_cache">Auto</string>
+    <string name="clear_cache">Clear Cache</string>
+    <string name="cache_size_calculating">Calculating…</string>
+    <string name="cache_cleared">Cache cleared successfully</string>
+    <string name="current_cache_size">Current Cache Size</string>
+    
+    <!-- Documentation Links -->
+    <string name="user_guide">User Guide</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    
+    <!-- Languages array -->
+    <string-array name="languages">
+        <item>English</item>
+        <item>Русский</item>
+        <item>Українська</item>
+    </string-array>
 
     <!-- Additional UI Strings -->
     <string name="thumbnail">Thumbnail</string>
@@ -236,13 +313,7 @@
     <string name="behavior">Behavior</string>
     <string name="show_hidden_files">Show hidden files</string>
     <string name="show_hidden_files_description">Display files and folders starting with a dot</string>
-    <string name="confirm_delete">Confirm before delete</string>
-    <string name="confirm_move">Confirm before move</string>
-    <string name="prevent_sleep">Keep screen on</string>
-    <string name="prevent_sleep_description">Prevent screen from turning off during media playback</string>
     <string name="cache">Cache</string>
-    <string name="current_cache_size">Current cache size:</string>
-    <string name="clear_cache">Clear Cache</string>
 
     <!-- Settings - Playback -->
     <string name="slideshow_settings">Slideshow</string>
@@ -310,6 +381,21 @@
     <string name="cd_search_thumbnail">Search result thumbnail</string>
     <string name="cd_search_icon">Search icon</string>
     <string name="cd_toggle_filters">Toggle search filters</string>
+
+    <!-- Network Settings -->
+    <string name="network_sync_settings">Network Sync Settings</string>
+    <string name="enable_background_sync">Enable background sync</string>
+    <string name="background_sync_description">Automatically sync network resources in the background</string>
+    <string name="sync_interval">Sync interval</string>
+    <string name="sync_now">Sync now</string>
+    <string name="sync_status_idle">Idle</string>
+    <string name="sync_status_in_progress">In progress…</string>
+    <string name="sync_status_completed">Completed: %1$d resources synced</string>
+    <string name="sync_status_failed">Failed</string>
+    <string name="background_sync_enabled">Background sync enabled</string>
+    <string name="background_sync_disabled">Background sync disabled</string>
+    <string name="sync_completed_successfully">Sync completed: %1$d resources</string>
+    <string name="sync_failed">Sync failed: %1$s</string>
 </resources>
 
 

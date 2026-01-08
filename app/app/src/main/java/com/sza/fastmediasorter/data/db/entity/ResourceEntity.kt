@@ -53,5 +53,8 @@ data class ResourceEntity(
     val createdDate: Long = System.currentTimeMillis(),
     
     /** Timestamp of last access */
-    val lastAccessedDate: Long = System.currentTimeMillis()
+    val lastAccessedDate: Long = System.currentTimeMillis(),
+
+    /** Whether the resource is read-only */
+    val isReadOnly: Boolean = false
 )

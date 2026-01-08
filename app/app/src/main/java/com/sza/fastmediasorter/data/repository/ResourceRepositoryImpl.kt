@@ -71,12 +71,15 @@ class ResourceRepositoryImpl @Inject constructor(
             name = name,
             path = path,
             type = ResourceType.valueOf(type),
+            credentialsId = credentialsId,
             sortMode = SortMode.valueOf(sortMode),
             displayMode = DisplayMode.valueOf(displayMode),
             isDestination = isDestination,
             destinationOrder = destinationOrder,
             destinationColor = destinationColor,
-            workWithAllFiles = workWithAllFiles
+
+            workWithAllFiles = workWithAllFiles,
+            isReadOnly = isReadOnly
         )
     }
 
@@ -86,12 +89,15 @@ class ResourceRepositoryImpl @Inject constructor(
             name = name,
             path = path,
             type = type.name,
+            credentialsId = credentialsId,
             sortMode = sortMode.name,
             displayMode = displayMode.name,
             isDestination = isDestination,
             destinationOrder = destinationOrder,
             destinationColor = destinationColor,
-            workWithAllFiles = workWithAllFiles
+
+            workWithAllFiles = workWithAllFiles,
+            isReadOnly = isReadOnly
         )
     }
 }

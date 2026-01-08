@@ -36,7 +36,10 @@ data class Resource(
     val destinationColor: Int = 0xFF4CAF50.toInt(),
     
     /** Whether to show all files, not just media */
-    val workWithAllFiles: Boolean = false
+    val workWithAllFiles: Boolean = false,
+
+    /** Whether the resource is read-only (no modifications allowed) */
+    val isReadOnly: Boolean = false
 )
 
 /**
