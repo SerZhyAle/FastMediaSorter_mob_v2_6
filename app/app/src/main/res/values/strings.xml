@@ -718,6 +718,19 @@
     <string name="extract_pages_count">Extract %1$d Pages</string>
     <string name="export_as_images">Export as Images</string>
     <string name="feature_coming_soon">Feature coming soon</string>
+    
+    <!-- Lyrics Strings -->
+    <string name="lyrics">Lyrics</string>
+    <string name="loading_lyrics">Loading lyrics…</string>
+    <string name="lyrics_not_found">No lyrics found</string>
+    <string name="lyrics_copied">Lyrics copied to clipboard</string>
+    <string name="copy_lyrics">Copy Lyrics</string>
+    <string name="lyrics_source_embedded">Embedded</string>
+    <string name="lyrics_source_lrc">LRC File</string>
+    <string name="lyrics_source_txt">Text File</string>
+    <string name="lyrics_source_online">Online</string>
+    <string name="lyrics_synced">Synchronized</string>
+    <string name="lyrics_unsynced">Unsynchronized</string>
 </resources>
 
 
