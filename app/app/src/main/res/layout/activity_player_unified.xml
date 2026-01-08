@@ -477,6 +477,135 @@
         app:layout_constraintEnd_toEndOf="parent"
         tools:visibility="visible" />
 
+    <!-- Copy/Move Destination Panels -->
+    <LinearLayout
+        android:id="@+id/copyMovePanelContainer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/controlsContainer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:visibility="visible">
+
+        <!-- Copy Panel (Dark Green) -->
+        <LinearLayout
+            android:id="@+id/copyPanel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#CC004D00"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <!-- Header with collapse/expand -->
+            <LinearLayout
+                android:id="@+id/copyPanelHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="8dp"
+                android:background="?attr/selectableItemBackground">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_copy"
+                    app:tint="@android:color/white"
+                    android:contentDescription="@string/action_copy"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    android:text="@string/copy_to"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold"/>
+
+                <ImageView
+                    android:id="@+id/copyPanelExpandIcon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_chevron_up"
+                    app:tint="@android:color/white"
+                    android:contentDescription="@string/action_expand"/>
+
+            </LinearLayout>
+
+            <!-- Destination buttons grid -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/copyDestinationsGrid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="8dp"
+                android:paddingBottom="8dp"
+                android:clipToPadding="false"/>
+
+        </LinearLayout>
+
+        <!-- Move Panel (Dark Blue) -->
+        <LinearLayout
+            android:id="@+id/movePanel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#CC00004D"
+            android:visibility="gone">
+
+            <!-- Header with collapse/expand -->
+            <LinearLayout
+                android:id="@+id/movePanelHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="8dp"
+                android:background="?attr/selectableItemBackground">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_move"
+                    app:tint="@android:color/white"
+                    android:contentDescription="@string/action_move"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    android:text="@string/move_to"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold"/>
+
+                <ImageView
+                    android:id="@+id/movePanelExpandIcon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_chevron_up"
+                    app:tint="@android:color/white"
+                    android:contentDescription="@string/action_expand"/>
+
+            </LinearLayout>
+
+            <!-- Destination buttons grid -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/moveDestinationsGrid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="8dp"
+                android:paddingBottom="8dp"
+                android:clipToPadding="false"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
     <!-- Bottom controls container (navigation) -->
     <LinearLayout
         android:id="@+id/controlsContainer"

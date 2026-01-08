@@ -671,6 +671,9 @@
     <string name="copy_to">Copy to…</string>
     <string name="move_to">Move to…</string>
     <string name="pause">Pause</string>
+    <string name="action_expand">Expand</string>
+    <string name="action_collapse">Collapse</string>
+    <string name="last_operation">Last operation</string>
     
     <!-- Additional Dialog Strings -->
     <string name="delete_confirmation_message_default">Are you sure you want to delete this item?</string>
