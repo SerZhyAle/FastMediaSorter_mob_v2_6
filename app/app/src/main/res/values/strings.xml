@@ -207,6 +207,51 @@
         <item>Русский</item>
         <item>Українська</item>
     </string-array>
+    
+    <!-- Media Category Tabs -->
+    <string name="media_category_images">Images</string>
+    <string name="media_category_video">Video</string>
+    <string name="media_category_audio">Audio</string>
+    <string name="media_category_documents">Docs</string>
+    <string name="media_category_other">Other</string>
+    
+    <!-- Media Settings - Images -->
+    <string name="support_images">Support Images</string>
+    <string name="supported_image_formats">JPG, PNG, BMP, WEBP</string>
+    <string name="image_size_limits">Image size limits (MB)</string>
+    <string name="load_full_size_images">Load full resolution</string>
+    <string name="load_full_size_images_hint">Enables pinch-to-zoom but uses more memory. Default: 1920px.</string>
+    
+    <!-- Media Settings - Video -->
+    <string name="support_video">Support Video</string>
+    <string name="supported_video_formats">MP4, MKV, MOV, WEBM, AVI</string>
+    <string name="video_size_limits">Video size limits (MB)</string>
+    <string name="show_video_thumbnails">Show video thumbnails</string>
+    <string name="show_video_thumbnails_description">Extract first frame for preview (may be slow for network)</string>
+    
+    <!-- Media Settings - Audio -->
+    <string name="support_audio">Support Audio</string>
+    <string name="supported_audio_formats">MP3, AAC, FLAC, OGG, WAV</string>
+    <string name="audio_size_limits">Audio size limits (MB)</string>
+    <string name="search_audio_covers_online">Search album covers online</string>
+    
+    <!-- Media Settings - Documents -->
+    <string name="support_text">Support Text Files</string>
+    <string name="supported_text_formats">TXT, MD, LOG, JSON, XML, CSV</string>
+    <string name="support_pdf">Support PDF</string>
+    <string name="supported_pdf_formats">PDF documents</string>
+    <string name="support_epub">Support EPUB</string>
+    
+    <!-- Media Settings - Other -->
+    <string name="support_gif">Support GIF</string>
+    <string name="support_gif_description">Animated GIF files</string>
+    <string name="translation_settings">Text &amp; Translation</string>
+    <string name="enable_translation">Enable Translation</string>
+    <string name="enable_google_lens">Send to Google Lens</string>
+    
+    <!-- Common Size Settings -->
+    <string name="min_size_mb">Min (MB)</string>
+    <string name="max_size_mb">Max (MB)</string>
 
     <!-- Additional UI Strings -->
     <string name="thumbnail">Thumbnail</string>

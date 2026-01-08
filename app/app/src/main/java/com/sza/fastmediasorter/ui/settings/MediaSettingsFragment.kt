@@ -4,14 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.android.material.tabs.TabLayoutMediator
+import com.sza.fastmediasorter.R
 import com.sza.fastmediasorter.databinding.FragmentSettingsMediaBinding
 import com.sza.fastmediasorter.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
 /**
- * Media settings fragment placeholder.
- * Will contain nested tabs for Images/Videos/Audio/Documents/Other.
+ * Media settings fragment with nested tabs.
+ * Contains 5 sub-tabs: Images, Video, Audio, Documents, Other.
  */
 @AndroidEntryPoint
 class MediaSettingsFragment : BaseFragment<FragmentSettingsMediaBinding>() {
@@ -26,7 +28,22 @@ class MediaSettingsFragment : BaseFragment<FragmentSettingsMediaBinding>() {
         super.onViewCreated(view, savedInstanceState)
         Timber.d("MediaSettingsFragment created")
         
-        // Placeholder - full implementation in future sprint
-        binding.tvPlaceholder.text = "Media settings coming soon.\n\nWill include:\n• Image settings\n• Video settings\n• Audio settings\n• Document settings"
+        setupViewPager()
+    }
+
+    private fun setupViewPager() {
+        val adapter = MediaCategoryPagerAdapter(this)
+        binding.viewPagerMedia.adapter = adapter
+        
+        TabLayoutMediator(binding.tabLayoutMedia, binding.viewPagerMedia) { tab, position ->
+            tab.text = when (position) {
+                0 -> getString(R.string.media_category_images)
+                1 -> getString(R.string.media_category_video)
+                2 -> getString(R.string.media_category_audio)
+                3 -> getString(R.string.media_category_documents)
+                4 -> getString(R.string.media_category_other)
+                else -> ""
+            }
+        }.attach()
     }
 }
