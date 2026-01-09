@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Search input -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilSearchQuery"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/search_hint"
+        app:startIconDrawable="@drawable/ic_search"
+        app:endIconMode="clear_text">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etSearchQuery"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:maxLines="1" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Case sensitivity toggle -->
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/cbCaseSensitive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/search_case_sensitive" />
+
+    <!-- Result counter and navigation -->
+    <LinearLayout
+        android:id="@+id/layoutResults"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <!-- Previous result -->
+        <ImageButton
+            android:id="@+id/btnPrevResult"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/search_prev"
+            android:src="@drawable/ic_arrow_back"
+            app:tint="?attr/colorOnSurface" />
+
+        <!-- Result counter -->
+        <TextView
+            android:id="@+id/tvResultCounter"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:text="3 / 15" />
+
+        <!-- Next result -->
+        <ImageButton
+            android:id="@+id/btnNextResult"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/search_next"
+            android:src="@drawable/ic_arrow_forward"
+            app:tint="?attr/colorOnSurface" />
+
+    </LinearLayout>
+
+    <!-- Current result context -->
+    <TextView
+        android:id="@+id/tvResultContext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/bg_rounded_light"
+        android:fontFamily="monospace"
+        android:padding="12dp"
+        android:textSize="14sp"
+        android:visibility="gone"
+        tools:text="...found text in context..."
+        tools:visibility="visible" />
+
+    <!-- No results message -->
+    <TextView
+        android:id="@+id/tvNoResults"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="@string/search_no_results_in_document"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="14sp"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+</LinearLayout>

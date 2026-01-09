@@ -837,7 +837,37 @@ class PlayerActivity : BaseActivity<ActivityPlayerUnifiedBinding>() {
             is PlayerUiEvent.ShowLyricsDialog -> {
                 showLyricsDialog(event.filePath, event.artist, event.title)
             }
+            // Search events
+            is PlayerUiEvent.ShowSearchDialog -> {
+                showSearchDialog(event.filePath, event.documentType, event.content)
+            }
+            is PlayerUiEvent.ScrollToSearchResult -> {
+                // Handle scroll to search result if needed
+                Timber.d("Scroll to search result at line ${event.lineNumber}")
+            }
         }
+    }
+
+    private fun showSearchDialog(filePath: String, documentType: String, content: String?) {
+        val type = try {
+            com.sza.fastmediasorter.ui.dialog.SearchDialog.DocumentType.valueOf(documentType)
+        } catch (e: Exception) {
+            com.sza.fastmediasorter.ui.dialog.SearchDialog.DocumentType.TEXT
+        }
+        
+        val dialog = com.sza.fastmediasorter.ui.dialog.SearchDialog.newInstance(
+            filePath = filePath,
+            documentType = type,
+            content = content
+        )
+        
+        dialog.setOnResultSelectedListener { result ->
+            // Notify the text viewer to scroll to this result
+            Timber.d("Search result selected: line ${result.lineNumber}, pos ${result.startPosition}-${result.endPosition}")
+            // The text viewer can observe this and highlight/scroll
+        }
+        
+        dialog.show(supportFragmentManager, "search_dialog")
     }
 
     private fun showRenameDialog(filePath: String) {

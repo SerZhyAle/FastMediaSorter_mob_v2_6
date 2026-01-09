@@ -52,6 +52,15 @@
     <string name="action_info">Info</string>
     <string name="action_search">Search</string>
     <string name="search_hint">Search files…</string>
+    <string name="search_in_document_hint">Search in document…</string>
+    <string name="search_case_sensitive">Case sensitive</string>
+    <string name="search_prev">Previous result</string>
+    <string name="search_next">Next result</string>
+    <string name="search_no_results_in_document">No results found</string>
+    <string name="search_result_counter">%1$d / %2$d</string>
+    <string name="search_in_text">Search in Text</string>
+    <string name="search_in_pdf">Search in PDF</string>
+    <string name="search_in_epub">Search in EPUB</string>
     <string name="no_search_results">No files match your search</string>
     <string name="selected_count">%d selected</string>
     <string name="delete_confirmation_title">Delete Files?</string>

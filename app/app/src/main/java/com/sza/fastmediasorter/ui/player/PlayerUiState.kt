@@ -108,4 +108,16 @@ sealed class PlayerUiEvent {
         val artist: String? = null,
         val title: String? = null
     ) : PlayerUiEvent()
+
+    // Search events
+    data class ShowSearchDialog(
+        val filePath: String,
+        val documentType: String, // "TEXT", "PDF", "EPUB"
+        val content: String? = null
+    ) : PlayerUiEvent()
+    data class ScrollToSearchResult(
+        val lineNumber: Int,
+        val startPosition: Int,
+        val endPosition: Int
+    ) : PlayerUiEvent()
 }

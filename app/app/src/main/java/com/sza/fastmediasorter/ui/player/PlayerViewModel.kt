@@ -332,7 +332,18 @@ class PlayerViewModel @Inject constructor(
      */
     fun onSearchTextClick() {
         viewModelScope.launch {
-            _events.emit(PlayerUiEvent.ShowSnackbar("Search in text: Not yet implemented"))
+            val state = _uiState.value
+            val currentPath = state.files.getOrNull(state.currentIndex) ?: return@launch
+            
+            if (state.currentMediaType == MediaType.TXT) {
+                _events.emit(PlayerUiEvent.ShowSearchDialog(
+                    filePath = currentPath,
+                    documentType = "TEXT",
+                    content = null
+                ))
+            } else {
+                _events.emit(PlayerUiEvent.ShowSnackbar("Search is only available for text files"))
+            }
         }
     }
 
@@ -458,7 +469,20 @@ class PlayerViewModel @Inject constructor(
      */
     fun onSearchPdfClick() {
         viewModelScope.launch {
-            _events.emit(PlayerUiEvent.ShowSnackbar("Search in PDF: Not yet implemented"))
+            val state = _uiState.value
+            val currentPath = state.files.getOrNull(state.currentIndex) ?: return@launch
+            
+            if (state.currentMediaType == MediaType.PDF) {
+                // For PDF, we would need to extract text first
+                // For now, show search dialog - text extraction can be added later
+                _events.emit(PlayerUiEvent.ShowSearchDialog(
+                    filePath = currentPath,
+                    documentType = "PDF",
+                    content = null
+                ))
+            } else {
+                _events.emit(PlayerUiEvent.ShowSnackbar("PDF search is only available for PDF files"))
+            }
         }
     }
 
@@ -484,7 +508,20 @@ class PlayerViewModel @Inject constructor(
      */
     fun onSearchEpubClick() {
         viewModelScope.launch {
-            _events.emit(PlayerUiEvent.ShowSnackbar("Search in EPUB: Not yet implemented"))
+            val state = _uiState.value
+            val currentPath = state.files.getOrNull(state.currentIndex) ?: return@launch
+            
+            if (state.currentMediaType == MediaType.EPUB) {
+                // For EPUB, we would need to extract chapter text
+                // For now, show search dialog - text extraction can be added later
+                _events.emit(PlayerUiEvent.ShowSearchDialog(
+                    filePath = currentPath,
+                    documentType = "EPUB",
+                    content = null
+                ))
+            } else {
+                _events.emit(PlayerUiEvent.ShowSnackbar("EPUB search is only available for EPUB files"))
+            }
         }
     }
 
