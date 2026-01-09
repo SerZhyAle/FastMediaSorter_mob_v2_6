@@ -230,13 +230,101 @@ class PdfToolsDialog : DialogFragment() {
     }
     
     private fun extractSelectedPages() {
-        Toast.makeText(context, R.string.feature_coming_soon, Toast.LENGTH_SHORT).show()
-        // Full implementation would require a document provider save location picker
+        val uri = pdfUri ?: return
+        val pages = selectedPages.toList().sorted()
+        
+        progressBar.visibility = View.VISIBLE
+        btnExtract.isEnabled = false
+        
+        lifecycleScope.launch {
+            try {
+                // Create output file in app's cache directory
+                val outputFile = withContext(Dispatchers.IO) {
+                    val tempDir = requireContext().externalCacheDir ?: requireContext().cacheDir
+                    val timestamp = System.currentTimeMillis()
+                    File(tempDir, "extracted_pages_$timestamp.pdf")
+                }
+                
+                val result = withContext(Dispatchers.IO) {
+                    pdfEditManager.extractPages(
+                        context = requireContext(),
+                        sourceUri = uri,
+                        outputFile = outputFile,
+                        pagesToExtract = pages
+                    )
+                }
+                
+                when (result) {
+                    is PdfEditManager.PdfResult.Success -> {
+                        Toast.makeText(
+                            context,
+                            getString(R.string.pages_extracted, pages.size, result.data.absolutePath),
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                    is PdfEditManager.PdfResult.Error -> {
+                        Toast.makeText(
+                            context,
+                            getString(R.string.pdf_operation_failed, result.message),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            } catch (e: Exception) {
+                Toast.makeText(context, "Extract failed: ${e.message}", Toast.LENGTH_SHORT).show()
+            } finally {
+                progressBar.visibility = View.GONE
+                btnExtract.isEnabled = true
+            }
+        }
     }
     
     private fun exportPagesAsImages(pages: Set<Int>) {
-        Toast.makeText(context, R.string.feature_coming_soon, Toast.LENGTH_SHORT).show()
-        // Full implementation would require storage access framework
+        val uri = pdfUri ?: return
+        val pageList = pages.toList().sorted()
+        
+        progressBar.visibility = View.VISIBLE
+        btnExportImages.isEnabled = false
+        
+        lifecycleScope.launch {
+            try {
+                // Create output directory
+                val outputDir = withContext(Dispatchers.IO) {
+                    val baseDir = requireContext().externalCacheDir ?: requireContext().cacheDir
+                    val timestamp = System.currentTimeMillis()
+                    File(baseDir, "pdf_images_$timestamp").apply { mkdirs() }
+                }
+                
+                var successCount = 0
+                
+                for (pageIndex in pageList) {
+                    val bitmap = withContext(Dispatchers.IO) {
+                        pdfToolsManager?.renderPage(requireContext(), uri, pageIndex, 1024)
+                    }
+                    
+                    if (bitmap != null) {
+                        val outputFile = File(outputDir, "page_${pageIndex + 1}.png")
+                        withContext(Dispatchers.IO) {
+                            outputFile.outputStream().use { out ->
+                                bitmap.compress(android.graphics.Bitmap.CompressFormat.PNG, 100, out)
+                            }
+                        }
+                        successCount++
+                    }
+                }
+                
+                Toast.makeText(
+                    context,
+                    getString(R.string.pages_exported_as_images, successCount, outputDir.absolutePath),
+                    Toast.LENGTH_LONG
+                ).show()
+            } catch (e: Exception) {
+                Toast.makeText(context, "Export failed: ${e.message}", Toast.LENGTH_SHORT).show()
+            } finally {
+                progressBar.visibility = View.GONE
+                btnExportImages.isEnabled = true
+            }
+        }
     }
     
     private fun rotatePages(degrees: Int) {

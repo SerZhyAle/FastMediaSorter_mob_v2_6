@@ -747,6 +747,8 @@
     <string name="delete_pages_confirm">Delete %1$d selected pages? This will create a new PDF file.</string>
     <string name="pages_rotated">Pages rotated successfully</string>
     <string name="pages_deleted">Pages deleted successfully</string>
+    <string name="pages_extracted">Extracted %1$d pages to:\n%2$s</string>
+    <string name="pages_exported_as_images">Exported %1$d pages as images to:\n%2$s</string>
     <string name="pdf_saved">PDF saved successfully</string>
     <string name="save_pdf">Save PDF</string>
     <string name="pdf_modified">PDF has been modified</string>

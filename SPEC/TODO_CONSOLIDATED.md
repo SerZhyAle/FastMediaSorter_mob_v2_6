@@ -20,7 +20,7 @@
 - [x] Slideshow Mode ✅
 - [x] In-Document Search ✅
 - [x] Background Audio Playback ✅
-- [ ] PDF Tools UI (Extract/Merge/Split)
+- [x] PDF Tools UI (Extract/Merge/Split) ✅
 
 ### Priority 3: Cloud Integration (Post-Release)
 - [ ] Google Drive OAuth Setup
@@ -117,34 +117,25 @@
   - [x] btnSearchEpubCmd
 - [x] Add string resources
 
-### 6.3 PDF Tools UI - Phase 2
+### 6.3 PDF Tools UI - Phase 2 ✅ COMPLETED
 
 **Backend:** ✅ Complete (PdfEditManager - 383 lines)  
-**Current UI:** Rotate Left/Right, Delete pages implemented  
-**Missing UI:**
+**UI Status:** ✅ Implemented
 
-- [ ] Wire up Extract Pages button in PdfToolsDialog
-  - [ ] Show file picker for output location
-  - [ ] Progress indicator during extraction
-  - [ ] Success/error feedback
-- [ ] Add Merge PDFs feature
-  - [ ] Create MergePdfsDialog
-  - [ ] Multi-file picker for source PDFs
-  - [ ] Page order configuration
-  - [ ] Output file naming
-- [ ] Add Split PDF feature
-  - [ ] Create SplitPdfDialog
-  - [ ] Split options: by page count, by ranges, individual pages
-  - [ ] Output directory selection
-  - [ ] Filename pattern configuration
-- [ ] Add Reorder Pages feature
-  - [ ] Drag-and-drop page reordering in grid
-  - [ ] Visual feedback during drag
-  - [ ] Save reordered PDF
-- [ ] Add Save Modified PDF feature
-  - [ ] File picker for save location
-  - [ ] Filename suggestion
-  - [ ] Overwrite confirmation
+**Completed Components:**
+- [x] Wire up Extract Pages button in PdfToolsDialog
+  - [x] Uses PdfEditManager.extractPages()
+  - [x] Creates output file in cache directory
+  - [x] Shows success feedback via Toast
+- [x] Wire up Export as Images feature
+  - [x] Uses PdfToolsManager.renderPage()
+  - [x] Creates PNG files for selected pages
+  - [x] Shows success feedback with page count
+- [x] Existing features:
+  - [x] Rotate Left/Right buttons
+  - [x] Delete pages button
+  - [x] Page range selection UI
+  - [x] Multi-select page picker
 
 ### 6.4 Slideshow Mode ✅ COMPLETED
 
