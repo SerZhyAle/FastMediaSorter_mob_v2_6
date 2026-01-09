@@ -246,7 +246,7 @@
   - [x] EditResourceViewModel
   - [x] SettingsViewModel
 - [ ] Repository Tests
-  - [ ] ResourceRepositoryImpl
+  - [x] ResourceRepositoryImpl
   - [ ] MediaFileRepositoryImpl
   - [ ] SettingsRepositoryImpl
   - [ ] PlaybackPositionRepositoryImpl
