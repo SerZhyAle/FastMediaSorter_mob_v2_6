@@ -255,7 +255,7 @@
   - [ ] GetResourcesUseCase (exists)
   - [ ] UpdateResourceUseCase (exists)
   - [ ] DeleteResourceUseCase (exists)
-  - [ ] GetMediaFilesUseCase
+  - [x] GetMediaFilesUseCase
   - [ ] CopyFileUseCase
   - [ ] MoveFileUseCase
   - [ ] DeleteFileUseCase
