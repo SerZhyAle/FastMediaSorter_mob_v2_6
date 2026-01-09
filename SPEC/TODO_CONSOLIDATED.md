@@ -247,24 +247,24 @@
   - [x] SettingsViewModel
 - [ ] Repository Tests
   - [x] ResourceRepositoryImpl
-  - [ ] MediaFileRepositoryImpl
-  - [ ] SettingsRepositoryImpl
+  - [ ] MediaFileRepositoryImpl (not implemented)
+  - [ ] SettingsRepositoryImpl (not implemented)
   - [x] PlaybackPositionRepositoryImpl
 - [ ] UseCase Tests
-  - [ ] AddResourceUseCase (exists)
-  - [ ] GetResourcesUseCase (exists)
-  - [ ] UpdateResourceUseCase (exists)
-  - [ ] DeleteResourceUseCase (exists)
+  - [x] AddResourceUseCase (exists)
+  - [x] GetResourcesUseCase (exists)
+  - [x] UpdateResourceUseCase (exists)
+  - [x] DeleteResourceUseCase (exists)
   - [x] GetMediaFilesUseCase
-  - [ ] CopyFileUseCase
-  - [ ] MoveFileUseCase
-  - [ ] DeleteFileUseCase
-- [ ] FileOperationStrategy Tests
+  - [ ] CopyFileUseCase (not implemented)
+  - [ ] MoveFileUseCase (not implemented)
+  - [ ] DeleteFileUseCase (not implemented)
+- [ ] FileOperationStrategy Tests (not implemented)
   - [ ] LocalFileStrategy
   - [ ] SmbFileStrategy
   - [ ] SftpFileStrategy
   - [ ] FtpFileStrategy
-- [ ] Manager Tests
+- [ ] Manager Tests (require instrumented tests due to Android dependencies)
   - [ ] PdfEditManager
   - [ ] PdfToolsManager
   - [ ] EpubReaderManager
