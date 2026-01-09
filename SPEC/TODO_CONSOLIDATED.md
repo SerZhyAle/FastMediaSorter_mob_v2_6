@@ -249,7 +249,7 @@
   - [x] ResourceRepositoryImpl
   - [ ] MediaFileRepositoryImpl
   - [ ] SettingsRepositoryImpl
-  - [ ] PlaybackPositionRepositoryImpl
+  - [x] PlaybackPositionRepositoryImpl
 - [ ] UseCase Tests
   - [ ] AddResourceUseCase (exists)
   - [ ] GetResourcesUseCase (exists)
