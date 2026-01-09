@@ -26,6 +26,7 @@ import com.sza.fastmediasorter.domain.model.MediaType
 import com.sza.fastmediasorter.ui.base.BaseActivity
 import com.sza.fastmediasorter.ui.dialog.OcrTranslationDialog
 import com.sza.fastmediasorter.ui.dialog.PdfToolsDialog
+import com.sza.fastmediasorter.ui.dialog.TranslationOverlayDialog
 import com.sza.fastmediasorter.ui.dialog.TranslationSettingsDialog
 import com.sza.fastmediasorter.integrations.GoogleLensHelper
 import dagger.hilt.android.AndroidEntryPoint
@@ -808,6 +809,9 @@ class PlayerActivity : BaseActivity<ActivityPlayerUnifiedBinding>() {
             is PlayerUiEvent.ShowTranslationProgress -> {
                 showTranslationProgress(event.isLoading)
             }
+            is PlayerUiEvent.ShowTranslationOverlay -> {
+                showTranslationOverlay(event.filePath, event.sourceLanguage, event.targetLanguage, event.fontSize)
+            }
             // OCR events
             is PlayerUiEvent.ShowOcrDialog -> {
                 showOcrDialog(event.filePath)
@@ -1066,6 +1070,24 @@ class PlayerActivity : BaseActivity<ActivityPlayerUnifiedBinding>() {
             Snackbar.make(binding.root, R.string.downloading_translation_model, Snackbar.LENGTH_INDEFINITE)
                 .show()
         }
+    }
+
+    /**
+     * Show translation overlay dialog for images with OCR text boxes.
+     */
+    private fun showTranslationOverlay(
+        filePath: String,
+        sourceLanguage: String?,
+        targetLanguage: String,
+        fontSize: Float
+    ) {
+        val dialog = TranslationOverlayDialog.newInstance(
+            filePath = filePath,
+            sourceLanguage = sourceLanguage,
+            targetLanguage = targetLanguage,
+            fontSize = fontSize
+        )
+        dialog.show(supportFragmentManager, TranslationOverlayDialog.TAG)
     }
 
     /**

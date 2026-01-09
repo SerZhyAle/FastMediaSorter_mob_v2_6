@@ -1,6 +1,7 @@
 package com.sza.fastmediasorter.ui.dialog
 
 import android.app.Dialog
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -21,7 +22,8 @@ import com.sza.fastmediasorter.translation.TranslationManager
  * Features:
  * - Auto-detect source language option
  * - 22 supported target languages
- * - Shows download status for each language
+ * - Font size selection (small/medium/large)
+ * - Persistent settings storage
  * - Remember last selected languages
  */
 class TranslationSettingsDialog : DialogFragment() {
@@ -30,6 +32,17 @@ class TranslationSettingsDialog : DialogFragment() {
         const val TAG = "TranslationSettingsDialog"
         private const val ARG_SOURCE_LANGUAGE = "source_language"
         private const val ARG_TARGET_LANGUAGE = "target_language"
+        
+        // Shared preferences keys
+        private const val PREFS_NAME = "translation_settings"
+        private const val PREF_SOURCE_LANGUAGE = "source_language"
+        private const val PREF_TARGET_LANGUAGE = "target_language"
+        private const val PREF_FONT_SIZE = "font_size"
+        
+        // Font size values
+        const val FONT_SIZE_SMALL = 12f
+        const val FONT_SIZE_MEDIUM = 14f
+        const val FONT_SIZE_LARGE = 18f
 
         fun newInstance(
             sourceLanguage: String? = null,
@@ -48,9 +61,11 @@ class TranslationSettingsDialog : DialogFragment() {
     private val binding get() = _binding!!
 
     private var onLanguagesSelected: ((sourceLanguage: String?, targetLanguage: String) -> Unit)? = null
+    private var onSettingsChanged: ((sourceLanguage: String?, targetLanguage: String, fontSize: Float) -> Unit)? = null
     
     private var selectedSourceLanguage: String? = null
     private var selectedTargetLanguage: String = TranslateLanguage.ENGLISH
+    private var selectedFontSize: Float = FONT_SIZE_MEDIUM
 
     // Language display data
     data class LanguageItem(
@@ -73,18 +88,23 @@ class TranslationSettingsDialog : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         _binding = DialogTranslationSettingsBinding.inflate(layoutInflater)
 
-        // Restore saved state
+        // Load saved preferences first
+        loadSavedSettings()
+        
+        // Override with arguments if provided
         arguments?.let { args ->
-            selectedSourceLanguage = args.getString(ARG_SOURCE_LANGUAGE)
-            selectedTargetLanguage = args.getString(ARG_TARGET_LANGUAGE) ?: TranslateLanguage.ENGLISH
+            args.getString(ARG_SOURCE_LANGUAGE)?.let { selectedSourceLanguage = it }
+            args.getString(ARG_TARGET_LANGUAGE)?.let { selectedTargetLanguage = it }
         }
 
         setupSpinners()
+        setupFontSizeToggle()
 
         return MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.translation_dialog_title)
             .setView(binding.root)
             .setPositiveButton(R.string.translate) { _, _ ->
+                saveSettings()
                 notifySelection()
             }
             .setNegativeButton(R.string.cancel, null)
@@ -98,6 +118,52 @@ class TranslationSettingsDialog : DialogFragment() {
 
     fun setOnLanguagesSelectedListener(listener: (sourceLanguage: String?, targetLanguage: String) -> Unit) {
         onLanguagesSelected = listener
+    }
+    
+    fun setOnSettingsChangedListener(listener: (sourceLanguage: String?, targetLanguage: String, fontSize: Float) -> Unit) {
+        onSettingsChanged = listener
+    }
+    
+    private fun loadSavedSettings() {
+        val prefs = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        selectedSourceLanguage = prefs.getString(PREF_SOURCE_LANGUAGE, null)
+        selectedTargetLanguage = prefs.getString(PREF_TARGET_LANGUAGE, TranslateLanguage.ENGLISH) ?: TranslateLanguage.ENGLISH
+        selectedFontSize = prefs.getFloat(PREF_FONT_SIZE, FONT_SIZE_MEDIUM)
+    }
+    
+    private fun saveSettings() {
+        val prefs = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        prefs.edit().apply {
+            if (selectedSourceLanguage != null) {
+                putString(PREF_SOURCE_LANGUAGE, selectedSourceLanguage)
+            } else {
+                remove(PREF_SOURCE_LANGUAGE)
+            }
+            putString(PREF_TARGET_LANGUAGE, selectedTargetLanguage)
+            putFloat(PREF_FONT_SIZE, selectedFontSize)
+            apply()
+        }
+    }
+    
+    private fun setupFontSizeToggle() {
+        // Set initial selection based on saved font size
+        val checkedId = when (selectedFontSize) {
+            FONT_SIZE_SMALL -> R.id.btnFontSmall
+            FONT_SIZE_LARGE -> R.id.btnFontLarge
+            else -> R.id.btnFontMedium
+        }
+        binding.fontSizeToggleGroup.check(checkedId)
+        
+        // Listen for changes
+        binding.fontSizeToggleGroup.addOnButtonCheckedListener { _, checkedButtonId, isChecked ->
+            if (isChecked) {
+                selectedFontSize = when (checkedButtonId) {
+                    R.id.btnFontSmall -> FONT_SIZE_SMALL
+                    R.id.btnFontLarge -> FONT_SIZE_LARGE
+                    else -> FONT_SIZE_MEDIUM
+                }
+            }
+        }
     }
 
     private fun setupSpinners() {
@@ -158,8 +224,13 @@ class TranslationSettingsDialog : DialogFragment() {
 
         val source = sourceLanguages[sourcePos].code
         val target = targetLanguages[targetPos].code ?: TranslateLanguage.ENGLISH
+        
+        // Update selected values
+        selectedSourceLanguage = source
+        selectedTargetLanguage = target
 
         onLanguagesSelected?.invoke(source, target)
+        onSettingsChanged?.invoke(source, target, selectedFontSize)
     }
 
     private fun getLanguageName(code: String): String {

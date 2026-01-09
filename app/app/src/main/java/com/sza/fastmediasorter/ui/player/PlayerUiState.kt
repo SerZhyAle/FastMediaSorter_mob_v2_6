@@ -86,6 +86,14 @@ sealed class PlayerUiEvent {
     ) : PlayerUiEvent()
     data class ShowTranslationResult(val translatedText: String) : PlayerUiEvent()
     data class ShowTranslationProgress(val isLoading: Boolean) : PlayerUiEvent()
+    
+    // Translation overlay events (for images)
+    data class ShowTranslationOverlay(
+        val filePath: String,
+        val sourceLanguage: String? = null,
+        val targetLanguage: String = "en",
+        val fontSize: Float = 14f
+    ) : PlayerUiEvent()
 
     // OCR events
     data class ShowOcrDialog(val filePath: String) : PlayerUiEvent()

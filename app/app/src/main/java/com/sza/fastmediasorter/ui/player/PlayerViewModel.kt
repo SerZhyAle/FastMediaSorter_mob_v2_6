@@ -44,6 +44,7 @@ class PlayerViewModel @Inject constructor(
     private var lastSourceLanguage: String? = null
     private var lastTargetLanguage: String = "en" // Default to English
     private var pendingTranslationContent: String? = null
+    private var translationFontSize: Float = 14f // Font size for translation overlay
 
     // Slideshow controller
     private val slideshowController = SlideshowController(
@@ -350,11 +351,25 @@ class PlayerViewModel @Inject constructor(
     /**
      * Translate current content.
      * Shows translation settings dialog to select languages, then performs translation.
+     * For images, shows the translation overlay with OCR-detected text boxes.
      */
     fun onTranslateClick() {
         viewModelScope.launch {
             val state = _uiState.value
             val currentPath = state.files.getOrNull(state.currentIndex) ?: return@launch
+
+            // For images, show translation overlay instead of text translation
+            if (state.currentMediaType == MediaType.IMAGE || state.currentMediaType == MediaType.GIF) {
+                _events.emit(
+                    PlayerUiEvent.ShowTranslationOverlay(
+                        filePath = currentPath,
+                        sourceLanguage = lastSourceLanguage,
+                        targetLanguage = lastTargetLanguage ?: "en",
+                        fontSize = translationFontSize
+                    )
+                )
+                return@launch
+            }
 
             // Get text content based on media type
             val textContent = getTextContentForTranslation(currentPath, state.currentMediaType)

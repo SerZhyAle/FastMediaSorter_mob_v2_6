@@ -174,17 +174,22 @@
   - [x] POST_NOTIFICATIONS
 - [x] Register service in AndroidManifest
 
-### 6.6 Translation Enhancements (Optional)
+### 6.6 Translation Enhancements ✅ COMPLETED
 
-- [ ] Google Lens-style overlay for image translation
-  - [ ] Transparent overlay with text boxes
-  - [ ] Tap box to translate
-  - [ ] Copy translated text
-- [ ] Translation settings dialog
-  - [ ] Source language selection
-  - [ ] Target language selection
-  - [ ] Font size control
-  - [ ] Persistent settings
+**Status:** Implemented with overlay and settings
+
+**Completed Components:**
+- [x] Google Lens-style overlay for image translation
+  - [x] TranslationOverlayView - Custom view with text boxes
+  - [x] TranslationOverlayDialog - Full-screen dialog
+  - [x] Tap box to translate individual text blocks
+  - [x] Copy translated text to clipboard
+  - [x] Translate all detected text at once
+- [x] Translation settings dialog
+  - [x] Source language selection (22 languages + auto-detect)
+  - [x] Target language selection
+  - [x] Font size control (small/medium/large toggle)
+  - [x] Persistent settings via SharedPreferences
 
 ---
 
