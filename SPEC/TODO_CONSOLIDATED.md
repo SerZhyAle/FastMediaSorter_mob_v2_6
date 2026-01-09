@@ -15,21 +15,14 @@
 - [ ] Performance SLA Validation
 - [ ] Store Preparation
 
-### Priority 2: Missing Features from v1/app_v2
-- [x] EPUB UI Integration ✅
-- [x] Slideshow Mode ✅
-- [x] In-Document Search ✅
-- [x] Background Audio Playback ✅
-- [x] PDF Tools UI (Extract/Merge/Split) ✅
-
-### Priority 3: Cloud Integration (Post-Release)
+### Priority 2: Cloud Integration (Post-Release - v2.1)
 - [ ] Google Drive OAuth Setup
 - [ ] OneDrive Integration
 - [ ] Dropbox Integration
 
 ---
 
-## 🚧 Epic 5: Cloud Integration (DEFERRED)
+## 🚧 Epic 5: Cloud Integration (DEFERRED TO v2.1)
 
 ### 5.1 Google Drive - Phase 3
 - [ ] Complete OAuth Android client setup in Google Cloud Console
@@ -64,135 +57,6 @@
 
 ---
 
-## 🔧 Epic 6: Advanced Features
-
-### 6.1 EPUB Reader UI Integration ✅ COMPLETED
-
-**Backend:** ✅ Complete (EpubReaderManager - 336 lines)  
-**UI Status:** ✅ Integrated
-
-**Completed Components:**
-- [x] Add WebView to PlayerActivity layout (`epubWebView`)
-- [x] Create EpubViewHolder in MediaPagerAdapter
-  - [x] WebView initialization with JavaScript enabled
-  - [x] HTML content rendering with CSS theming
-  - [x] Image resource serving from EPUB ZIP
-  - [x] Scroll position tracking
-- [x] Add EPUB Controls Layout (`item_media_page_epub.xml`)
-  - [x] btnPrevChapter - Previous chapter button
-  - [x] btnNextChapter - Next chapter button
-  - [x] tvChapterIndicator - Chapter counter (e.g., "5/12")
-  - [x] btnToc - Table of contents button
-  - [x] btnFontDecrease - Decrease font button
-  - [x] btnFontIncrease - Increase font button
-- [x] Wire up EPUB operations
-  - [x] Chapter navigation (prev/next)
-  - [x] Font size control (8-48px range)
-  - [x] Table of Contents dialog
-- [x] Add string resources for EPUB UI
-  - [x] Chapter indicators
-  - [x] Font size labels
-  - [x] Table of contents headers
-  - [x] Error messages
-
-### 6.2 In-Document Search ✅ COMPLETED
-
-**Status:** Implemented
-
-**Completed Components:**
-- [x] Create TextSearchHelper class
-  - [x] Text content loading
-  - [x] Search query processing
-  - [x] Result navigation (next/prev)
-  - [x] Context extraction
-- [x] Create Search UI Dialog
-  - [x] Search input field
-  - [x] Result counter (e.g., "3/15")
-  - [x] Prev/Next navigation buttons
-  - [x] Case sensitivity toggle
-  - [x] Result context display with highlighting
-- [x] Wire up search buttons in PlayerActivity
-  - [x] btnSearchTextCmd
-  - [x] btnSearchPdfCmd
-  - [x] btnSearchEpubCmd
-- [x] Add string resources
-
-### 6.3 PDF Tools UI - Phase 2 ✅ COMPLETED
-
-**Backend:** ✅ Complete (PdfEditManager - 383 lines)  
-**UI Status:** ✅ Implemented
-
-**Completed Components:**
-- [x] Wire up Extract Pages button in PdfToolsDialog
-  - [x] Uses PdfEditManager.extractPages()
-  - [x] Creates output file in cache directory
-  - [x] Shows success feedback via Toast
-- [x] Wire up Export as Images feature
-  - [x] Uses PdfToolsManager.renderPage()
-  - [x] Creates PNG files for selected pages
-  - [x] Shows success feedback with page count
-- [x] Existing features:
-  - [x] Rotate Left/Right buttons
-  - [x] Delete pages button
-  - [x] Page range selection UI
-  - [x] Multi-select page picker
-
-### 6.4 Slideshow Mode ✅ COMPLETED
-
-**Status:** Implemented in current app
-
-**Completed Features:**
-- [x] Add Slideshow controls to PlayerActivity
-  - [x] Play/Pause button
-  - [x] Interval support (5s/10s/15s/30s/60s)
-- [x] Create SlideshowController class
-  - [x] Timer-based auto-advance
-  - [x] Countdown display (last 3 seconds)
-  - [x] State management (playing/paused)
-- [x] Add Slideshow settings
-  - [x] Interval configuration
-- [x] Wire up keyboard/gesture controls
-  - [x] Middle touch zone: Pause/Resume
-- [x] Add string resources and icons
-  - [x] Slideshow controls labels
-  - [x] Interval options
-  - [x] Status messages
-
-### 6.5 Background Audio Playback ✅ COMPLETED
-
-**Status:** Implemented with MediaSessionService
-
-**Completed Components:**
-- [x] Create MediaPlaybackService extending MediaSessionService
-  - [x] Media notification with controls
-  - [x] Lock screen controls (via MediaSession)
-  - [x] Bluetooth/headphone controls (via MediaSession)
-- [x] Audio focus management (via ExoPlayer default)
-- [x] Position save/restore via PlaybackPositionRepository
-- [x] Add manifest permissions
-  - [x] FOREGROUND_SERVICE_MEDIA_PLAYBACK
-  - [x] POST_NOTIFICATIONS
-- [x] Register service in AndroidManifest
-
-### 6.6 Translation Enhancements ✅ COMPLETED
-
-**Status:** Implemented with overlay and settings
-
-**Completed Components:**
-- [x] Google Lens-style overlay for image translation
-  - [x] TranslationOverlayView - Custom view with text boxes
-  - [x] TranslationOverlayDialog - Full-screen dialog
-  - [x] Tap box to translate individual text blocks
-  - [x] Copy translated text to clipboard
-  - [x] Translate all detected text at once
-- [x] Translation settings dialog
-  - [x] Source language selection (22 languages + auto-detect)
-  - [x] Target language selection
-  - [x] Font size control (small/medium/large toggle)
-  - [x] Persistent settings via SharedPreferences
-
----
-
 ## 🧪 Epic 8: Testing & Release Engineering
 
 ### 8.1 Automated Testing ⚠️ CRITICAL
@@ -213,10 +77,10 @@
   - [ ] SettingsRepositoryImpl (not implemented)
   - [x] PlaybackPositionRepositoryImpl
 - [ ] UseCase Tests
-  - [x] AddResourceUseCase (exists)
-  - [x] GetResourcesUseCase (exists)
-  - [x] UpdateResourceUseCase (exists)
-  - [x] DeleteResourceUseCase (exists)
+  - [x] AddResourceUseCase
+  - [x] GetResourcesUseCase
+  - [x] UpdateResourceUseCase
+  - [x] DeleteResourceUseCase
   - [x] GetMediaFilesUseCase
   - [ ] CopyFileUseCase (not implemented)
   - [ ] MoveFileUseCase (not implemented)
@@ -349,63 +213,9 @@
 ### Medium Priority Issues
 - **FTP PASV Mode:** Occasional timeouts on some servers (active mode fallback works)
 - **Test Coverage:** Currently <50%, need >80% for confidence
-- **EPUB UI Missing:** Backend complete but no UI integration
 
 ### Low Priority Issues
 - **DataStore Migration:** Still using SharedPreferences (works fine, not urgent)
-- **Audio Background Playback:** Not implemented (low demand)
-- **Slideshow Mode:** Missing from current app (was in app_v2)
-
----
-
-## 📋 Missing Features from app_v2
-
-These features were present in `OLD_CODE_for_information_only/app_v2` but are missing in the current app:
-
-### High Priority (Should be implemented)
-1. **EPUB Viewer UI** (backend exists, no UI)
-   - WebView-based reader
-   - Chapter navigation
-   - Font controls
-   - Table of contents
-   - Reference: `app_v2/.../EpubViewerManager.kt` (1600 lines)
-
-2. **Slideshow Mode**
-   - Auto-advance timer
-   - Interval selection
-   - Random shuffle
-   - Progress indicator
-   - Reference: Check app_v2 PlayerActivity
-
-3. **In-Document Search**
-   - PDF text search
-   - EPUB cross-chapter search
-   - Text file search
-   - Result navigation
-
-### Medium Priority (Nice to have)
-4. **Advanced PDF UI**
-   - Extract pages (backend ready)
-   - Merge PDFs (backend ready)
-   - Split PDF (backend ready)
-   - Reorder pages (backend ready)
-
-5. **Translation Overlay**
-   - Google Lens-style boxes
-   - Tap to translate
-   - Visual overlay
-
-### Low Priority (Can defer)
-6. **Background Audio Service**
-   - MediaSessionService
-   - Lock screen controls
-   - Notification controls
-
-7. **Advanced EPUB Features**
-   - Bookmarks
-   - Highlights
-   - Reading statistics
-   - Export notes
 
 ---
 
@@ -420,12 +230,11 @@ These features were present in `OLD_CODE_for_information_only/app_v2` but are mi
 5. Target: Reach 60% coverage
 
 ### Week 3-4 (Jan 23 - Feb 5, 2026)
-**Focus: EPUB UI & Testing**
-1. Integrate EPUB UI into PlayerActivity
-2. Add FileOperationStrategy tests
-3. Complete Manager tests
-4. Target: Reach 75% coverage
-5. Begin manual device testing
+**Focus: Testing**
+1. Add FileOperationStrategy tests
+2. Complete Manager tests
+3. Target: Reach 75% coverage
+4. Begin manual device testing
 
 ### Week 5 (Feb 6-12, 2026)
 **Focus: QA & Polish**
@@ -454,8 +263,8 @@ These features were present in `OLD_CODE_for_information_only/app_v2` but are mi
 1. Monitor crash reports
 2. Address user feedback
 3. Begin Epic 5 (Cloud Integration)
-4. Plan Slideshow Mode implementation
-5. Plan In-Document Search implementation
+4. Plan advanced EPUB features (bookmarks, highlights)
+5. Plan PDF merge/split/reorder UI
 
 ---
 
@@ -497,10 +306,21 @@ These features were present in `OLD_CODE_for_information_only/app_v2` but are mi
 
 1. **DO NOT copy code from OLD_CODE_for_information_only/** - Always implement from SPEC following Clean Architecture
 2. All "DEFERRED" features are non-blocking for initial release
-3. Focus on testing first, then missing high-priority features
-4. EPUB UI integration is highest priority after testing
-5. Cloud integration (Epic 5) planned for v2.1
-6. Target release: Late February 2026
+3. Focus on testing to reach >80% coverage goal
+4. Cloud integration (Epic 5) planned for v2.1
+5. Target release: Late February 2026
+
+---
+
+## ✅ Completed Features (v2.0.0)
+
+All Priority 2 missing features from app_v2 have been completed:
+- EPUB UI Integration (WebView reader, chapter navigation, TOC)
+- Slideshow Mode (auto-advance, countdown, pause/resume)
+- In-Document Search (text/PDF/EPUB search with highlighting)
+- Background Audio Playback (MediaSessionService, notification controls)
+- PDF Tools UI (extract pages, export as images, rotate, delete)
+- Translation Enhancements (OCR overlay, tap-to-translate, font size control)
 
 ---
 
