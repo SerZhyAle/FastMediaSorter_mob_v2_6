@@ -277,8 +277,8 @@ This document tracks **developer implementation tasks**, primarily focused on un
 
 #### 1. Default Username/Password for Network Connections
 **Priority:** HIGH
-- [ ] Add "Default Username" text input field
-- [ ] Add "Default Password" password input field
+- [x] Add "Default Username" text input field
+- [x] Add "Default Password" password input field
 - [ ] Store in SharedPreferences (encrypted)
 - [ ] Pre-fill when adding new SMB/FTP/SFTP resources
 
