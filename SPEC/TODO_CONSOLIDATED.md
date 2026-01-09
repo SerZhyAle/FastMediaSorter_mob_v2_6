@@ -244,7 +244,7 @@
   - [x] PlayerViewModel  
   - [x] AddResourceViewModel
   - [x] EditResourceViewModel
-  - [ ] SettingsViewModel
+  - [x] SettingsViewModel
 - [ ] Repository Tests
   - [ ] ResourceRepositoryImpl
   - [ ] MediaFileRepositoryImpl
