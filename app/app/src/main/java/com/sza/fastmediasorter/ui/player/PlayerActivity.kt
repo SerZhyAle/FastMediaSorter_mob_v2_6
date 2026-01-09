@@ -83,6 +83,9 @@ class PlayerActivity : BaseActivity<ActivityPlayerUnifiedBinding>() {
     @Inject
     lateinit var googleLensHelper: GoogleLensHelper
 
+    @Inject
+    lateinit var epubReaderManager: com.sza.fastmediasorter.epub.EpubReaderManager
+
     override fun getViewBinding() = ActivityPlayerUnifiedBinding.inflate(layoutInflater)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -289,7 +292,8 @@ class PlayerActivity : BaseActivity<ActivityPlayerUnifiedBinding>() {
             videoPlayerManager = videoPlayerManager,
             audioPlayerManager = audioPlayerManager,
             onPreviousClick = { navigateToPrevious() },
-            onNextClick = { navigateToNext() }
+            onNextClick = { navigateToNext() },
+            epubReaderManager = epubReaderManager
         )
 
         binding.viewPager.apply {

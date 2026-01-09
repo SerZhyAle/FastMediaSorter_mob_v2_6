@@ -881,4 +881,17 @@
     <string name="enable_pin_protection">Enable PIN Protection</string>
     <string name="pin_protection_desc">Require PIN code to access this resource</string>
     <string name="supported_media_types">Supported Media Types</string>
-    <string name="media_type_filter_desc">Select which file types to show from this resource</string></resources>
+    <string name="media_type_filter_desc">Select which file types to show from this resource</string>
+
+    <!-- EPUB Reader -->
+    <string name="action_previous_chapter">Previous chapter</string>
+    <string name="action_next_chapter">Next chapter</string>
+    <string name="action_font_decrease">Decrease font size</string>
+    <string name="action_font_increase">Increase font size</string>
+    <string name="action_table_of_contents">Table of contents</string>
+    <string name="epub_load_error">Could not load EPUB file</string>
+    <string name="epub_chapter_indicator">Chapter %1$d of %2$d</string>
+    <string name="epub_table_of_contents">Table of Contents</string>
+    <string name="epub_no_chapters">No chapters found</string>
+
+</resources>

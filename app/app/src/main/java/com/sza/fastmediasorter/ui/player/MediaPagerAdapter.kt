@@ -1,10 +1,14 @@
 package com.sza.fastmediasorter.ui.player
 
+import android.net.Uri
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebSettings
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -16,6 +20,8 @@ import com.sza.fastmediasorter.databinding.ItemMediaPageBinding
 import com.sza.fastmediasorter.databinding.ItemMediaPageVideoBinding
 import com.sza.fastmediasorter.databinding.ItemMediaPageAudioBinding
 import com.sza.fastmediasorter.databinding.ItemMediaPageTextBinding
+import com.sza.fastmediasorter.databinding.ItemMediaPageEpubBinding
+import com.sza.fastmediasorter.epub.EpubReaderManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -26,7 +32,7 @@ import java.io.File
 
 /**
  * Adapter for ViewPager2 to display media files.
- * Supports images, videos with ExoPlayer, audio with controls, and text files.
+ * Supports images, videos with ExoPlayer, audio with controls, text files, and EPUB e-books.
  */
 class MediaPagerAdapter(
     private val onMediaClick: () -> Unit,
@@ -34,7 +40,8 @@ class MediaPagerAdapter(
     private val videoPlayerManager: VideoPlayerManager? = null,
     private val audioPlayerManager: AudioPlayerManager? = null,
     private val onPreviousClick: (() -> Unit)? = null,
-    private val onNextClick: (() -> Unit)? = null
+    private val onNextClick: (() -> Unit)? = null,
+    private val epubReaderManager: EpubReaderManager? = null
 ) : ListAdapter<String, RecyclerView.ViewHolder>(MediaDiffCallback()) {
 
     companion object {
@@ -42,17 +49,20 @@ class MediaPagerAdapter(
         private const val VIEW_TYPE_VIDEO = 1
         private const val VIEW_TYPE_AUDIO = 2
         private const val VIEW_TYPE_TEXT = 3
+        private const val VIEW_TYPE_EPUB = 4
         private const val MAX_TEXT_FILE_SIZE = 1_000_000L // 1MB limit for text files
     }
 
     private var currentVideoHolder: VideoViewHolder? = null
     private var currentAudioHolder: AudioViewHolder? = null
+    private var currentEpubHolder: EpubViewHolder? = null
     private var currentVisiblePosition = -1
 
     override fun getItemViewType(position: Int): Int {
         val filePath = getItem(position)
         val file = File(filePath)
         return when {
+            isEpub(file) -> VIEW_TYPE_EPUB
             isVideo(file) -> VIEW_TYPE_VIDEO
             isAudio(file) -> VIEW_TYPE_AUDIO
             isText(file) -> VIEW_TYPE_TEXT
@@ -86,6 +96,14 @@ class MediaPagerAdapter(
                 )
                 TextViewHolder(binding)
             }
+            VIEW_TYPE_EPUB -> {
+                val binding = ItemMediaPageEpubBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+                EpubViewHolder(binding)
+            }
             else -> {
                 val binding = ItemMediaPageBinding.inflate(
                     LayoutInflater.from(parent.context),
@@ -104,6 +122,7 @@ class MediaPagerAdapter(
             is VideoViewHolder -> holder.bind(filePath)
             is AudioViewHolder -> holder.bind(filePath)
             is TextViewHolder -> holder.bind(filePath)
+            is EpubViewHolder -> holder.bind(filePath)
         }
     }
 
@@ -113,6 +132,7 @@ class MediaPagerAdapter(
             is VideoViewHolder -> holder.stopPlayback()
             is AudioViewHolder -> holder.stopPlayback()
             is TextViewHolder -> holder.cancelLoading()
+            is EpubViewHolder -> holder.cleanup()
         }
     }
 
@@ -530,6 +550,11 @@ class MediaPagerAdapter(
         )
     }
 
+    private fun isEpub(file: File): Boolean {
+        val extension = file.extension.lowercase()
+        return extension == "epub"
+    }
+
     /**
      * ViewHolder for text files.
      */
@@ -620,6 +645,227 @@ class MediaPagerAdapter(
         fun cancelLoading() {
             loadJob?.cancel()
             loadJob = null
+        }
+    }
+
+    /**
+     * ViewHolder for EPUB e-books.
+     * Uses WebView to display HTML content from chapters.
+     */
+    inner class EpubViewHolder(
+        private val binding: ItemMediaPageEpubBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
+
+        private var loadJob: Job? = null
+        private var epubInfo: EpubReaderManager.EpubInfo? = null
+        private var currentChapterIndex = 0
+        private var fontSize = 16
+        private var fontFamily = "serif"
+        private var filePath: String = ""
+
+        init {
+            setupWebView()
+            setupControls()
+        }
+
+        private fun setupWebView() {
+            binding.epubWebView.apply {
+                settings.apply {
+                    javaScriptEnabled = true
+                    loadWithOverviewMode = true
+                    useWideViewPort = true
+                    builtInZoomControls = true
+                    displayZoomControls = false
+                    setSupportZoom(true)
+                    domStorageEnabled = true
+                    cacheMode = WebSettings.LOAD_NO_CACHE
+                }
+                webViewClient = object : WebViewClient() {
+                    override fun onPageFinished(view: WebView?, url: String?) {
+                        super.onPageFinished(view, url)
+                        binding.progressBar.isVisible = false
+                        binding.epubWebView.isVisible = true
+                    }
+                }
+                setBackgroundColor(android.graphics.Color.WHITE)
+            }
+        }
+
+        private fun setupControls() {
+            binding.btnPrevChapter.setOnClickListener { navigateToPreviousChapter() }
+            binding.btnNextChapter.setOnClickListener { navigateToNextChapter() }
+            binding.btnFontDecrease.setOnClickListener { decreaseFontSize() }
+            binding.btnFontIncrease.setOnClickListener { increaseFontSize() }
+            binding.btnToc.setOnClickListener { showTableOfContents() }
+            
+            // Click on webview to toggle controls in player
+            binding.root.setOnClickListener { onMediaClick() }
+        }
+
+        fun bind(path: String) {
+            filePath = path
+            currentChapterIndex = 0
+            
+            binding.progressBar.isVisible = true
+            binding.epubWebView.isVisible = false
+            binding.errorContainer.isVisible = false
+            
+            loadEpub()
+        }
+
+        private fun loadEpub() {
+            loadJob?.cancel()
+            loadJob = CoroutineScope(Dispatchers.Main).launch {
+                try {
+                    val result = withContext(Dispatchers.IO) {
+                        val uri = Uri.fromFile(File(filePath))
+                        epubReaderManager?.parseEpub(binding.root.context, uri)
+                    }
+                    
+                    when (result) {
+                        is EpubReaderManager.EpubResult.Success -> {
+                            epubInfo = result.data
+                            updateChapterIndicator()
+                            loadCurrentChapter()
+                        }
+                        is EpubReaderManager.EpubResult.Error -> {
+                            showError(result.message)
+                        }
+                        null -> {
+                            showError("EPUB reader not available")
+                        }
+                    }
+                } catch (e: Exception) {
+                    Timber.e(e, "Failed to load EPUB: $filePath")
+                    showError(e.message ?: "Failed to load EPUB")
+                }
+            }
+        }
+
+        private fun loadCurrentChapter() {
+            val info = epubInfo ?: return
+            val chapter = info.chapters.getOrNull(currentChapterIndex) ?: return
+            
+            loadJob?.cancel()
+            loadJob = CoroutineScope(Dispatchers.Main).launch {
+                try {
+                    binding.progressBar.isVisible = true
+                    
+                    val result = withContext(Dispatchers.IO) {
+                        val uri = Uri.fromFile(File(filePath))
+                        epubReaderManager?.getChapterContent(
+                            binding.root.context, 
+                            uri, 
+                            chapter.href,
+                            fontSize,
+                            fontFamily
+                        )
+                    }
+                    
+                    when (result) {
+                        is EpubReaderManager.EpubResult.Success -> {
+                            binding.epubWebView.loadDataWithBaseURL(
+                                null,
+                                result.data,
+                                "text/html",
+                                "UTF-8",
+                                null
+                            )
+                        }
+                        is EpubReaderManager.EpubResult.Error -> {
+                            showError(result.message)
+                        }
+                        null -> {
+                            showError("Failed to load chapter")
+                        }
+                    }
+                } catch (e: Exception) {
+                    Timber.e(e, "Failed to load chapter")
+                    showError(e.message ?: "Failed to load chapter")
+                }
+            }
+        }
+
+        private fun navigateToPreviousChapter() {
+            val info = epubInfo ?: return
+            if (currentChapterIndex > 0) {
+                currentChapterIndex--
+                updateChapterIndicator()
+                loadCurrentChapter()
+            }
+        }
+
+        private fun navigateToNextChapter() {
+            val info = epubInfo ?: return
+            if (currentChapterIndex < info.chapters.size - 1) {
+                currentChapterIndex++
+                updateChapterIndicator()
+                loadCurrentChapter()
+            }
+        }
+
+        private fun updateChapterIndicator() {
+            val info = epubInfo ?: return
+            val current = currentChapterIndex + 1
+            val total = info.chapters.size
+            binding.tvChapterIndicator.text = binding.root.context.getString(
+                R.string.epub_chapter_indicator, current, total
+            )
+            
+            // Update button states
+            binding.btnPrevChapter.isEnabled = currentChapterIndex > 0
+            binding.btnPrevChapter.alpha = if (currentChapterIndex > 0) 1f else 0.3f
+            binding.btnNextChapter.isEnabled = currentChapterIndex < info.chapters.size - 1
+            binding.btnNextChapter.alpha = if (currentChapterIndex < info.chapters.size - 1) 1f else 0.3f
+        }
+
+        private fun decreaseFontSize() {
+            if (fontSize > 8) {
+                fontSize -= 2
+                binding.tvFontSize.text = fontSize.toString()
+                loadCurrentChapter()
+            }
+        }
+
+        private fun increaseFontSize() {
+            if (fontSize < 48) {
+                fontSize += 2
+                binding.tvFontSize.text = fontSize.toString()
+                loadCurrentChapter()
+            }
+        }
+
+        private fun showTableOfContents() {
+            val info = epubInfo ?: return
+            if (info.chapters.isEmpty()) {
+                return
+            }
+            
+            val context = binding.root.context
+            val chapters = info.chapters.map { it.title }.toTypedArray()
+            
+            androidx.appcompat.app.AlertDialog.Builder(context)
+                .setTitle(R.string.epub_table_of_contents)
+                .setItems(chapters) { _, which ->
+                    currentChapterIndex = which
+                    updateChapterIndicator()
+                    loadCurrentChapter()
+                }
+                .setNegativeButton(android.R.string.cancel, null)
+                .show()
+        }
+
+        private fun showError(message: String) {
+            binding.progressBar.isVisible = false
+            binding.epubWebView.isVisible = false
+            binding.errorContainer.isVisible = true
+            binding.errorMessage.text = message
+        }
+
+        fun cleanup() {
+            loadJob?.cancel()
+            loadJob = null
+            binding.epubWebView.stopLoading()
         }
     }
 
