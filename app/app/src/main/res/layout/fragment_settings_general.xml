@@ -222,6 +222,60 @@
             android:background="?colorOutline"
             android:layout_marginVertical="8dp"/>
 
+        <!-- Network Section -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/network"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:textColor="?colorPrimary"
+            android:layout_marginBottom="8dp"/>
+
+        <!-- Default Username -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputLayoutDefaultUsername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:hint="@string/default_user"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etDefaultUsername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textNoSuggestions"
+                android:singleLine="true"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Default Password -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputLayoutDefaultPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:hint="@string/default_password"
+            app:endIconMode="password_toggle"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etDefaultPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:singleLine="true"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?colorOutline"
+            android:layout_marginVertical="8dp"/>
+
         <!-- Cache Section -->
         <TextView
             android:layout_width="wrap_content"

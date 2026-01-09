@@ -43,6 +43,8 @@ class PreferencesRepositoryImpl @Inject constructor(
         val WORK_WITH_ALL_FILES = booleanPreferencesKey("work_with_all_files")
         val DATE_FORMAT = stringPreferencesKey("date_format")
         val FILE_NAME_DISPLAY = stringPreferencesKey("file_name_display")
+        val DEFAULT_USERNAME = stringPreferencesKey("default_username")
+        val DEFAULT_PASSWORD = stringPreferencesKey("default_password")
 
         // Playback Settings
         val SLIDESHOW_INTERVAL = intPreferencesKey("slideshow_interval")
@@ -251,6 +253,28 @@ class PreferencesRepositoryImpl @Inject constructor(
         Timber.d("Setting file name display: $mode")
         context.dataStore.edit { prefs ->
             prefs[Keys.FILE_NAME_DISPLAY] = mode
+        }
+    }
+
+    override val defaultUsername: Flow<String> = context.dataStore.data.map { prefs ->
+        prefs[Keys.DEFAULT_USERNAME] ?: ""
+    }
+
+    override suspend fun setDefaultUsername(username: String) {
+        Timber.d("Setting default username: $username")
+        context.dataStore.edit { prefs ->
+            prefs[Keys.DEFAULT_USERNAME] = username
+        }
+    }
+
+    override val defaultPassword: Flow<String> = context.dataStore.data.map { prefs ->
+        prefs[Keys.DEFAULT_PASSWORD] ?: ""
+    }
+
+    override suspend fun setDefaultPassword(password: String) {
+        Timber.d("Setting default password: ***")
+        context.dataStore.edit { prefs ->
+            prefs[Keys.DEFAULT_PASSWORD] = password
         }
     }
 

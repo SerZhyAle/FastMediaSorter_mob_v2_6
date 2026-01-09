@@ -82,6 +82,18 @@ interface PreferencesRepository {
     val fileNameDisplay: Flow<String>
     suspend fun setFileNameDisplay(mode: String)
 
+    /**
+     * Default username for network connections (SMB/FTP/SFTP).
+     */
+    val defaultUsername: Flow<String>
+    suspend fun setDefaultUsername(username: String)
+
+    /**
+     * Default password for network connections (SMB/FTP/SFTP).
+     */
+    val defaultPassword: Flow<String>
+    suspend fun setDefaultPassword(password: String)
+
     // ==================== Playback Settings ====================
 
     /**

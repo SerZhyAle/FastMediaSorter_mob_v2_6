@@ -52,7 +52,9 @@ class GeneralSettingsViewModel @Inject constructor(
                 preferencesRepository.showHiddenFiles,
                 preferencesRepository.confirmDelete,
                 preferencesRepository.confirmMove,
-                preferencesRepository.preventSleepDuringPlayback
+                preferencesRepository.preventSleepDuringPlayback,
+                preferencesRepository.defaultUsername,
+                preferencesRepository.defaultPassword
             ) { values ->
                 GeneralSettingsUiState(
                     language = values[0] as String,
@@ -62,6 +64,8 @@ class GeneralSettingsViewModel @Inject constructor(
                     confirmDelete = values[4] as Boolean,
                     confirmMove = values[5] as Boolean,
                     preventSleepDuringPlayback = values[6] as Boolean,
+                    defaultUsername = values[7] as String,
+                    defaultPassword = values[8] as String,
                     cacheSizeDisplay = "Calculating..."
                 )
             }.collect { state ->
@@ -132,6 +136,20 @@ class GeneralSettingsViewModel @Inject constructor(
         }
     }
 
+    fun setDefaultUsername(username: String) {
+        Timber.d("Setting default username: $username")
+        viewModelScope.launch {
+            preferencesRepository.setDefaultUsername(username)
+        }
+    }
+
+    fun setDefaultPassword(password: String) {
+        Timber.d("Setting default password: ***")
+        viewModelScope.launch {
+            preferencesRepository.setDefaultPassword(password)
+        }
+    }
+
     fun clearCache() {
         Timber.d("Clearing cache...")
         viewModelScope.launch {
@@ -145,12 +163,12 @@ class GeneralSettingsViewModel @Inject constructor(
             }
             // Clear unified file cache
             unifiedFileCache.clearAll()
-            
+
             Timber.d("Cache cleared successfully")
             _uiState.update { it.copy(cacheSizeDisplay = "0 MB") }
         }
     }
-    
+
     private fun loadCacheSize() {
         viewModelScope.launch {
             val unifiedCacheSize = unifiedFileCache.getCacheSize()
@@ -196,6 +214,8 @@ data class GeneralSettingsUiState(
     val confirmDelete: Boolean = true,
     val confirmMove: Boolean = false,
     val preventSleepDuringPlayback: Boolean = true,
+    val defaultUsername: String = "",
+    val defaultPassword: String = "",
     val cacheSizeDisplay: String = "0 MB",
     val isGeneratingData: Boolean = false
 )

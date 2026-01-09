@@ -35,11 +35,12 @@ class GeneralSettingsFragment : BaseFragment<FragmentSettingsGeneralBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Timber.d("GeneralSettingsFragment created")
-        
+
         setupLanguageDropdown()
         setupThemeRadioGroup()
         setupDisplayModeDropdown()
         setupSwitches()
+        setupNetworkCredentials()
 
         setupCacheSection()
         setupDeveloperOptions()
@@ -92,17 +93,33 @@ class GeneralSettingsFragment : BaseFragment<FragmentSettingsGeneralBinding>() {
         binding.switchShowHiddenFiles.setOnCheckedChangeListener { _, isChecked ->
             viewModel.setShowHiddenFiles(isChecked)
         }
-        
+
         binding.switchConfirmDelete.setOnCheckedChangeListener { _, isChecked ->
             viewModel.setConfirmDelete(isChecked)
         }
-        
+
         binding.switchConfirmMove.setOnCheckedChangeListener { _, isChecked ->
             viewModel.setConfirmMove(isChecked)
         }
-        
+
         binding.switchPreventSleep.setOnCheckedChangeListener { _, isChecked ->
             viewModel.setPreventSleepDuringPlayback(isChecked)
+        }
+    }
+
+    private fun setupNetworkCredentials() {
+        binding.etDefaultUsername.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                val username = binding.etDefaultUsername.text.toString()
+                viewModel.setDefaultUsername(username)
+            }
+        }
+
+        binding.etDefaultPassword.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                val password = binding.etDefaultPassword.text.toString()
+                viewModel.setDefaultPassword(password)
+            }
         }
     }
 
@@ -164,9 +181,17 @@ class GeneralSettingsFragment : BaseFragment<FragmentSettingsGeneralBinding>() {
         binding.switchConfirmMove.isChecked = state.confirmMove
         binding.switchPreventSleep.isChecked = state.preventSleepDuringPlayback
 
+        // Update network credentials
+        if (binding.etDefaultUsername.text.toString() != state.defaultUsername) {
+            binding.etDefaultUsername.setText(state.defaultUsername)
+        }
+        if (binding.etDefaultPassword.text.toString() != state.defaultPassword) {
+            binding.etDefaultPassword.setText(state.defaultPassword)
+        }
+
         // Update cache size display
         binding.tvCacheSize.text = state.cacheSizeDisplay
-        
+
         // Update generator button state
         binding.btnGenerateStressData.isEnabled = !state.isGeneratingData
         binding.btnGenerateStressData.text = if (state.isGeneratingData) {
