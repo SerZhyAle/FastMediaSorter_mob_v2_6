@@ -61,41 +61,134 @@
 
 ### 8.1 Automated Testing ⚠️ CRITICAL
 
-**Current:** <50% coverage  
+**Current Status:** <50% coverage  
 **Goal:** >80% coverage on domain layer
 
+**Test Coverage Summary:**
+```
+✅ Completed Tests: 15
+⚠️ Missing Tests: 50+
+🔵 Low Priority Tests: 6
+
+Category Breakdown:
+├── ViewModels:      5/17  (29%) - 12 missing
+├── Repositories:    2/8   (25%) - 6 missing  
+├── UseCases:        5/13  (38%) - 8 missing
+├── File Operations: 0/5   (0%)  - ALL MISSING ⚠️ CRITICAL
+├── Managers:        0/12  (0%)  - 12 missing
+└── Domain Models:   3/3   (100%) ✅
+```
+
+**Critical Priorities:**
+1. **FileOperationStrategy Tests** - Core functionality, zero coverage
+2. **Repository Tests** - Data layer foundation
+3. **ViewModel Tests** - User-facing logic
+4. **UseCase Tests** - Business rules
+5. **Manager Tests** - Feature-specific logic
+
 **Unit Tests Needed:**
-- [ ] ViewModel Tests
-  - [x] BrowseViewModel
-  - [x] PlayerViewModel  
-  - [x] AddResourceViewModel
-  - [x] EditResourceViewModel
-  - [x] SettingsViewModel
-- [ ] Repository Tests
-  - [x] ResourceRepositoryImpl
-  - [ ] MediaFileRepositoryImpl (not implemented)
-  - [ ] SettingsRepositoryImpl (not implemented)
-  - [x] PlaybackPositionRepositoryImpl
-- [ ] UseCase Tests
-  - [x] AddResourceUseCase
-  - [x] GetResourcesUseCase
-  - [x] UpdateResourceUseCase
-  - [x] DeleteResourceUseCase
-  - [x] GetMediaFilesUseCase
-  - [ ] CopyFileUseCase (not implemented)
-  - [ ] MoveFileUseCase (not implemented)
-  - [ ] DeleteFileUseCase (not implemented)
-- [ ] FileOperationStrategy Tests (not implemented)
-  - [ ] LocalFileStrategy
-  - [ ] SmbFileStrategy
-  - [ ] SftpFileStrategy
-  - [ ] FtpFileStrategy
-- [ ] Manager Tests (require instrumented tests due to Android dependencies)
-  - [ ] PdfEditManager
-  - [ ] PdfToolsManager
-  - [ ] EpubReaderManager
-  - [ ] TranslationManager
-  - [ ] OcrManager
+
+#### ViewModel Tests
+- [x] BrowseViewModel ✅
+- [x] PlayerViewModel ✅
+- [x] AddResourceViewModel ✅
+- [x] EditResourceViewModel ✅
+- [x] SettingsViewModel ✅
+- [ ] MainViewModel ⚠️ **MISSING**
+- [ ] SearchViewModel ⚠️ **MISSING**
+- [ ] FavoritesViewModel ⚠️ **MISSING**
+- [ ] DestinationPickerViewModel ⚠️ **MISSING**
+- [ ] PlaybackSettingsViewModel ⚠️ **MISSING**
+- [ ] GeneralSettingsViewModel ⚠️ **MISSING**
+- [ ] DestinationsSettingsViewModel ⚠️ **MISSING**
+- [ ] MediaSettingsViewModel ⚠️ **MISSING**
+- [ ] BaseCloudFolderPickerViewModel (abstract) ⚠️ **MISSING**
+- [ ] GoogleDriveFolderPickerViewModel ⚠️ **MISSING**
+- [ ] OneDriveFolderPickerViewModel ⚠️ **MISSING**
+- [ ] DropboxFolderPickerViewModel ⚠️ **MISSING**
+
+#### Repository Tests
+- [x] ResourceRepositoryImpl ✅
+- [x] PlaybackPositionRepository ✅
+- [ ] MediaRepositoryImpl ⚠️ **MISSING**
+- [ ] FileMetadataRepositoryImpl ⚠️ **MISSING**
+- [ ] PreferencesRepositoryImpl ⚠️ **MISSING**
+- [ ] NetworkCredentialsRepositoryImpl ⚠️ **MISSING**
+- [ ] StressTestRepositoryImpl (debug only) 🔵 **LOW PRIORITY**
+- [ ] AlbumArtRepository ⚠️ **MISSING**
+
+#### UseCase Tests
+- [x] AddResourceUseCase ✅
+- [x] GetResourcesUseCase ✅
+- [x] UpdateResourceUseCase ✅
+- [x] DeleteResourceUseCase ✅
+- [x] GetMediaFilesUseCase ✅
+- [ ] GetPaginatedMediaFilesUseCase ⚠️ **MISSING**
+- [ ] GetFavoriteFilesUseCase ⚠️ **MISSING**
+- [ ] GlobalSearchUseCase ⚠️ **MISSING**
+- [ ] GetNetworkCredentialsUseCase ⚠️ **MISSING**
+- [ ] SaveNetworkCredentialsUseCase ⚠️ **MISSING**
+- [ ] DeleteNetworkCredentialsUseCase ⚠️ **MISSING**
+- [ ] TestNetworkConnectionUseCase ⚠️ **MISSING**
+- [ ] GenerateStressDataUseCase (debug only) 🔵 **LOW PRIORITY**
+
+#### FileOperationStrategy Tests ⚠️ **CRITICAL - ALL MISSING**
+- [ ] LocalOperationStrategy
+  - Test file listing, reading, writing
+  - Test error handling for permissions
+  - Test directory operations
+- [ ] SmbOperationStrategy
+  - Test SMB connection with credentials
+  - Test anonymous access
+  - Test workgroup vs domain scenarios
+  - Mock jCIFS library interactions
+- [ ] SftpOperationStrategy
+  - Test SFTP connection with password
+  - Test key-based authentication
+  - Mock JSch library interactions
+- [ ] FtpOperationStrategy
+  - Test FTP active/passive mode
+  - Test FTPS with TLS
+  - Mock Apache Commons Net interactions
+- [ ] CloudOperationStrategy
+  - Test Google Drive operations
+  - Test OneDrive operations
+  - Test Dropbox operations
+
+#### Manager Tests (May require instrumented tests for Android dependencies)
+- [ ] PdfEditManager ⚠️ **MISSING**
+  - Test PDF page extraction
+  - Test PDF rotation
+  - Test PDF page deletion
+- [ ] PdfToolsManager ⚠️ **MISSING**
+  - Test PDF export to images
+  - Test PDF metadata extraction
+- [ ] EpubReaderManager ⚠️ **MISSING**
+  - Test EPUB parsing
+  - Test chapter navigation
+  - Test TOC extraction
+- [ ] TranslationManager ⚠️ **MISSING**
+  - Test OCR text extraction
+  - Test translation API calls
+  - Mock ML Kit dependencies
+- [ ] OcrManager ⚠️ **MISSING**
+  - Test image text recognition
+  - Mock ML Kit Text Recognition
+- [ ] LyricsManager ⚠️ **MISSING**
+  - Test lyrics fetching
+  - Test lyrics synchronization
+- [ ] VideoPlayerManager 🔵 **LOW PRIORITY** (requires ExoPlayer mocks)
+- [ ] AudioPlayerManager 🔵 **LOW PRIORITY** (requires ExoPlayer mocks)
+- [ ] TesseractManager 🔵 **LOW PRIORITY** (requires Tesseract OCR mocks)
+- [ ] TouchZoneGestureManager 🔵 **LOW PRIORITY** (UI gesture handling)
+- [ ] TrashManager ⚠️ **MISSING**
+- [ ] GoogleDriveCredentialsManager ⚠️ **MISSING**
+
+#### Domain Model Tests
+- [x] SearchFilterTest ✅
+- [x] ResultTest ✅
+- [x] MediaExtensionsTest ✅
+- [ ] Additional model validation tests 🔵 **LOW PRIORITY**
 
 **Instrumented Tests Needed:**
 - [ ] Database Tests
@@ -323,6 +416,3 @@ All Priority 2 missing features from app_v2 have been completed:
 - Translation Enhancements (OCR overlay, tap-to-translate, font size control)
 
 ---
-
-**Last Review:** January 9, 2026  
-**Next Review:** January 16, 2026
