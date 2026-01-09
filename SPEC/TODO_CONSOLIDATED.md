@@ -241,7 +241,7 @@
 **Unit Tests Needed:**
 - [ ] ViewModel Tests
   - [x] BrowseViewModel
-  - [ ] PlayerViewModel  
+  - [x] PlayerViewModel  
   - [ ] AddResourceViewModel
   - [ ] EditResourceViewModel
   - [ ] SettingsViewModel
