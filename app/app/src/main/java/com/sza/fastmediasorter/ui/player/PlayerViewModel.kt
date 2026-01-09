@@ -45,6 +45,29 @@ class PlayerViewModel @Inject constructor(
     private var lastTargetLanguage: String = "en" // Default to English
     private var pendingTranslationContent: String? = null
 
+    // Slideshow controller
+    private val slideshowController = SlideshowController(
+        onAdvance = { advanceSlideshow() },
+        onCountdownTick = { remaining -> onSlideshowCountdownTick(remaining) }
+    )
+
+    init {
+        // Observe slideshow state changes
+        viewModelScope.launch {
+            slideshowController.state.collect { slideshowState ->
+                _uiState.update {
+                    it.copy(
+                        isSlideshowActive = slideshowState.isActive,
+                        isSlideshowPaused = slideshowState.isPaused,
+                        slideshowRemainingSeconds = slideshowState.remainingSeconds,
+                        showSlideshowCountdown = slideshowState.showCountdown,
+                        slideshowInterval = slideshowState.intervalSeconds
+                    )
+                }
+            }
+        }
+    }
+
     /**
      * Loads file list and sets initial position.
      */
@@ -699,9 +722,85 @@ class PlayerViewModel @Inject constructor(
      * Toggle slideshow mode.
      */
     fun toggleSlideshow() {
+        slideshowController.toggle()
+        
+        val isActive = slideshowController.state.value.isActive
         viewModelScope.launch {
-            _events.emit(PlayerUiEvent.ShowSnackbar("Slideshow: Not yet implemented"))
+            if (isActive) {
+                _events.emit(PlayerUiEvent.ShowSnackbar("Slideshow started"))
+            } else {
+                _events.emit(PlayerUiEvent.ShowSnackbar("Slideshow stopped"))
+            }
         }
+    }
+
+    /**
+     * Pause/resume slideshow.
+     */
+    fun toggleSlideshowPause() {
+        if (!_uiState.value.isSlideshowActive) return
+        
+        slideshowController.togglePause()
+        
+        val isPaused = slideshowController.state.value.isPaused
+        viewModelScope.launch {
+            if (isPaused) {
+                _events.emit(PlayerUiEvent.ShowSnackbar("Slideshow paused"))
+            } else {
+                _events.emit(PlayerUiEvent.ShowSnackbar("Slideshow resumed"))
+            }
+        }
+    }
+
+    /**
+     * Set slideshow interval.
+     */
+    fun setSlideshowInterval(seconds: Int) {
+        slideshowController.setInterval(seconds)
+    }
+
+    /**
+     * Called when slideshow timer advances.
+     */
+    private fun advanceSlideshow() {
+        val state = _uiState.value
+        if (state.currentIndex < state.files.size - 1) {
+            // Advance to next
+            viewModelScope.launch {
+                _events.emit(PlayerUiEvent.NavigateToPage(state.currentIndex + 1))
+            }
+        } else {
+            // Loop back to beginning
+            viewModelScope.launch {
+                _events.emit(PlayerUiEvent.NavigateToPage(0))
+            }
+        }
+    }
+
+    /**
+     * Called on slideshow countdown tick.
+     */
+    private fun onSlideshowCountdownTick(remaining: Int) {
+        // Countdown is already updated via state collection
+        Timber.d("Slideshow countdown: $remaining")
+    }
+
+    /**
+     * Notify slideshow of lifecycle events.
+     */
+    fun onSlideshowBackground() {
+        slideshowController.onBackground()
+    }
+
+    fun onSlideshowForeground() {
+        slideshowController.onForeground()
+    }
+
+    /**
+     * Reset slideshow timer after manual navigation.
+     */
+    fun resetSlideshowTimer() {
+        slideshowController.resetTimer()
     }
 
     /**
@@ -781,11 +880,21 @@ class PlayerViewModel @Inject constructor(
      * @return true if the back press was consumed, false otherwise.
      */
     fun onBackPressed(): Boolean {
+        // If slideshow is active, stop it first
+        if (_uiState.value.isSlideshowActive) {
+            slideshowController.stop()
+            return true
+        }
         // If UI is hidden, show it first
         if (!_uiState.value.isUiVisible) {
             _uiState.update { it.copy(isUiVisible = true) }
             return true
         }
         return false
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        slideshowController.release()
     }
 }

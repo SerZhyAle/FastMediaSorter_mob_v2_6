@@ -305,6 +305,8 @@ class PlayerActivity : BaseActivity<ActivityPlayerUnifiedBinding>() {
                     viewModel.onPageSelected(position)
                     // Notify adapter about page change to manage video playback
                     pagerAdapter.onPageSelected(position)
+                    // Reset slideshow timer on manual navigation
+                    viewModel.resetSlideshowTimer()
                 }
             })
         }
@@ -579,12 +581,16 @@ class PlayerActivity : BaseActivity<ActivityPlayerUnifiedBinding>() {
         super.onResume()
         // Resume video playback if any
         videoPlayerManager.play()
+        // Resume slideshow if active
+        viewModel.onSlideshowForeground()
     }
 
     override fun onPause() {
         super.onPause()
         // Pause video playback when activity goes to background
         videoPlayerManager.pause()
+        // Pause slideshow when going to background
+        viewModel.onSlideshowBackground()
     }
 
     override fun onDestroy() {
@@ -609,7 +615,12 @@ class PlayerActivity : BaseActivity<ActivityPlayerUnifiedBinding>() {
 
         // Play/Pause button for slideshow
         binding.btnPlayPause.setOnClickListener {
-            viewModel.toggleSlideshow()
+            viewModel.toggleSlideshowPause()
+        }
+
+        // Pause/Resume slideshow button in overlay
+        binding.btnPauseSlideshow.setOnClickListener {
+            viewModel.toggleSlideshowPause()
         }
     }
 
@@ -675,6 +686,55 @@ class PlayerActivity : BaseActivity<ActivityPlayerUnifiedBinding>() {
         binding.btnFullscreenCmd.setImageResource(
             if (state.isFullscreen) R.drawable.ic_fullscreen_exit else R.drawable.ic_fullscreen
         )
+
+        // Update slideshow UI
+        updateSlideshowUi(state)
+    }
+
+    private fun updateSlideshowUi(state: PlayerUiState) {
+        // Show/hide slideshow controls overlay
+        binding.layoutSlideshowControls.isVisible = state.isSlideshowActive
+
+        if (state.isSlideshowActive) {
+            // Update countdown display
+            if (state.showSlideshowCountdown) {
+                binding.tvSlideshowCountdown.isVisible = true
+                binding.tvSlideshowCountdown.text = state.slideshowRemainingSeconds.toString()
+            } else {
+                binding.tvSlideshowCountdown.isVisible = false
+            }
+
+            // Update progress bar
+            val progress = if (state.slideshowInterval > 0) {
+                ((state.slideshowInterval - state.slideshowRemainingSeconds).toFloat() / state.slideshowInterval * 100).toInt()
+            } else 0
+            binding.progressSlideshow.progress = progress
+
+            // Update timer text
+            if (state.isSlideshowPaused) {
+                binding.tvSlideshowTimer.text = getString(R.string.slideshow_paused)
+            } else {
+                binding.tvSlideshowTimer.text = getString(R.string.slideshow_next_in, state.slideshowRemainingSeconds)
+            }
+
+            // Update pause/play button icon
+            binding.btnPauseSlideshow.setImageResource(
+                if (state.isSlideshowPaused) R.drawable.ic_play_arrow else R.drawable.ic_pause
+            )
+
+            // Show play/pause button in controls container
+            binding.btnPlayPause.isVisible = true
+            binding.btnPlayPause.setImageResource(
+                if (state.isSlideshowPaused) R.drawable.ic_play_circle else R.drawable.ic_pause_circle
+            )
+
+            // Update slideshow button icon in command panel
+            binding.btnSlideshowCmd.setImageResource(R.drawable.ic_stop)
+        } else {
+            // Hide slideshow controls
+            binding.btnPlayPause.isVisible = false
+            binding.btnSlideshowCmd.setImageResource(R.drawable.ic_slideshow)
+        }
     }
 
     private fun updateFavoriteIcon(isFavorite: Boolean) {

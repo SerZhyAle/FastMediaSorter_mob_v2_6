@@ -530,6 +530,15 @@
     <string name="action_slideshow">Slideshow</string>
     <string name="action_more_options">More options</string>
     <string name="action_play_pause">Play/Pause</string>
+    <string name="slideshow_next_in">Next in %1$ds</string>
+    <string name="slideshow_paused">Paused</string>
+    <string name="slideshow_interval_5s">5 seconds</string>
+    <string name="slideshow_interval_10s">10 seconds</string>
+    <string name="slideshow_interval_15s">15 seconds</string>
+    <string name="slideshow_interval_30s">30 seconds</string>
+    <string name="slideshow_interval_60s">60 seconds</string>
+    <string name="slideshow_started">Slideshow started</string>
+    <string name="slideshow_stopped">Slideshow stopped</string>
 
     <!-- Touch Zones -->
     <string name="touch_zone_top_left">Previous file</string>

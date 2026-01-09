@@ -45,6 +45,18 @@ data class PlayerUiState(
     /** Whether slideshow mode is active */
     val isSlideshowActive: Boolean = false,
 
+    /** Whether slideshow is paused */
+    val isSlideshowPaused: Boolean = false,
+
+    /** Slideshow remaining seconds (for countdown display) */
+    val slideshowRemainingSeconds: Int = 0,
+
+    /** Whether to show countdown (last 3 seconds) */
+    val showSlideshowCountdown: Boolean = false,
+
+    /** Slideshow interval in seconds */
+    val slideshowInterval: Int = 10,
+
     /** Whether current file is from a read-only resource (disables edit, rename, delete) */
     val isCurrentFileReadOnly: Boolean = false
 ) {

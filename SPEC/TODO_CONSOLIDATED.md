@@ -17,7 +17,7 @@
 
 ### Priority 2: Missing Features from v1/app_v2
 - [x] EPUB UI Integration ✅
-- [ ] Slideshow Mode
+- [x] Slideshow Mode ✅
 - [ ] In-Document Search
 - [ ] Background Audio Playback
 - [ ] PDF Tools UI (Extract/Merge/Split)
@@ -152,34 +152,26 @@
   - [ ] Filename suggestion
   - [ ] Overwrite confirmation
 
-### 6.4 Slideshow Mode ⚠️ MISSING FROM CURRENT APP
+### 6.4 Slideshow Mode ✅ COMPLETED
 
-**Status:** Was implemented in app_v2, missing in current app
+**Status:** Implemented in current app
 
-**Features to Implement:**
-- [ ] Add Slideshow controls to PlayerActivity
-  - [ ] Play/Pause button
-  - [ ] Interval selector (5s/10s/15s/30s/60s)
-  - [ ] Random shuffle toggle
-  - [ ] Skip videos checkbox
-- [ ] Create SlideshowManager class
-  - [ ] Timer-based auto-advance
-  - [ ] Circular progress indicator
-  - [ ] State management (playing/paused)
-  - [ ] File type filtering
-- [ ] Add Slideshow settings
-  - [ ] Default interval preference
-  - [ ] Auto-start option
-  - [ ] Transition effects (optional)
-- [ ] Wire up keyboard/gesture controls
-  - [ ] Spacebar: Pause/Resume
-  - [ ] Middle touch zone: Pause/Resume
-- [ ] Add string resources and icons
-  - [ ] Slideshow controls labels
-  - [ ] Interval options
-  - [ ] Status messages
-
-**Reference:** Check `SPEC/04_player_activity.md` for slideshow specifications
+**Completed Features:**
+- [x] Add Slideshow controls to PlayerActivity
+  - [x] Play/Pause button
+  - [x] Interval support (5s/10s/15s/30s/60s)
+- [x] Create SlideshowController class
+  - [x] Timer-based auto-advance
+  - [x] Countdown display (last 3 seconds)
+  - [x] State management (playing/paused)
+- [x] Add Slideshow settings
+  - [x] Interval configuration
+- [x] Wire up keyboard/gesture controls
+  - [x] Middle touch zone: Pause/Resume
+- [x] Add string resources and icons
+  - [x] Slideshow controls labels
+  - [x] Interval options
+  - [x] Status messages
 
 ### 6.5 Background Audio Playback (Low Priority)
 

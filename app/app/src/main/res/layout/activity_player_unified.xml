@@ -656,6 +656,69 @@
 
     </LinearLayout>
 
+    <!-- Slideshow Controls Overlay -->
+    <LinearLayout
+        android:id="@+id/layoutSlideshowControls"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:background="@drawable/bg_rounded_dark"
+        android:padding="16dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/controlsContainer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="16dp"
+        tools:visibility="visible">
+
+        <!-- Countdown text -->
+        <TextView
+            android:id="@+id/tvSlideshowCountdown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            tools:text="3"
+            tools:visibility="visible"/>
+
+        <!-- Progress bar -->
+        <ProgressBar
+            android:id="@+id/progressSlideshow"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:max="100"
+            android:progress="50"
+            android:progressTint="@color/colorPrimary"
+            android:progressBackgroundTint="@android:color/darker_gray"/>
+
+        <!-- Timer text -->
+        <TextView
+            android:id="@+id/tvSlideshowTimer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="12sp"
+            tools:text="Next in 5s"/>
+
+        <!-- Pause/Resume button -->
+        <ImageButton
+            android:id="@+id/btnPauseSlideshow"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/action_play_pause"
+            android:src="@drawable/ic_pause"
+            app:tint="@android:color/white"/>
+
+    </LinearLayout>
+
     <!-- Touch zones overlay - for gesture detection -->
     <com.sza.fastmediasorter.ui.player.views.TouchZoneOverlayView
         android:id="@+id/touchZonesOverlay"
