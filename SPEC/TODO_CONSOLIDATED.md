@@ -242,7 +242,7 @@
 - [ ] ViewModel Tests
   - [x] BrowseViewModel
   - [x] PlayerViewModel  
-  - [ ] AddResourceViewModel
+  - [x] AddResourceViewModel
   - [ ] EditResourceViewModel
   - [ ] SettingsViewModel
 - [ ] Repository Tests
