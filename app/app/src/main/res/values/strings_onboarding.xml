@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- onboarding strings for FastMediaSorter -->
+    <string name="search_next">Next result</string>
+    <string name="welcome_title_1">Welcome to FastMediaSorter</string>
+    <string name="welcome_description_1">FastMediaSorter helps you organize photos, videos, audio, documentation and other files from local folders and network sources.</string>
+    <string name="welcome_title_2">Resource Types</string>
+    <string name="welcome_description_2">Connect to local folders, Window/Samba shares (SMB), FTP/SFTP servers, and cloud storage (Google Drive, Dropbox, OneDrive). Browse them all in one place!</string>
+    <string name="welcome_title_3_touch_zones">Gesture Navigation</string>
+    <string name="welcome_description_3_touch_zones">Navigate media effortlessly with touch zones in fullscreen player for sorting:\n\n• Tap LEFT side → Previous file\n• Tap RIGHT side → Next file\n• Tap CENTER → Play/Pause (video/audio)\n• Tap TOP/BOTTOM center → Show/Hide controls\n\nDuring video playback, tap left-middle to rewind or right-middle to fast-forward 10 seconds.</string>
+    <string name="welcome_title_features">Advanced Features</string>
+    <string name="welcome_description_features">Powerful tools to enhance your workflow:\n\n• OCR (Text Recognition) - Extract text from images\n• Translation - Translate text in images and documents\n• Text Search - Search within PDF, EPUB, and text files\n• Google Lens integration - Identify objects and text\n\nAll features work offline after initial setup!</string>
+    <string name="welcome_title_4">Destinations &amp; Permissions</string>
+    <string name="welcome_description_4">Set up "Destinations" for one-tap move/copy operations using the Floating Action Button.\n\nConfigure cloud credentials and network shares in Settings.\n\nTo begin, we need storage access permissions.</string>
+    <string name="permissions_required">Storage permissions required</string>
+    <string name="permissions_description">To browse and manage your files, we need access to your storage.</string>
+    <string name="grant_permission">Grant Permission</string>
+    <string name="grant_permissions">Grant Permissions</string>
+    <string name="skip">Skip</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+    <string name="finish">Finish</string>
+    <string name="get_started">Get Started</string>
+    <string name="permission_required_title">Permission Required</string>
+    <string name="permission_required_message">FastMediaSorter needs storage access to browse and organize your media files. Without this permission, the app cannot function.</string>
+    <string name="permission_denied_title">Permission Denied</string>
+    <string name="permission_denied_message">Storage permission was denied. Please enable it in app settings to continue.</string>
+    <string name="open_settings">Open Settings</string>
+    <string name="action_previous">Previous</string>
+    <string name="action_next">Next</string>
+    <string name="slideshow_next_in">Next in %1$ds</string>
+    <string name="previous_frame">Previous frame</string>
+    <string name="next_frame">Next frame</string>
+    <string name="action_previous_chapter">Previous chapter</string>
+    <string name="action_next_chapter">Next chapter</string>
+</resources>

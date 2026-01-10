@@ -131,3 +131,8 @@
 # ===== FindBugs Annotations (Microsoft Identity Library) =====
 # These annotations are compile-time only and not needed at runtime
 -dontwarn edu.umd.cs.findbugs.annotations.**
+
+# ===== PDF Box Optional Dependencies =====
+# JP2 codec is optional for JPEG2000 support in PDFs
+-dontwarn com.gemalto.jp2.JP2Decoder
+-dontwarn com.gemalto.jp2.JP2Encoder

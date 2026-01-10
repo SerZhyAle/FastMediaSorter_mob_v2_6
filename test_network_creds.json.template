@@ -1,0 +1,53 @@
+{
+  "smb": {
+    "enabled": false,
+    "host": "192.168.1.100",
+    "port": 445,
+    "shareName": "TestShare",
+    "workgroup": "WORKGROUP",
+    "domain": "",
+    "username": "testuser",
+    "password": "testpassword",
+    "testFolder": "/test_media",
+    "anonymousAccess": false,
+    "smbVersion": "SMB2",
+    "notes": "SMB/CIFS network share credentials"
+  },
+  "sftp": {
+    "enabled": false,
+    "host": "192.168.1.101",
+    "port": 22,
+    "username": "sftpuser",
+    "password": "sftppassword",
+    "privateKeyPath": "",
+    "privateKeyPassphrase": "",
+    "testFolder": "/home/sftpuser/test_media",
+    "authType": "password",
+    "notes": "SFTP server credentials. authType can be 'password' or 'key'"
+  },
+  "ftp": {
+    "enabled": false,
+    "host": "192.168.1.102",
+    "port": 21,
+    "username": "ftpuser",
+    "password": "ftppassword",
+    "testFolder": "/test_media",
+    "usePassiveMode": true,
+    "useTLS": false,
+    "tlsMode": "explicit",
+    "anonymousAccess": false,
+    "notes": "FTP/FTPS server credentials. tlsMode can be 'explicit' or 'implicit'"
+  },
+  "testFiles": {
+    "smallFile": "test_small.txt",
+    "mediumFile": "test_medium.jpg",
+    "largeFile": "test_large.mp4",
+    "notes": "Expected test files on the servers"
+  },
+  "settings": {
+    "connectionTimeout": 10000,
+    "readTimeout": 30000,
+    "skipRealNetworkTests": true,
+    "notes": "Set skipRealNetworkTests to false to run actual network tests"
+  }
+}

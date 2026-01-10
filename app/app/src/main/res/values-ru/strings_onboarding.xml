@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- onboarding strings for FastMediaSorter -->
+    <string name="welcome_title_1">Добро пожаловать в FastMediaSorter</string>
+    <string name="welcome_description_1">FastMediaSorter поможет вам организовать фото, видео, аудио, документы и другие файлы из локальных папок и сетевых источников.</string>
+    <string name="welcome_title_2">Типы ресурсов</string>
+    <string name="welcome_description_2">Подключайтесь к локальным папкам, Windows/Samba (SMB), FTP/SFTP серверам и облачным хранилищам (Google Drive, Dropbox, OneDrive). Просматривайте всё в одном месте!</string>
+    <string name="welcome_title_3_touch_zones">Жесты навигации</string>
+    <string name="welcome_description_3_touch_zones">Управляйте медиа с помощью зон касания в полноэкранном плеере для сортировки:\n\n• Касание СЛЕВА → Предыдущий файл\n• Касание СПРАВА → Следующий файл\n• Касание ПО ЦЕНТРУ → Воспроизведение/Пауза (видео/аудио)\n• Касание ВВЕРХУ/ВНИЗУ по центру → Показать/Скрыть элементы управления\n\nВо время воспроизведения видео касайтесь слева-посередине для перемотки назад или справа-посередине для перемотки вперёд на 10 секунд.</string>
+    <string name="welcome_title_features">Дополнительные возможности</string>
+    <string name="welcome_description_features">Мощные инструменты для улучшения рабочего процесса:\n\n• OCR (Распознавание текста) - Извлечение текста из изображений\n• Перевод - Перевод текста в изображениях и документах\n• Текстовый поиск - Поиск в PDF, EPUB и текстовых файлах\n• Интеграция с Google Lens - Распознавание объектов и текста\n\nВсе функции работают офлайн после начальной настройки!</string>
+    <string name="welcome_title_4">Назначения и разрешения</string>
+    <string name="welcome_description_4">Настройте "Назначения" для перемещения/копирования одним касанием через плавающую кнопку действий.\n\nНастройте облачные учётные данные и сетевые ресурсы в Настройках.\n\nДля начала работы нам нужны разрешения на доступ к хранилищу.</string>
+    <string name="permissions_required">Требуются разрешения хранилища</string>
+    <string name="permissions_description">Для просмотра и управления файлами нам нужен доступ к хранилищу.</string>
+    <string name="grant_permission">Предоставить разрешение</string>
+    <string name="grant_permissions">Предоставить разрешения</string>
+    <string name="skip">Пропустить</string>
+    <string name="next">Далее</string>
+    <string name="previous">Назад</string>
+    <string name="finish">Готово</string>
+    <string name="get_started">Начать</string>
+    <string name="permission_required_title">Требуется разрешение</string>
+    <string name="permission_required_message">FastMediaSorter необходим доступ к хранилищу для просмотра и организации ваших медиафайлов. Без этого разрешения приложение не сможет работать.</string>
+    <string name="permission_denied_title">Разрешение отклонено</string>
+    <string name="permission_denied_message">Разрешение на доступ к хранилищу было отклонено. Пожалуйста, включите его в настройках приложения.</string>
+    <string name="open_settings">Открыть настройки</string>
+    <string name="action_previous">Предыдущий</string>
+    <string name="action_next">Следующий</string>
+</resources>

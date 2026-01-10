@@ -1,69 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- App Name -->
+    <!-- core strings for FastMediaSorter -->
     <string name="app_name">FastMediaSorter</string>
-
-    <!-- Common Actions -->
     <string name="action_add">Додати</string>
     <string name="action_edit">Редагувати</string>
-    <string name="action_delete">Видалити</string>
     <string name="action_save">Зберегти</string>
     <string name="action_cancel">Скасувати</string>
     <string name="action_ok">ОК</string>
     <string name="action_retry">Повторити</string>
-    <string name="action_close">Закрити</string>
     <string name="action_settings">Налаштування</string>
     <string name="action_undo">Скасувати</string>
-    <string name="action_move">Перемістити</string>
-    <string name="action_copy">Копіювати</string>
     <string name="action_info">Інформація</string>
-    <string name="action_search">Пошук</string>
-    <string name="search_hint">Пошук файлів…</string>
-    <string name="no_search_results">Файли не знайдено</string>
-    <string name="selected_count">Вибрано: %d</string>
-    <string name="delete_confirmation_title">Видалити файли?</string>
-    <string name="delete_confirmation_message">Видалити %d файл(ів)? Файли буде переміщено до кошика і можна відновити.</string>
-    <string name="delete_single_file_message">Видалити \"%1$s\"? Файл буде переміщено до кошика.</string>
-    <string name="select_destination_move">Перемістити до…</string>
-    <string name="select_destination_copy">Копіювати до…</string>
-    <string name="no_destinations">Теки призначення не налаштовані.\nДодайте їх у Налаштуваннях для швидкого переміщення/копіювання.</string>
-    <string name="files_moved">Переміщено файлів: %d</string>
-    <string name="files_copied">Скопійовано файлів: %d</string>
-    <string name="files_deleted">Видалено файлів: %d</string>
-    <string name="file_deleted">Файл видалено</string>
-    <string name="file_restored">Файл відновлено</string>
-    <string name="files_restored">Відновлено файлів: %d</string>
     <string name="share">Поділитися</string>
-    <string name="error_sharing_file">Помилка при надсиланні файлу</string>
     <string name="operation_in_progress">Операція виконується…</string>
-
-    <!-- Welcome/Onboarding -->
-    <string name="welcome_title">Ласкаво просимо до FastMediaSorter</string>
-    <string name="welcome_subtitle">Легко організуйте ваші медіафайли</string>
-    <string name="welcome_description">FastMediaSorter допоможе вам організувати фото, відео та аудіо файли з локальних тек та мережевих джерел.\n\nДля початку роботи нам потрібен дозвіл на доступ до ваших медіафайлів.</string>
-    <string name="permissions_required">Потрібні дозволи сховища</string>
-    <string name="permissions_description">Для перегляду та керування файлами нам потрібен доступ до сховища.</string>
-    <string name="grant_permission">Надати дозвіл</string>
-    <string name="grant_permissions">Надати дозволи</string>
-    <string name="skip">Пропустити</string>
-    <string name="get_started">Почати</string>
     <string name="cancel">Скасувати</string>
-    <string name="permission_required_title">Потрібен дозвіл</string>
-    <string name="permission_required_message">FastMediaSorter потребує доступу до сховища для перегляду та організації ваших медіафайлів. Без цього дозволу програма не зможе працювати.</string>
-    <string name="permission_denied_title">Дозвіл відхилено</string>
-    <string name="permission_denied_message">Дозвіл на доступ до сховища був відхилений. Будь ласка, увімкніть його в налаштуваннях програми.</string>
-    <string name="open_settings">Відкрити налаштування</string>
-
-    <!-- Main Screen -->
     <string name="resources">Ресурси</string>
     <string name="no_resources">Немає доданих ресурсів</string>
     <string name="add_first_resource">Натисніть + щоб додати перший ресурс</string>
     <string name="add_resource">Додати ресурс</string>
-    <string name="local_folder">Локальна тека</string>
-    <string name="network_share">Мережевий ресурс</string>
     <string name="cloud_storage">Хмарне сховище</string>
-
-    <!-- Resource Types -->
     <string name="type_local">Локальний</string>
     <string name="type_smb">SMB/Windows тека</string>
     <string name="type_sftp">SFTP</string>
@@ -71,368 +26,34 @@
     <string name="type_google_drive">Google Drive</string>
     <string name="type_onedrive">OneDrive</string>
     <string name="type_dropbox">Dropbox</string>
-
-    <!-- File Browser -->
-    <string name="files">Файли</string>
-    <string name="folders">Теки</string>
-    <string name="no_files">Файли не знайдено</string>
     <string name="loading">Завантаження…</string>
-    <string name="select_all">Вибрати все</string>
-    <string name="deselect_all">Зняти виділення</string>
-
-    <!-- Sort Options -->
-    <string name="sort_by">Сортування</string>
-    <string name="sort_name_asc">Ім\'я (А-Я)</string>
-    <string name="sort_name_desc">Ім\'я (Я-А)</string>
-    <string name="sort_date_asc">Дата (старіші)</string>
-    <string name="sort_date_desc">Дата (новіші)</string>
-    <string name="sort_size_asc">Розмір (менші)</string>
-    <string name="sort_size_desc">Розмір (більші)</string>
-
-    <!-- Display Options -->
-    <string name="view_list">Список</string>
-    <string name="view_grid">Сітка</string>
-
-    <!-- File Operations -->
-    <string name="copy">Копіювати</string>
-    <string name="move">Перемістити</string>
-    <string name="rename">Перейменувати</string>
-    <string name="select_destination">Виберіть призначення</string>
     <string name="operation_complete">Операцію завершено</string>
     <string name="operation_failed">Операція не вдалася</string>
-
-    <!-- Favorites -->
-    <string name="favorites">Вибране</string>
-    <string name="add_to_favorites">Додати до вибраного</string>
-    <string name="remove_from_favorites">Видалити з вибраного</string>
-    <string name="no_favorites">Немає вибраних файлів</string>
-    <string name="no_favorites_hint">Натисніть на іконку серця на будь-якому файлі,\nщоб додати його до вибраного</string>
-    <string name="added_to_favorites">Додано до вибраного</string>
-    <string name="removed_from_favorites">Видалено з вибраного</string>
-
-    <!-- Errors -->
-    <string name="error_unknown">Сталася невідома помилка</string>
-    <string name="error_network">Помилка мережі. Перевірте з\'єднання.</string>
-    <string name="error_permission">Доступ заборонено</string>
-    <string name="error_file_not_found">Файл не знайдено</string>
-    <string name="error_connection_failed">Не вдалося підключитися</string>
-    <string name="error_authentication">Помилка автентифікації</string>
-
-    <!-- Confirmation Dialogs -->
-    <string name="confirm_delete_title">Видалити файл?</string>
-    <string name="confirm_delete_message">Файл буде переміщено до кошика.</string>
-    <string name="confirm_delete_permanent">Цю дію неможливо скасувати.</string>
-
-    <!-- Settings -->
     <string name="settings">Налаштування</string>
     <string name="general">Загальні</string>
     <string name="appearance">Зовнішній вигляд</string>
     <string name="dark_mode">Темна тема</string>
     <string name="language">Мова</string>
     <string name="system_default">За замовчуванням</string>
-
-    <!-- Additional UI Strings -->
     <string name="thumbnail">Мініатюра</string>
     <string name="resource_icon">Іконка ресурсу</string>
-    <string name="action_sort">Сортування</string>
     <string name="view_mode">Режим перегляду</string>
-    <string name="local_folder_description">Перегляд фото та відео з вашого пристрою</string>
-    <string name="error_opening_folder_picker">Не вдалося відкрити вибір теки</string>
     <string name="feature_not_yet_implemented">%1$s скоро буде доступний!</string>
-
-    <!-- Player -->
-    <string name="action_previous">Попередній</string>
-    <string name="action_next">Наступний</string>
     <string name="action_share">Поділитися</string>
-    <string name="action_play">Відтворити</string>
-    <string name="action_pause">Пауза</string>
-    <string name="action_rewind">Назад 10 секунд</string>
-    <string name="action_forward">Вперед 10 секунд</string>
-    <string name="file_info">Інформація про файл</string>
-    <string name="info_name">Ім\'я</string>
-    <string name="info_path">Розташування</string>
-    <string name="info_size">Розмір</string>
-    <string name="info_type">Тип</string>
-    <string name="info_modified">Змінено</string>
-    <string name="open_with">Відкрити за допомогою…</string>
-
-    <!-- File Info - Sections -->
-    <string name="info_section_basic">Основна інформація</string>
-    <string name="info_section_image">Дані зображення</string>
-    <string name="info_section_gif">Дані GIF</string>
-    <string name="info_section_video">Дані відео</string>
-    <string name="info_section_audio">Дані аудіо</string>
-    <string name="info_section_audio_track">Аудіодоріжка</string>
-    <string name="info_section_document">Дані документа</string>
-
-    <!-- File Info - Image Metadata -->
-    <string name="info_resolution">Роздільна здатність</string>
-    <string name="info_megapixels">Мегапікселів</string>
-    <string name="info_camera">Камера</string>
-    <string name="info_date_taken">Дата зйомки</string>
-    <string name="info_aperture">Діафрагма</string>
-    <string name="info_exposure">Витримка</string>
-    <string name="info_iso">ISO</string>
-    <string name="info_focal_length">Фокусна відстань</string>
-    <string name="info_location">Місцезнаходження</string>
-    <string name="info_flash">Спалах</string>
-    <string name="info_flash_fired">Спрацював</string>
-    <string name="info_flash_not_fired">Не спрацював</string>
-    <string name="info_white_balance">Баланс білого</string>
-
-    <!-- File Info - Video Metadata -->
-    <string name="info_duration">Тривалість</string>
-    <string name="info_quality">Якість</string>
-    <string name="info_bitrate">Бітрейт</string>
-    <string name="info_framerate">Частота кадрів</string>
-    <string name="info_rotation">Поворот</string>
-    <string name="info_codec">Кодек</string>
-    <string name="info_date_recorded">Дата запису</string>
-
-    <!-- File Info - Audio Metadata -->
-    <string name="info_title">Назва</string>
-    <string name="info_artist">Виконавець</string>
-    <string name="info_album">Альбом</string>
-    <string name="info_album_artist">Виконавець альбому</string>
-    <string name="info_year">Рік</string>
-    <string name="info_track">Трек</string>
-    <string name="info_genre">Жанр</string>
-    <string name="info_composer">Композитор</string>
-    <string name="info_sample_rate">Частота дискретизації</string>
-    <string name="info_bit_depth">Розрядність</string>
-    <string name="info_format">Формат</string>
-
-    <!-- File Info - Document Metadata -->
-    <string name="info_pages">Сторінок</string>
-    <string name="info_lines">Рядків</string>
-    <string name="info_words">Слів</string>
-    <string name="info_characters">Символів</string>
-    <string name="media_content">Медіаконтент</string>
-    <string name="player">Плеєр</string>
-    <string name="error_loading_media">Помилка завантаження медіа</string>
-    <string name="album_art">Обкладинка альбому</string>
-
-    <!-- Edit Resource -->
     <string name="edit_resource">Редагувати ресурс</string>
     <string name="resource_info">Інформація про ресурс</string>
     <string name="resource_name">Назва</string>
     <string name="display_settings">Налаштування відображення</string>
     <string name="advanced_settings">Розширені налаштування</string>
     <string name="destination_settings">Налаштування призначення</string>
-    <string name="work_with_all_files">Працювати з усіма файлами</string>
-    <string name="work_with_all_files_description">Показувати всі типи файлів, не лише медіа</string>
     <string name="use_as_destination">Використовувати як призначення</string>
     <string name="use_as_destination_description">Показувати у швидкому переміщенні/копіюванні</string>
     <string name="destination_color">Колір значка призначення</string>
     <string name="color_picker_coming_soon">Вибір кольору скоро</string>
-    <string name="confirm_delete_resource_message">Ви впевнені, що хочете видалити цей ресурс? Файли не будуть видалені.</string>
-
-    <!-- Settings - General -->
-    <string name="theme">Тема</string>
-    <string name="theme_light">Світла</string>
-    <string name="theme_dark">Темна</string>
-    <string name="theme_system">Системна</string>
-    <string name="default_view_mode">Режим перегляду за замовчуванням</string>
-    <string name="behavior">Поведінка</string>
-    <string name="show_hidden_files">Показувати приховані файли</string>
-    <string name="show_hidden_files_description">Відображати файли та теки, що починаються з крапки</string>
-    <string name="confirm_delete">Підтверджувати видалення</string>
-    <string name="confirm_move">Підтверджувати переміщення</string>
-    <string name="prevent_sleep">Не вимикати екран</string>
-    <string name="prevent_sleep_description">Не вимикати екран під час відтворення</string>
     <string name="cache">Кеш</string>
-    <string name="current_cache_size">Поточний розмір кешу:</string>
-    <string name="clear_cache">Очистити кеш</string>
-
-    <!-- Settings - Playback -->
-    <string name="slideshow_settings">Слайд-шоу</string>
-    <string name="slideshow_interval">Інтервал</string>
-    <string name="random_order">Випадковий порядок</string>
-    <string name="loop_slideshow">Повторювати слайд-шоу</string>
-    <string name="touch_zones">Зони дотику</string>
-    <string name="enable_touch_zones">Увімкнути зони дотику</string>
-    <string name="enable_touch_zones_description">Дотик по краях для навігації</string>
-    <string name="show_zone_overlay">Показувати індикатори зон</string>
-    <string name="video_playback">Відтворення відео</string>
-    <string name="resume_playback">Продовжити відтворення</string>
-    <string name="resume_playback_description">Продовжити відео з того місця, де зупинилися</string>
-    <string name="auto_play_videos">Автовідтворення відео</string>
-
-    <!-- Settings - Destinations -->
-    <string name="no_destinations_description">Додайте ресурси як теки призначення для швидкого переміщення/копіювання</string>
     <string name="add_destination">Додати призначення</string>
-    <string name="remove_destination">Видалити призначення</string>
-    <string name="confirm_remove_destination">Видалити \"%1$s\" з призначень?</string>
     <string name="destination_added">Додано \"%1$s\" як призначення</string>
-    <string name="destination_removed">Видалено \"%1$s\" з призначень</string>
     <string name="no_resources_to_add">Немає доступних ресурсів для додавання</string>
     <string name="drag_to_reorder">Перетягніть для зміни порядку</string>
     <string name="select_color">Виберіть колір</string>
-
-    <!-- Network Credentials -->
-    <string name="add_smb_connection">Додати SMB-підключення</string>
-    <string name="add_sftp_connection">Додати SFTP-підключення</string>
-    <string name="add_ftp_connection">Додати FTP-підключення</string>
-    <string name="add_network_connection">Додати мережеве підключення</string>
-    <string name="server_address">Адреса сервера</string>
-    <string name="port">Порт</string>
-    <string name="username">Ім\'я користувача</string>
-    <string name="password">Пароль</string>
-    <string name="use_ssh_key">Використовувати SSH-ключ</string>
-    <string name="ssh_key_path">Шлях до SSH-ключа</string>
-    <string name="domain_optional">Домен (необов\'язково)</string>
-    <string name="share_name">Ім\'я спільної теки</string>
-    <string name="test_connection">Перевірити підключення</string>
-    <string name="error_name_required">Необхідно вказати ім\'я</string>
-    <string name="error_server_required">Необхідно вказати адресу сервера</string>
-    <string name="error_invalid_port">Невірний номер порту (1-65535)</string>
-    <string name="error_username_required">Необхідно вказати ім\'я користувача</string>
-    <string name="error_share_name_required">Необхідно вказати ім\'я спільної теки</string>
-    <string name="error_ssh_key_required">Необхідно вказати шлях до SSH-ключа</string>
-    <string name="error_password_required">Необхідно вказати пароль</string>
-
-    <!-- Widget -->
-    <string name="widget_name">Ярлик ресурсу</string>
-    <string name="widget_description">Швидкий доступ до теки або мережевого ресурсу</string>
-    <string name="widget_configure_title">Виберіть ресурс</string>
-    <string name="widget_configure_description">Виберіть ресурс для відкриття при натисканні на віджет:</string>
-    <string name="widget_not_configured">Не налаштовано</string>
-
-    <!-- Search -->
-    <string name="search_title">Пошук</string>
-    <string name="search_initial_message">Пошук по всіх ресурсах.\nВведіть щонайменше 2 символи для початку.</string>
-    <string name="search_no_results">Файли, які відповідають критеріям, не знайдено.</string>
-    <string name="search_result_info">%1$s • %2$s</string>
-    <string name="filter_images">Зображення</string>
-    <string name="filter_videos">Відео</string>
-    <string name="filter_audio">Аудіо</string>
-    <string name="filter_other">Інше</string>
-    <string name="cd_search_thumbnail">Мініатюра результату пошуку</string>
-    <string name="cd_search_icon">Значок пошуку</string>
-    <string name="cd_toggle_filters">Переключити фільтри пошуку</string>
-
-    <!-- Settings - Image Options -->
-    <string name="thumbnail_quality">Якість мініатюр</string>
-    <string name="auto_rotate_images">Авто-поворот зображень</string>
-    <string name="auto_rotate_images_hint">Поворот на основі даних EXIF</string>
-    <string name="show_exif_data">Показувати дані EXIF</string>
-    <string name="show_exif_data_hint">Відображати інформацію про камеру</string>
-    <string name="jpeg_compression_quality">Якість JPEG (збереження)</string>
-
-    <!-- Settings - Video Options -->
-    <string name="video_quality">Якість відео</string>
-    <string name="hardware_acceleration">Апаратне прискорення</string>
-    <string name="hardware_acceleration_hint">Використовувати GPU для декодування (рекомендовано)</string>
-    <string name="seek_increment">Крок перемотування</string>
-    <string name="preview_duration">Тривалість превью</string>
-
-    <!-- Settings - Audio Options -->
-    <string name="waveform_style">Стиль хвильової форми</string>
-    <string name="background_playback">Фонове відтворення</string>
-    <string name="background_playback_hint">Продовжувати відтворення у фоні</string>
-    <string name="audio_focus_handling">Обробка аудіо фокуса</string>
-    <string name="search_audio_covers_hint">Шукати обкладинки альбомів онлайн</string>
-
-    <!-- Settings - Document Options -->
-    <string name="text_encoding">Кодування тексту</string>
-    <string name="pdf_page_cache">Кеш сторінок PDF</string>
-    <string name="pdf_render_quality">Якість рендера PDF</string>
-    <string name="epub_font_family">Шрифт EPUB</string>
-    <string name="epub_font_size">Розмір шрифту EPUB</string>
-
-    <!-- Settings - GIF Options -->
-    <string name="gif_frame_rate_limit">Ліміт частоти кадрів GIF</string>
-
-    <!-- Settings - Translation Options -->
-    <string name="enable_translation_hint">Показувати кнопку перекладу для тексту</string>
-    <string name="enable_google_lens_hint">Надсилати зображення до Google Lens</string>
-
-    <!-- Quality Options -->
-    <string name="quality_auto">Авто</string>
-    <string name="quality_low">Низька</string>
-    <string name="quality_medium">Середня</string>
-    <string name="quality_high">Висока</string>
-    <string name="quality_best">Найкраща</string>
-
-    <!-- Waveform Styles -->
-    <string name="waveform_none">Немає</string>
-    <string name="waveform_bars">Стовпці</string>
-    <string name="waveform_line">Лінія</string>
-
-    <!-- Audio Focus Options -->
-    <string name="audio_focus_duck">Приглушити (зменшити гучність)</string>
-    <string name="audio_focus_pause">Призупинити</string>
-    <string name="audio_focus_ignore">Ігнорувати</string>
-
-    <!-- Text Encoding Options -->
-    <string name="encoding_auto">Автовизначення</string>
-    <string name="encoding_utf8">UTF-8</string>
-    <string name="encoding_utf16">UTF-16</string>
-    <string name="encoding_latin1">Latin-1</string>
-    <string name="encoding_windows1251">Windows-1251</string>
-
-    <!-- Font Family Options -->
-    <string name="font_serif">Із засічками</string>
-    <string name="font_sans">Без засічок</string>
-    <string name="font_mono">Моноширинний</string>
-
-    <!-- Format Strings -->
-    <string name="pages_format">%d стор.</string>
-    <string name="pixels_format">%dпкс</string>
-    <string name="fps_format">%d к/с</string>
-    <string name="seconds_format">%dс</string>
-    <string name="percent_format">%d%%</string>
-    <string name="no_limit">Без обмежень</string>
-
-    <!-- Text Editor -->
-    <string name="edit_text_file">Редагування тексту</string>
-    <string name="action_redo">Повторити</string>
-    <string name="file_truncated_notice">Файл надто великий — показано лише перший 1МБ</string>
-    <string name="file_truncated_warning">⚠️ Файл обрізано. Зміни зберегти неможливо.</string>
-    <string name="cannot_save_truncated">Неможливо зберегти зміни в обрізаному файлі. Файл надто великий для редагування.</string>
-    <string name="file_saved_successfully">Файл успішно збережено</string>
-    <string name="save_failed_message">Помилка збереження: %1$s</string>
-
-    <!-- Lyrics -->
-    <string name="lyrics">Текст пісні</string>
-    <string name="loading_lyrics">Завантаження тексту…</string>
-    <string name="lyrics_not_found">Текст пісні не знайдено</string>
-    <string name="lyrics_not_found_hint">Помістіть файл .lrc або .txt з такою ж назвою як аудіофайл для відображення тексту</string>
-    <string name="lyrics_copied">Текст скопійовано до буфера обміну</string>
-    <string name="copy_lyrics">Копіювати текст</string>
-    <string name="lyrics_source_embedded">Вбудований</string>
-    <string name="lyrics_source_lrc">LRC-файл</string>
-    <string name="lyrics_source_txt">Текстовий файл</string>
-    <string name="lyrics_source_online">Онлайн</string>
-    <string name="lyrics_synced">Синхронізований</string>
-    <string name="lyrics_unsynced">Несинхронізований</string>
-
-    <!-- Subtitles -->
-    <string name="toggle_subtitles">Переключити субтитри</string>
-    <string name="subtitles_enabled">Субтитри увімкнено</string>
-    <string name="subtitles_disabled">Субтитри вимкнено</string>
-    <string name="no_subtitles_available">Субтитри недоступні</string>
-    <string name="subtitles_hint">Помістіть файл .srt або .vtt з такою ж назвою як відеофайл для субтитрів</string>
-
-    <!-- Widget Strings -->
-    <string name="widget_favorites_description">Швидкий доступ до обраних файлів</string>
-    <string name="widget_continue_reading_description">Продовжити слайдшоу з останньої позиції</string>
-    <string name="continue_reading">Продовжити\nперегляд</string>
-    <string name="media_type">Тип медіа</string>
-
-    <!-- PIN Code Protection -->
-    <string name="set_pin_code">Встановити PIN-код</string>
-    <string name="change_pin_code">Змінити PIN-код</string>
-    <string name="enter_pin_code">Введіть PIN-код</string>
-    <string name="pin_code">PIN-код</string>
-    <string name="confirm_pin_code">Підтвердіть PIN-код</string>
-    <string name="remove_pin">Видалити PIN</string>
-    <string name="pin_hint_length">Введіть PIN від %1$d до %2$d цифр</string>
-    <string name="pin_too_short">PIN повинен містити мінімум %1$d цифр</string>
-    <string name="pin_mismatch">PIN-коди не співпадають</string>
-    <string name="pin_incorrect">Невірний PIN-код</string>
-    <string name="pin_protection">Захист PIN-кодом</string>
-    <string name="enable_pin_protection">Увімкнути захист PIN-кодом</string>
-    <string name="pin_protection_desc">Вимагати PIN-код для доступу до цього ресурсу</string>
-    <string name="supported_media_types">Підтримувані типи медіа</string>
-    <string name="media_type_filter_desc">Виберіть, які типи файлів показувати з цього ресурсу</string></resources>
+</resources>

@@ -7,16 +7,40 @@
 
 ---
 
-## 📋 Active TODO List
+## � Essential Documents (Start Here)
 
-**All remaining development tasks are consolidated in:** [TODO_CONSOLIDATED.md](TODO_CONSOLIDATED.md)
+### Current Status & Planning
+1. **[PROJECT_STATUS.md](PROJECT_STATUS.md)** ⭐ - Current development state, epic progress, test coverage
+2. **[DEV_TODO.md](DEV_TODO.md)** 🛠️ - Developer tasks, unit test implementation (6-week roadmap)
+3. **[TESTING_TODO.md](TESTING_TODO.md)** ✅ - QA manual testing checklist (organized by week)
+4. **[UI_ISSUES.md](UI_ISSUES.md)** 🎨 - UI/UX improvements found during testing
 
-This single file contains:
-- Current project status (85% complete)
-- Active development priorities (Epic 8: Release Engineering)
-- Remaining work for Epics 5, 6, 8
-- Known issues and technical debt
-- Timeline and next steps
+> **Note:** Previous TODO files (TODO_CONSOLIDATED.md, UNIT_TEST_CHECKLIST.md, etc.) have been consolidated into the above documents.
+
+---
+
+## Quick Reference by Role
+
+### For Project Managers
+- [PROJECT_STATUS.md](PROJECT_STATUS.md) - Overall progress & blockers
+- [00_overview.md](00_overview.md) - Project vision
+- [00_strategy.md](00_strategy.md) - Strategic roadmap
+
+### For Developers
+- [DEV_TODO.md](DEV_TODO.md) - Implementation tasks
+- [17_architecture_patterns.md](17_architecture_patterns.md) - Code organization
+- [18_development_workflows.md](18_development_workflows.md) - Development process
+- [23_code_conventions.md](23_code_conventions.md) - Coding standards
+
+### For QA / Testers
+- [TESTING_TODO.md](TESTING_TODO.md) - Manual testing plan
+- [30_testing_strategy.md](30_testing_strategy.md) - Testing approach
+- [37_edge_cases_matrix.md](37_edge_cases_matrix.md) - Edge cases
+
+### For UI/UX Designers
+- [UI_ISSUES.md](UI_ISSUES.md) - Known improvements needed
+- [15_ui_guidelines.md](15_ui_guidelines.md) - Design patterns
+- [41_layout_specifications.md](41_layout_specifications.md) - Layout specs
 
 ---
 

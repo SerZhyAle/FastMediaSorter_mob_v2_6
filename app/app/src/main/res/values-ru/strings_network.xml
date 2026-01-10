@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- network strings for FastMediaSorter -->
+    <string name="local_folder">Локальная папка</string>
+    <string name="network_share">Сетевой ресурс</string>
+    <string name="folders">Папки</string>
+    <string name="local_folder_description">Просмотр фото и видео с вашего устройства</string>
+    <string name="error_opening_folder_picker">Не удалось открыть выбор папки</string>
+    <string name="add_smb_connection">Добавить SMB-подключение</string>
+    <string name="add_sftp_connection">Добавить SFTP-подключение</string>
+    <string name="add_ftp_connection">Добавить FTP-подключение</string>
+    <string name="add_network_connection">Добавить сетевое подключение</string>
+    <string name="server_address">Адрес сервера</string>
+    <string name="port">Порт</string>
+    <string name="username">Имя пользователя</string>
+    <string name="password">Пароль</string>
+    <string name="use_ssh_key">Использовать SSH-ключ</string>
+    <string name="ssh_key_path">Путь к SSH-ключу</string>
+    <string name="domain_optional">Домен (необязательно)</string>
+    <string name="share_name">Имя общей папки</string>
+    <string name="test_connection">Проверить подключение</string>
+    <string name="error_server_required">Необходимо указать адрес сервера</string>
+    <string name="error_invalid_port">Неверный номер порта (1-65535)</string>
+    <string name="error_username_required">Необходимо указать имя пользователя</string>
+    <string name="error_share_name_required">Необходимо указать имя общей папки</string>
+    <string name="error_ssh_key_required">Необходимо указать путь к SSH-ключу</string>
+    <string name="error_password_required">Необходимо указать пароль</string>
+    <string name="supported_media_types">Поддерживаемые типы медиа</string>
+</resources>

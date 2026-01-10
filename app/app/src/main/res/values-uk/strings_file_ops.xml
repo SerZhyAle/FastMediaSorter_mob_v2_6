@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- file_ops strings for FastMediaSorter -->
+    <string name="action_move">Перемістити</string>
+    <string name="action_copy">Копіювати</string>
+    <string name="action_search">Пошук</string>
+    <string name="search_hint">Пошук файлів…</string>
+    <string name="no_search_results">Файли не знайдено</string>
+    <string name="selected_count">Вибрано: %d</string>
+    <string name="files_moved">Переміщено файлів: %d</string>
+    <string name="files_copied">Скопійовано файлів: %d</string>
+    <string name="file_restored">Файл відновлено</string>
+    <string name="files_restored">Відновлено файлів: %d</string>
+    <string name="error_sharing_file">Помилка при надсиланні файлу</string>
+    <string name="files">Файли</string>
+    <string name="no_files">Файли не знайдено</string>
+    <string name="select_all">Вибрати все</string>
+    <string name="deselect_all">Зняти виділення</string>
+    <string name="sort_by">Сортування</string>
+    <string name="sort_name_asc">Ім\'я (А-Я)</string>
+    <string name="sort_name_desc">Ім\'я (Я-А)</string>
+    <string name="sort_date_asc">Дата (старіші)</string>
+    <string name="sort_date_desc">Дата (новіші)</string>
+    <string name="sort_size_asc">Розмір (менші)</string>
+    <string name="sort_size_desc">Розмір (більші)</string>
+    <string name="view_list">Список</string>
+    <string name="view_grid">Сітка</string>
+    <string name="copy">Копіювати</string>
+    <string name="move">Перемістити</string>
+    <string name="rename">Перейменувати</string>
+    <string name="select_destination">Виберіть призначення</string>
+    <string name="favorites">Вибране</string>
+    <string name="add_to_favorites">Додати до вибраного</string>
+    <string name="remove_from_favorites">Видалити з вибраного</string>
+    <string name="no_favorites">Немає вибраних файлів</string>
+    <string name="no_favorites_hint">Натисніть на іконку серця на будь-якому файлі,\nщоб додати його до вибраного</string>
+    <string name="added_to_favorites">Додано до вибраного</string>
+    <string name="removed_from_favorites">Видалено з вибраного</string>
+    <string name="action_sort">Сортування</string>
+    <string name="work_with_all_files">Працювати з усіма файлами</string>
+    <string name="work_with_all_files_description">Показувати всі типи файлів, не лише медіа</string>
+    <string name="remove_destination">Видалити призначення</string>
+    <string name="confirm_remove_destination">Видалити \"%1$s\" з призначень?</string>
+    <string name="destination_removed">Видалено \"%1$s\" з призначень</string>
+    <string name="search_title">Пошук</string>
+    <string name="search_initial_message">Пошук по всіх ресурсах.\nВведіть щонайменше 2 символи для початку.</string>
+    <string name="search_no_results">Файли, які відповідають критеріям, не знайдено.</string>
+    <string name="search_result_info">%1$s • %2$s</string>
+    <string name="filter_images">Зображення</string>
+    <string name="filter_videos">Відео</string>
+    <string name="filter_audio">Аудіо</string>
+    <string name="filter_other">Інше</string>
+    <string name="cd_search_thumbnail">Мініатюра результату пошуку</string>
+    <string name="cd_search_icon">Значок пошуку</string>
+    <string name="cd_toggle_filters">Переключити фільтри пошуку</string>
+</resources>

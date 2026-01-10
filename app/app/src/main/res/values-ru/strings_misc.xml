@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- misc strings for FastMediaSorter -->
+    <string name="widget_name">Ярлык ресурса</string>
+    <string name="widget_description">Быстрый доступ к папке или сетевому ресурсу</string>
+    <string name="widget_configure_title">Выберите ресурс</string>
+    <string name="widget_configure_description">Выберите ресурс для открытия при нажатии на виджет:</string>
+    <string name="widget_not_configured">Не настроено</string>
+    <string name="pages_format">%d стр.</string>
+    <string name="pixels_format">%dпкс</string>
+    <string name="fps_format">%d к/с</string>
+    <string name="seconds_format">%dс</string>
+    <string name="percent_format">%d%%</string>
+    <string name="no_limit">Без ограничений</string>
+    <string name="edit_text_file">Редактирование текста</string>
+    <string name="action_redo">Повторить</string>
+    <string name="file_truncated_notice">Файл слишком большой — показан только первый 1МБ</string>
+    <string name="file_truncated_warning">⚠️ Файл обрезан. Изменения сохранить нельзя.</string>
+    <string name="cannot_save_truncated">Невозможно сохранить изменения в обрезанном файле. Файл слишком большой для редактирования.</string>
+    <string name="file_saved_successfully">Файл успешно сохранён</string>
+    <string name="save_failed_message">Ошибка сохранения: %1$s</string>
+    <string name="widget_favorites_description">Быстрый доступ к избранным файлам</string>
+    <string name="widget_continue_reading_description">Продолжить слайдшоу с последней позиции</string>
+    <string name="continue_reading">Продолжить\nпросмотр</string>
+    <string name="media_type">Тип медиа</string>
+    <string name="set_pin_code">Установить PIN-код</string>
+    <string name="change_pin_code">Изменить PIN-код</string>
+    <string name="enter_pin_code">Введите PIN-код</string>
+    <string name="pin_code">PIN-код</string>
+    <string name="confirm_pin_code">Подтвердите PIN-код</string>
+    <string name="remove_pin">Удалить PIN</string>
+    <string name="pin_hint_length">Введите PIN от %1$d до %2$d цифр</string>
+    <string name="pin_too_short">PIN должен содержать минимум %1$d цифр</string>
+    <string name="pin_mismatch">PIN-коды не совпадают</string>
+    <string name="pin_incorrect">Неверный PIN-код</string>
+    <string name="pin_protection">Защита PIN-кодом</string>
+    <string name="enable_pin_protection">Включить защиту PIN-кодом</string>
+    <string name="pin_protection_desc">Требовать PIN-код для доступа к этому ресурсу</string>
+    <string name="media_type_filter_desc">Выберите, какие типы файлов показывать из этого ресурса</string>
+</resources>

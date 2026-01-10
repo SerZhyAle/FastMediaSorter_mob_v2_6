@@ -297,9 +297,9 @@ This document tracks **developer implementation tasks**, primarily focused on un
 
 #### 4. View Logs & Session Logs
 **Priority:** MEDIUM
-- [ ] Add "View Logs" button to Settings-General
-- [ ] Add "View Session Logs" button to Settings-General
-- [ ] Use dialog with scrollable ond opend to copy text content and button "copy to clipboard" to display logs. We must already have such dialog activity for many needs. For example to show detailed errors and test results
+- [x] Add "View Logs" button to Settings-General
+- [x] Add "View Session Logs" button to Settings-General
+- [x] Use dialog with scrollable ond opend to copy text content and button "copy to clipboard" to display logs. We must already have such dialog activity for many needs. For example to show detailed errors and test results
 
 
 #### 5. Copy Logs to Clipboard

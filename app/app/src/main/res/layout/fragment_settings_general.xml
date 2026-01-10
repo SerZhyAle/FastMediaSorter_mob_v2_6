@@ -309,6 +309,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/clear_cache"
+            android:layout_marginBottom="8dp"
+            style="@style/Widget.Material3.Button.OutlinedButton"/>
+
+        <!-- View Logs Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnViewLogs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/view_logs"
+            android:layout_marginBottom="8dp"
+            style="@style/Widget.Material3.Button.OutlinedButton"/>
+
+        <!-- View Session Logs Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnViewSessionLogs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/view_session_logs"
             style="@style/Widget.Material3.Button.OutlinedButton"/>
 
         <!-- Developer Options (Debug Only) -->

@@ -127,6 +127,14 @@ class GeneralSettingsFragment : BaseFragment<FragmentSettingsGeneralBinding>() {
         binding.btnClearCache.setOnClickListener {
             viewModel.clearCache()
         }
+
+        binding.btnViewLogs.setOnClickListener {
+            showFullLogs()
+        }
+
+        binding.btnViewSessionLogs.setOnClickListener {
+            showSessionLogs()
+        }
     }
 
     private fun setupDeveloperOptions() {
@@ -198,6 +206,100 @@ class GeneralSettingsFragment : BaseFragment<FragmentSettingsGeneralBinding>() {
             "Generating..."
         } else {
             "Generate 10k Files (Stress Test)"
+        }
+    }
+
+    /**
+     * Show full application logs in a scrollable dialog.
+     */
+    private fun showFullLogs() {
+        val logContent = getFullLog()
+        val dialog = com.sza.fastmediasorter.ui.dialog.ScrollableTextDialog.forLogViewer(
+            title = getString(R.string.application_logs),
+            logContent = logContent
+        )
+        dialog.show(childFragmentManager, "full_logs")
+    }
+
+    /**
+     * Show session logs (filtered to current app) in a scrollable dialog.
+     */
+    private fun showSessionLogs() {
+        val logContent = getSessionLog()
+        val dialog = com.sza.fastmediasorter.ui.dialog.ScrollableTextDialog.forLogViewer(
+            title = getString(R.string.session_logs),
+            logContent = logContent
+        )
+        dialog.show(childFragmentManager, "session_logs")
+    }
+
+    /**
+     * Retrieve full logcat output (last 512 lines).
+     */
+    private fun getFullLog(): String {
+        return try {
+            val process = Runtime.getRuntime().exec("logcat -d -v time")
+            val bufferedReader = java.io.BufferedReader(
+                java.io.InputStreamReader(process.inputStream)
+            )
+
+            val log = StringBuilder()
+            val maxLines = 512
+
+            // Read last 512 lines
+            val lines = bufferedReader.readLines()
+            val startIndex = maxOf(0, lines.size - maxLines)
+
+            for (i in startIndex until lines.size) {
+                log.append(lines[i]).append("\n")
+            }
+
+            bufferedReader.close()
+
+            if (log.isEmpty()) {
+                getString(R.string.no_logs_found)
+            } else {
+                "Last ${lines.size - startIndex} lines of log:\n\n$log"
+            }
+        } catch (e: Exception) {
+            Timber.e(e, "Error reading full logs")
+            getString(R.string.error_reading_logs, e.message ?: "Unknown error")
+        }
+    }
+
+    /**
+     * Retrieve session logs filtered to current app package.
+     */
+    private fun getSessionLog(): String {
+        return try {
+            val packageName = requireContext().packageName
+            val process = Runtime.getRuntime().exec("logcat -d -v time")
+            val bufferedReader = java.io.BufferedReader(
+                java.io.InputStreamReader(process.inputStream)
+            )
+
+            val log = StringBuilder()
+            var lineCount = 0
+
+            bufferedReader.forEachLine { line ->
+                // Filter only lines from current app
+                if (line.contains(packageName, ignoreCase = true) ||
+                    line.contains("FastMediaSorter", ignoreCase = true)) {
+                    log.append(line).append("\n")
+                    lineCount++
+                }
+            }
+
+            bufferedReader.close()
+
+            if (log.isEmpty()) {
+                getString(R.string.no_logs_found)
+            } else {
+                "Current session log ($lineCount lines):\n\n$log"
+            }
+        } catch (e: Exception) {
+            Timber.e(e, "Error reading session logs")
+            getString(R.string.error_reading_logs, e.message ?: "Unknown error")
         }
     }
 }

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- dialogs strings for FastMediaSorter -->
+    <string name="action_delete">Удалить</string>
+    <string name="action_close">Закрыть</string>
+    <string name="delete_confirmation_title">Удалить файлы?</string>
+    <string name="delete_confirmation_message">Удалить %d файл(ов)? Файлы будут перемещены в корзину и могут быть восстановлены.</string>
+    <string name="delete_single_file_message">Удалить \"%1$s\"? Файл будет перемещён в корзину.</string>
+    <string name="select_destination_move">Переместить в…</string>
+    <string name="select_destination_copy">Копировать в…</string>
+    <string name="no_destinations">Папки назначения не настроены.\nДобавьте их в Настройках для быстрого перемещения/копирования.</string>
+    <string name="files_deleted">Удалено файлов: %d</string>
+    <string name="file_deleted">Файл удалён</string>
+    <string name="error_unknown">Произошла неизвестная ошибка</string>
+    <string name="error_network">Ошибка сети. Проверьте подключение.</string>
+    <string name="error_permission">Доступ запрещён</string>
+    <string name="error_file_not_found">Файл не найден</string>
+    <string name="error_connection_failed">Не удалось подключиться</string>
+    <string name="error_authentication">Ошибка аутентификации</string>
+    <string name="confirm_delete_title">Удалить файл?</string>
+    <string name="confirm_delete_message">Файл будет перемещён в корзину.</string>
+    <string name="confirm_delete_permanent">Это действие нельзя отменить.</string>
+    <string name="confirm_delete_resource_message">Вы уверены, что хотите удалить этот ресурс? Файлы не будут удалены.</string>
+    <string name="confirm_delete">Подтверждать удаление</string>
+    <string name="no_destinations_description">Добавьте ресурсы как папки назначения для быстрого перемещения/копирования</string>
+    <string name="error_name_required">Необходимо указать имя</string>
+    <string name="audio_focus_pause">Приостановить</string>
+</resources>

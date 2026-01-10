@@ -16,7 +16,7 @@ class WelcomePagerAdapter : RecyclerView.Adapter<WelcomePagerAdapter.WelcomeView
             iconRes = R.mipmap.ic_launcher,
             titleRes = R.string.welcome_title_1,
             descriptionRes = R.string.welcome_description_1,
-            showVersion = true  // Show version on first page
+            showVersion = false  // Version removed per user request
         ),
         WelcomePage(
             iconRes = R.drawable.resource_types,
@@ -25,15 +25,15 @@ class WelcomePagerAdapter : RecyclerView.Adapter<WelcomePagerAdapter.WelcomeView
             showVersion = false
         ),
         WelcomePage(
-            iconRes = R.drawable.ic_touch_zones_guide,
+            iconRes = R.drawable.touch_zones_scheme,
             titleRes = R.string.welcome_title_3_touch_zones,
             descriptionRes = R.string.welcome_description_3_touch_zones,
             showVersion = false
         ),
         WelcomePage(
             iconRes = R.mipmap.ic_launcher,
-            titleRes = R.string.welcome_title_3,
-            descriptionRes = R.string.welcome_description_3,
+            titleRes = R.string.welcome_title_features,
+            descriptionRes = R.string.welcome_description_features,
             showVersion = false
         ),
         WelcomePage(

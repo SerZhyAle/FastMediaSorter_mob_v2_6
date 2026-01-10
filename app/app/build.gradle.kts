@@ -34,8 +34,8 @@ android {
         applicationId = "com.sza.fastmediasorter"
         minSdk = 28
         targetSdk = 35
-        versionCode = 26010809
-        versionName = "2.60.1080.947"
+        versionCode = 26010916
+        versionName = "2.60.1091.605"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -93,6 +93,12 @@ android {
     buildFeatures {
         viewBinding = true
         buildConfig = true
+    }
+
+    lint {
+        // Disable GridLayout check - it incorrectly flags androidx.gridlayout.widget.GridLayout
+        // which uses android: namespace, not app: namespace
+        disable += "GridLayout"
     }
 }
 

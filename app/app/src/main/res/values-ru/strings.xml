@@ -1,69 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- App Name -->
+    <!-- core strings for FastMediaSorter -->
     <string name="app_name">FastMediaSorter</string>
-
-    <!-- Common Actions -->
     <string name="action_add">Добавить</string>
     <string name="action_edit">Редактировать</string>
-    <string name="action_delete">Удалить</string>
     <string name="action_save">Сохранить</string>
     <string name="action_cancel">Отмена</string>
     <string name="action_ok">ОК</string>
     <string name="action_retry">Повторить</string>
-    <string name="action_close">Закрыть</string>
     <string name="action_settings">Настройки</string>
     <string name="action_undo">Отменить</string>
-    <string name="action_move">Переместить</string>
-    <string name="action_copy">Копировать</string>
     <string name="action_info">Информация</string>
-    <string name="action_search">Поиск</string>
-    <string name="search_hint">Поиск файлов…</string>
-    <string name="no_search_results">Файлы не найдены</string>
-    <string name="selected_count">Выбрано: %d</string>
-    <string name="delete_confirmation_title">Удалить файлы?</string>
-    <string name="delete_confirmation_message">Удалить %d файл(ов)? Файлы будут перемещены в корзину и могут быть восстановлены.</string>
-    <string name="delete_single_file_message">Удалить \"%1$s\"? Файл будет перемещён в корзину.</string>
-    <string name="select_destination_move">Переместить в…</string>
-    <string name="select_destination_copy">Копировать в…</string>
-    <string name="no_destinations">Папки назначения не настроены.\nДобавьте их в Настройках для быстрого перемещения/копирования.</string>
-    <string name="files_moved">Перемещено файлов: %d</string>
-    <string name="files_copied">Скопировано файлов: %d</string>
-    <string name="files_deleted">Удалено файлов: %d</string>
-    <string name="file_deleted">Файл удалён</string>
-    <string name="file_restored">Файл восстановлен</string>
-    <string name="files_restored">Восстановлено файлов: %d</string>
     <string name="share">Поделиться</string>
-    <string name="error_sharing_file">Ошибка при отправке файла</string>
     <string name="operation_in_progress">Операция выполняется…</string>
-
-    <!-- Welcome/Onboarding -->
-    <string name="welcome_title">Добро пожаловать в FastMediaSorter</string>
-    <string name="welcome_subtitle">Легко организуйте ваши медиафайлы</string>
-    <string name="welcome_description">FastMediaSorter поможет вам организовать фото, видео и аудио файлы из локальных папок и сетевых источников.\n\nДля начала работы нам нужно разрешение на доступ к вашим медиафайлам.</string>
-    <string name="permissions_required">Требуются разрешения хранилища</string>
-    <string name="permissions_description">Для просмотра и управления файлами нам нужен доступ к хранилищу.</string>
-    <string name="grant_permission">Предоставить разрешение</string>
-    <string name="grant_permissions">Предоставить разрешения</string>
-    <string name="skip">Пропустить</string>
-    <string name="get_started">Начать</string>
     <string name="cancel">Отмена</string>
-    <string name="permission_required_title">Требуется разрешение</string>
-    <string name="permission_required_message">FastMediaSorter необходим доступ к хранилищу для просмотра и организации ваших медиафайлов. Без этого разрешения приложение не сможет работать.</string>
-    <string name="permission_denied_title">Разрешение отклонено</string>
-    <string name="permission_denied_message">Разрешение на доступ к хранилищу было отклонено. Пожалуйста, включите его в настройках приложения.</string>
-    <string name="open_settings">Открыть настройки</string>
-
-    <!-- Main Screen -->
     <string name="resources">Ресурсы</string>
     <string name="no_resources">Нет добавленных ресурсов</string>
     <string name="add_first_resource">Нажмите + чтобы добавить первый ресурс</string>
     <string name="add_resource">Добавить ресурс</string>
-    <string name="local_folder">Локальная папка</string>
-    <string name="network_share">Сетевой ресурс</string>
     <string name="cloud_storage">Облачное хранилище</string>
-
-    <!-- Resource Types -->
     <string name="type_local">Локальный</string>
     <string name="type_smb">SMB/Windows папка</string>
     <string name="type_sftp">SFTP</string>
@@ -71,368 +26,34 @@
     <string name="type_google_drive">Google Drive</string>
     <string name="type_onedrive">OneDrive</string>
     <string name="type_dropbox">Dropbox</string>
-
-    <!-- File Browser -->
-    <string name="files">Файлы</string>
-    <string name="folders">Папки</string>
-    <string name="no_files">Файлы не найдены</string>
     <string name="loading">Загрузка…</string>
-    <string name="select_all">Выбрать все</string>
-    <string name="deselect_all">Снять выделение</string>
-
-    <!-- Sort Options -->
-    <string name="sort_by">Сортировка</string>
-    <string name="sort_name_asc">Имя (А-Я)</string>
-    <string name="sort_name_desc">Имя (Я-А)</string>
-    <string name="sort_date_asc">Дата (старые)</string>
-    <string name="sort_date_desc">Дата (новые)</string>
-    <string name="sort_size_asc">Размер (меньше)</string>
-    <string name="sort_size_desc">Размер (больше)</string>
-
-    <!-- Display Options -->
-    <string name="view_list">Список</string>
-    <string name="view_grid">Сетка</string>
-
-    <!-- File Operations -->
-    <string name="copy">Копировать</string>
-    <string name="move">Переместить</string>
-    <string name="rename">Переименовать</string>
-    <string name="select_destination">Выберите назначение</string>
     <string name="operation_complete">Операция завершена</string>
     <string name="operation_failed">Операция не удалась</string>
-
-    <!-- Favorites -->
-    <string name="favorites">Избранное</string>
-    <string name="add_to_favorites">Добавить в избранное</string>
-    <string name="remove_from_favorites">Удалить из избранного</string>
-    <string name="no_favorites">Нет избранных файлов</string>
-    <string name="no_favorites_hint">Нажмите на иконку сердца на любом файле,\nчтобы добавить его в избранное</string>
-    <string name="added_to_favorites">Добавлено в избранное</string>
-    <string name="removed_from_favorites">Удалено из избранного</string>
-
-    <!-- Errors -->
-    <string name="error_unknown">Произошла неизвестная ошибка</string>
-    <string name="error_network">Ошибка сети. Проверьте подключение.</string>
-    <string name="error_permission">Доступ запрещён</string>
-    <string name="error_file_not_found">Файл не найден</string>
-    <string name="error_connection_failed">Не удалось подключиться</string>
-    <string name="error_authentication">Ошибка аутентификации</string>
-
-    <!-- Confirmation Dialogs -->
-    <string name="confirm_delete_title">Удалить файл?</string>
-    <string name="confirm_delete_message">Файл будет перемещён в корзину.</string>
-    <string name="confirm_delete_permanent">Это действие нельзя отменить.</string>
-
-    <!-- Settings -->
     <string name="settings">Настройки</string>
     <string name="general">Общие</string>
     <string name="appearance">Внешний вид</string>
     <string name="dark_mode">Тёмная тема</string>
     <string name="language">Язык</string>
     <string name="system_default">По умолчанию</string>
-
-    <!-- Additional UI Strings -->
     <string name="thumbnail">Миниатюра</string>
     <string name="resource_icon">Иконка ресурса</string>
-    <string name="action_sort">Сортировка</string>
     <string name="view_mode">Режим просмотра</string>
-    <string name="local_folder_description">Просмотр фото и видео с вашего устройства</string>
-    <string name="error_opening_folder_picker">Не удалось открыть выбор папки</string>
     <string name="feature_not_yet_implemented">%1$s скоро будет доступен!</string>
-
-    <!-- Player -->
-    <string name="action_previous">Предыдущий</string>
-    <string name="action_next">Следующий</string>
     <string name="action_share">Поделиться</string>
-    <string name="action_play">Воспроизвести</string>
-    <string name="action_pause">Пауза</string>
-    <string name="action_rewind">Назад 10 секунд</string>
-    <string name="action_forward">Вперёд 10 секунд</string>
-    <string name="file_info">Информация о файле</string>
-    <string name="info_name">Имя</string>
-    <string name="info_path">Расположение</string>
-    <string name="info_size">Размер</string>
-    <string name="info_type">Тип</string>
-    <string name="info_modified">Изменён</string>
-    <string name="open_with">Открыть с помощью…</string>
-
-    <!-- File Info - Sections -->
-    <string name="info_section_basic">Основная информация</string>
-    <string name="info_section_image">Данные изображения</string>
-    <string name="info_section_gif">Данные GIF</string>
-    <string name="info_section_video">Данные видео</string>
-    <string name="info_section_audio">Данные аудио</string>
-    <string name="info_section_audio_track">Аудиодорожка</string>
-    <string name="info_section_document">Данные документа</string>
-
-    <!-- File Info - Image Metadata -->
-    <string name="info_resolution">Разрешение</string>
-    <string name="info_megapixels">Мегапикселей</string>
-    <string name="info_camera">Камера</string>
-    <string name="info_date_taken">Дата съёмки</string>
-    <string name="info_aperture">Диафрагма</string>
-    <string name="info_exposure">Выдержка</string>
-    <string name="info_iso">ISO</string>
-    <string name="info_focal_length">Фокусное расстояние</string>
-    <string name="info_location">Местоположение</string>
-    <string name="info_flash">Вспышка</string>
-    <string name="info_flash_fired">Сработала</string>
-    <string name="info_flash_not_fired">Не сработала</string>
-    <string name="info_white_balance">Баланс белого</string>
-
-    <!-- File Info - Video Metadata -->
-    <string name="info_duration">Длительность</string>
-    <string name="info_quality">Качество</string>
-    <string name="info_bitrate">Битрейт</string>
-    <string name="info_framerate">Частота кадров</string>
-    <string name="info_rotation">Поворот</string>
-    <string name="info_codec">Кодек</string>
-    <string name="info_date_recorded">Дата записи</string>
-
-    <!-- File Info - Audio Metadata -->
-    <string name="info_title">Название</string>
-    <string name="info_artist">Исполнитель</string>
-    <string name="info_album">Альбом</string>
-    <string name="info_album_artist">Исполнитель альбома</string>
-    <string name="info_year">Год</string>
-    <string name="info_track">Трек</string>
-    <string name="info_genre">Жанр</string>
-    <string name="info_composer">Композитор</string>
-    <string name="info_sample_rate">Частота дискретизации</string>
-    <string name="info_bit_depth">Разрядность</string>
-    <string name="info_format">Формат</string>
-
-    <!-- File Info - Document Metadata -->
-    <string name="info_pages">Страниц</string>
-    <string name="info_lines">Строк</string>
-    <string name="info_words">Слов</string>
-    <string name="info_characters">Символов</string>
-    <string name="media_content">Медиаконтент</string>
-    <string name="player">Плеер</string>
-    <string name="error_loading_media">Ошибка загрузки медиа</string>
-    <string name="album_art">Обложка альбома</string>
-
-    <!-- Edit Resource -->
     <string name="edit_resource">Редактировать ресурс</string>
     <string name="resource_info">Информация о ресурсе</string>
     <string name="resource_name">Название</string>
     <string name="display_settings">Настройки отображения</string>
     <string name="advanced_settings">Расширенные настройки</string>
     <string name="destination_settings">Настройки назначения</string>
-    <string name="work_with_all_files">Работать со всеми файлами</string>
-    <string name="work_with_all_files_description">Показывать все типы файлов, не только медиа</string>
     <string name="use_as_destination">Использовать как назначение</string>
     <string name="use_as_destination_description">Показывать в быстром перемещении/копировании</string>
     <string name="destination_color">Цвет значка назначения</string>
     <string name="color_picker_coming_soon">Выбор цвета скоро</string>
-    <string name="confirm_delete_resource_message">Вы уверены, что хотите удалить этот ресурс? Файлы не будут удалены.</string>
-
-    <!-- Settings - General -->
-    <string name="theme">Тема</string>
-    <string name="theme_light">Светлая</string>
-    <string name="theme_dark">Тёмная</string>
-    <string name="theme_system">Системная</string>
-    <string name="default_view_mode">Режим просмотра по умолчанию</string>
-    <string name="behavior">Поведение</string>
-    <string name="show_hidden_files">Показывать скрытые файлы</string>
-    <string name="show_hidden_files_description">Отображать файлы и папки, начинающиеся с точки</string>
-    <string name="confirm_delete">Подтверждать удаление</string>
-    <string name="confirm_move">Подтверждать перемещение</string>
-    <string name="prevent_sleep">Не выключать экран</string>
-    <string name="prevent_sleep_description">Не выключать экран во время воспроизведения</string>
     <string name="cache">Кэш</string>
-    <string name="current_cache_size">Текущий размер кэша:</string>
-    <string name="clear_cache">Очистить кэш</string>
-
-    <!-- Settings - Playback -->
-    <string name="slideshow_settings">Слайд-шоу</string>
-    <string name="slideshow_interval">Интервал</string>
-    <string name="random_order">Случайный порядок</string>
-    <string name="loop_slideshow">Повторять слайд-шоу</string>
-    <string name="touch_zones">Зоны касания</string>
-    <string name="enable_touch_zones">Включить зоны касания</string>
-    <string name="enable_touch_zones_description">Касание по краям для навигации</string>
-    <string name="show_zone_overlay">Показывать индикаторы зон</string>
-    <string name="video_playback">Воспроизведение видео</string>
-    <string name="resume_playback">Продолжить воспроизведение</string>
-    <string name="resume_playback_description">Продолжить видео с того места, где остановились</string>
-    <string name="auto_play_videos">Автовоспроизведение видео</string>
-
-    <!-- Settings - Destinations -->
-    <string name="no_destinations_description">Добавьте ресурсы как папки назначения для быстрого перемещения/копирования</string>
     <string name="add_destination">Добавить назначение</string>
-    <string name="remove_destination">Удалить назначение</string>
-    <string name="confirm_remove_destination">Удалить \"%1$s\" из назначений?</string>
     <string name="destination_added">Добавлено \"%1$s\" как назначение</string>
-    <string name="destination_removed">Удалено \"%1$s\" из назначений</string>
     <string name="no_resources_to_add">Нет доступных ресурсов для добавления</string>
     <string name="drag_to_reorder">Перетащите для изменения порядка</string>
     <string name="select_color">Выберите цвет</string>
-
-    <!-- Network Credentials -->
-    <string name="add_smb_connection">Добавить SMB-подключение</string>
-    <string name="add_sftp_connection">Добавить SFTP-подключение</string>
-    <string name="add_ftp_connection">Добавить FTP-подключение</string>
-    <string name="add_network_connection">Добавить сетевое подключение</string>
-    <string name="server_address">Адрес сервера</string>
-    <string name="port">Порт</string>
-    <string name="username">Имя пользователя</string>
-    <string name="password">Пароль</string>
-    <string name="use_ssh_key">Использовать SSH-ключ</string>
-    <string name="ssh_key_path">Путь к SSH-ключу</string>
-    <string name="domain_optional">Домен (необязательно)</string>
-    <string name="share_name">Имя общей папки</string>
-    <string name="test_connection">Проверить подключение</string>
-    <string name="error_name_required">Необходимо указать имя</string>
-    <string name="error_server_required">Необходимо указать адрес сервера</string>
-    <string name="error_invalid_port">Неверный номер порта (1-65535)</string>
-    <string name="error_username_required">Необходимо указать имя пользователя</string>
-    <string name="error_share_name_required">Необходимо указать имя общей папки</string>
-    <string name="error_ssh_key_required">Необходимо указать путь к SSH-ключу</string>
-    <string name="error_password_required">Необходимо указать пароль</string>
-
-    <!-- Widget -->
-    <string name="widget_name">Ярлык ресурса</string>
-    <string name="widget_description">Быстрый доступ к папке или сетевому ресурсу</string>
-    <string name="widget_configure_title">Выберите ресурс</string>
-    <string name="widget_configure_description">Выберите ресурс для открытия при нажатии на виджет:</string>
-    <string name="widget_not_configured">Не настроено</string>
-
-    <!-- Search -->
-    <string name="search_title">Поиск</string>
-    <string name="search_initial_message">Поиск по всем ресурсам.\nВведите минимум 2 символа для начала.</string>
-    <string name="search_no_results">Файлы, соответствующие критериям, не найдены.</string>
-    <string name="search_result_info">%1$s • %2$s</string>
-    <string name="filter_images">Изображения</string>
-    <string name="filter_videos">Видео</string>
-    <string name="filter_audio">Аудио</string>
-    <string name="filter_other">Другое</string>
-    <string name="cd_search_thumbnail">Миниатюра результата поиска</string>
-    <string name="cd_search_icon">Значок поиска</string>
-    <string name="cd_toggle_filters">Переключить фильтры поиска</string>
-
-    <!-- Settings - Image Options -->
-    <string name="thumbnail_quality">Качество миниатюр</string>
-    <string name="auto_rotate_images">Авто-поворот изображений</string>
-    <string name="auto_rotate_images_hint">Поворот на основе данных EXIF</string>
-    <string name="show_exif_data">Показывать данные EXIF</string>
-    <string name="show_exif_data_hint">Отображать информацию о камере</string>
-    <string name="jpeg_compression_quality">Качество JPEG (сохранение)</string>
-
-    <!-- Settings - Video Options -->
-    <string name="video_quality">Качество видео</string>
-    <string name="hardware_acceleration">Аппаратное ускорение</string>
-    <string name="hardware_acceleration_hint">Использовать GPU для декодирования (рекомендуется)</string>
-    <string name="seek_increment">Шаг перемотки</string>
-    <string name="preview_duration">Длительность превью</string>
-
-    <!-- Settings - Audio Options -->
-    <string name="waveform_style">Стиль волновой формы</string>
-    <string name="background_playback">Фоновое воспроизведение</string>
-    <string name="background_playback_hint">Продолжать воспроизведение в фоне</string>
-    <string name="audio_focus_handling">Обработка аудио фокуса</string>
-    <string name="search_audio_covers_hint">Искать обложки альбомов онлайн</string>
-
-    <!-- Settings - Document Options -->
-    <string name="text_encoding">Кодировка текста</string>
-    <string name="pdf_page_cache">Кэш страниц PDF</string>
-    <string name="pdf_render_quality">Качество рендера PDF</string>
-    <string name="epub_font_family">Шрифт EPUB</string>
-    <string name="epub_font_size">Размер шрифта EPUB</string>
-
-    <!-- Settings - GIF Options -->
-    <string name="gif_frame_rate_limit">Лимит частоты кадров GIF</string>
-
-    <!-- Settings - Translation Options -->
-    <string name="enable_translation_hint">Показывать кнопку перевода для текста</string>
-    <string name="enable_google_lens_hint">Отправлять изображения в Google Lens</string>
-
-    <!-- Quality Options -->
-    <string name="quality_auto">Авто</string>
-    <string name="quality_low">Низкое</string>
-    <string name="quality_medium">Среднее</string>
-    <string name="quality_high">Высокое</string>
-    <string name="quality_best">Лучшее</string>
-
-    <!-- Waveform Styles -->
-    <string name="waveform_none">Нет</string>
-    <string name="waveform_bars">Столбцы</string>
-    <string name="waveform_line">Линия</string>
-
-    <!-- Audio Focus Options -->
-    <string name="audio_focus_duck">Приглушить (убавить громкость)</string>
-    <string name="audio_focus_pause">Приостановить</string>
-    <string name="audio_focus_ignore">Игнорировать</string>
-
-    <!-- Text Encoding Options -->
-    <string name="encoding_auto">Автоопределение</string>
-    <string name="encoding_utf8">UTF-8</string>
-    <string name="encoding_utf16">UTF-16</string>
-    <string name="encoding_latin1">Latin-1</string>
-    <string name="encoding_windows1251">Windows-1251</string>
-
-    <!-- Font Family Options -->
-    <string name="font_serif">С засечками</string>
-    <string name="font_sans">Без засечек</string>
-    <string name="font_mono">Моноширинный</string>
-
-    <!-- Format Strings -->
-    <string name="pages_format">%d стр.</string>
-    <string name="pixels_format">%dпкс</string>
-    <string name="fps_format">%d к/с</string>
-    <string name="seconds_format">%dс</string>
-    <string name="percent_format">%d%%</string>
-    <string name="no_limit">Без ограничений</string>
-
-    <!-- Text Editor -->
-    <string name="edit_text_file">Редактирование текста</string>
-    <string name="action_redo">Повторить</string>
-    <string name="file_truncated_notice">Файл слишком большой — показан только первый 1МБ</string>
-    <string name="file_truncated_warning">⚠️ Файл обрезан. Изменения сохранить нельзя.</string>
-    <string name="cannot_save_truncated">Невозможно сохранить изменения в обрезанном файле. Файл слишком большой для редактирования.</string>
-    <string name="file_saved_successfully">Файл успешно сохранён</string>
-    <string name="save_failed_message">Ошибка сохранения: %1$s</string>
-
-    <!-- Lyrics -->
-    <string name="lyrics">Текст песни</string>
-    <string name="loading_lyrics">Загрузка текста…</string>
-    <string name="lyrics_not_found">Текст песни не найден</string>
-    <string name="lyrics_not_found_hint">Поместите файл .lrc или .txt с таким же именем как аудиофайл для отображения текста</string>
-    <string name="lyrics_copied">Текст скопирован в буфер обмена</string>
-    <string name="copy_lyrics">Копировать текст</string>
-    <string name="lyrics_source_embedded">Встроенный</string>
-    <string name="lyrics_source_lrc">LRC-файл</string>
-    <string name="lyrics_source_txt">Текстовый файл</string>
-    <string name="lyrics_source_online">Онлайн</string>
-    <string name="lyrics_synced">Синхронизированный</string>
-    <string name="lyrics_unsynced">Несинхронизированный</string>
-
-    <!-- Subtitles -->
-    <string name="toggle_subtitles">Переключить субтитры</string>
-    <string name="subtitles_enabled">Субтитры включены</string>
-    <string name="subtitles_disabled">Субтитры отключены</string>
-    <string name="no_subtitles_available">Субтитры недоступны</string>
-    <string name="subtitles_hint">Поместите файл .srt или .vtt с таким же именем как видеофайл для субтитров</string>
-
-    <!-- Widget Strings -->
-    <string name="widget_favorites_description">Быстрый доступ к избранным файлам</string>
-    <string name="widget_continue_reading_description">Продолжить слайдшоу с последней позиции</string>
-    <string name="continue_reading">Продолжить\nпросмотр</string>
-    <string name="media_type">Тип медиа</string>
-
-    <!-- PIN Code Protection -->
-    <string name="set_pin_code">Установить PIN-код</string>
-    <string name="change_pin_code">Изменить PIN-код</string>
-    <string name="enter_pin_code">Введите PIN-код</string>
-    <string name="pin_code">PIN-код</string>
-    <string name="confirm_pin_code">Подтвердите PIN-код</string>
-    <string name="remove_pin">Удалить PIN</string>
-    <string name="pin_hint_length">Введите PIN от %1$d до %2$d цифр</string>
-    <string name="pin_too_short">PIN должен содержать минимум %1$d цифр</string>
-    <string name="pin_mismatch">PIN-коды не совпадают</string>
-    <string name="pin_incorrect">Неверный PIN-код</string>
-    <string name="pin_protection">Защита PIN-кодом</string>
-    <string name="enable_pin_protection">Включить защиту PIN-кодом</string>
-    <string name="pin_protection_desc">Требовать PIN-код для доступа к этому ресурсу</string>
-    <string name="supported_media_types">Поддерживаемые типы медиа</string>
-    <string name="media_type_filter_desc">Выберите, какие типы файлов показывать из этого ресурса</string></resources>
+</resources>

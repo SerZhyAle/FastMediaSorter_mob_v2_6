@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- misc strings for FastMediaSorter -->
+    <string name="media_type_images">Images</string>
+    <string name="media_type_videos">Videos</string>
+    <string name="media_type_audio">Audio</string>
+    <string name="media_type_gifs">GIFs</string>
+    <string name="media_type_pdf">PDF Documents</string>
+    <string name="media_type_text">Text Files</string>
+    <string name="media_type_epub">E-Books (EPUB)</string>
+    <string name="media_type_other">Other Files</string>
+    <string name="widget_name">Resource Shortcut</string>
+    <string name="widget_description">Quick access to a folder or network resource</string>
+    <string name="widget_configure_title">Select Resource</string>
+    <string name="widget_configure_description">Choose a resource to open when tapping this widget:</string>
+    <string name="widget_not_configured">Not configured</string>
+    <string name="debug_logs">Debug Logs</string>
+    <string name="search_logs">Search logs…</string>
+    <string name="filter_all">All</string>
+    <string name="action_dismiss">Dismiss</string>
+    <string name="hide_details">Hide details</string>
+    <string name="copy_details">Copy details</string>
+    <string name="pages_format">%d pages</string>
+    <string name="pixels_format">%dpx</string>
+    <string name="fps_format">%d fps</string>
+    <string name="seconds_format">%ds</string>
+    <string name="percent_format">%d%%</string>
+    <string name="no_limit">No limit</string>
+    <string name="edit_text_file">Edit Text File</string>
+    <string name="action_redo">Redo</string>
+    <string name="file_truncated_notice">File too large - showing first 1MB only</string>
+    <string name="file_truncated_warning">⚠️ File truncated. Changes cannot be saved.</string>
+    <string name="cannot_save_truncated">Cannot save changes to a truncated file. The file is too large to edit.</string>
+    <string name="file_saved_successfully">File saved successfully</string>
+    <string name="save_failed_message">Failed to save file: %1$s</string>
+    <string name="widget_favorites_description">Quick access to favorite media files</string>
+    <string name="widget_continue_reading_description">Resume slideshow from last position</string>
+    <string name="continue_reading">Continue\nReading</string>
+    <string name="media_type">Media Type</string>
+    <string name="set_pin_code">Set PIN Code</string>
+    <string name="change_pin_code">Change PIN Code</string>
+    <string name="enter_pin_code">Enter PIN Code</string>
+    <string name="pin_hint">Enter %1$d-digit PIN</string>
+    <string name="pin_code">PIN Code</string>
+    <string name="confirm_pin_code">Confirm PIN Code</string>
+    <string name="remove_pin">Remove PIN</string>
+    <string name="pin_hint_length">Enter a PIN with %1$d to %2$d digits</string>
+    <string name="pin_too_short">PIN must be at least %1$d digits</string>
+    <string name="pin_length_error">PIN must be %1$d digits</string>
+    <string name="pin_mismatch">PINs do not match</string>
+    <string name="pin_incorrect">Incorrect PIN</string>
+    <string name="pin_protection">PIN Protection</string>
+    <string name="enable_pin_protection">Enable PIN Protection</string>
+    <string name="pin_protection_desc">Require PIN code to access this resource</string>
+    <string name="media_type_filter_desc">Select which file types to show from this resource</string>
+</resources>

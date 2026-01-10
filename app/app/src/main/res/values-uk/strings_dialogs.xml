@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- dialogs strings for FastMediaSorter -->
+    <string name="action_delete">Видалити</string>
+    <string name="action_close">Закрити</string>
+    <string name="delete_confirmation_title">Видалити файли?</string>
+    <string name="delete_confirmation_message">Видалити %d файл(ів)? Файли буде переміщено до кошика і можна відновити.</string>
+    <string name="delete_single_file_message">Видалити \"%1$s\"? Файл буде переміщено до кошика.</string>
+    <string name="select_destination_move">Перемістити до…</string>
+    <string name="select_destination_copy">Копіювати до…</string>
+    <string name="no_destinations">Теки призначення не налаштовані.\nДодайте їх у Налаштуваннях для швидкого переміщення/копіювання.</string>
+    <string name="files_deleted">Видалено файлів: %d</string>
+    <string name="file_deleted">Файл видалено</string>
+    <string name="error_unknown">Сталася невідома помилка</string>
+    <string name="error_network">Помилка мережі. Перевірте з\'єднання.</string>
+    <string name="error_permission">Доступ заборонено</string>
+    <string name="error_file_not_found">Файл не знайдено</string>
+    <string name="error_connection_failed">Не вдалося підключитися</string>
+    <string name="error_authentication">Помилка автентифікації</string>
+    <string name="confirm_delete_title">Видалити файл?</string>
+    <string name="confirm_delete_message">Файл буде переміщено до кошика.</string>
+    <string name="confirm_delete_permanent">Цю дію неможливо скасувати.</string>
+    <string name="confirm_delete_resource_message">Ви впевнені, що хочете видалити цей ресурс? Файли не будуть видалені.</string>
+    <string name="confirm_delete">Підтверджувати видалення</string>
+    <string name="no_destinations_description">Додайте ресурси як теки призначення для швидкого переміщення/копіювання</string>
+    <string name="error_name_required">Необхідно вказати ім\'я</string>
+    <string name="audio_focus_pause">Призупинити</string>
+</resources>

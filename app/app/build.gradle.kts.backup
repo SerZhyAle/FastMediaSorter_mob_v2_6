@@ -34,14 +34,17 @@ android {
         applicationId = "com.sza.fastmediasorter"
         minSdk = 28
         targetSdk = 35
-        versionCode = 26010809
-        versionName = "2.60.1080.947"
+        versionCode = 26010916
+        versionName = "2.60.1091.604"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         // Inject Keys from local.properties
         buildConfigField("String", "GOOGLE_CLIENT_ID", "\"${localProperties.getProperty("GOOGLE_CLIENT_ID", "")}\"")
         buildConfigField("String", "DROPBOX_KEY", "\"${localProperties.getProperty("DROPBOX_KEY", "")}\"")
+        
+        // Manifest placeholders for OAuth redirects
+        manifestPlaceholders["dropboxKey"] = localProperties.getProperty("DROPBOX_KEY", "")
     }
 
     signingConfigs {
@@ -90,6 +93,12 @@ android {
     buildFeatures {
         viewBinding = true
         buildConfig = true
+    }
+
+    lint {
+        // Disable GridLayout check - it incorrectly flags androidx.gridlayout.widget.GridLayout
+        // which uses android: namespace, not app: namespace
+        disable += "GridLayout"
     }
 }
 
@@ -147,11 +156,20 @@ dependencies {
     implementation(libs.smbj)
     implementation(libs.sshj)
     implementation(libs.commons.net)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.gson)
     implementation(libs.okhttp)
     implementation(libs.gson)
 
     // Security
     implementation(libs.security.crypto)
+
+    // PDF Editing
+    implementation(libs.pdfbox.android) {
+        exclude(group = "org.bouncycastle", module = "bcprov-jdk15to18")
+        exclude(group = "org.bouncycastle", module = "bcpkix-jdk15to18")
+        exclude(group = "org.bouncycastle", module = "bcutil-jdk15to18")
+    }
 
     // ML Kit - OCR and Translation
     implementation(libs.mlkit.text.recognition)

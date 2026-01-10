@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- onboarding strings for FastMediaSorter -->
+    <string name="welcome_title_1">Ласкаво просимо до FastMediaSorter</string>
+    <string name="welcome_description_1">FastMediaSorter допоможе вам організувати фото, відео, аудіо, документи та інші файли з локальних тек та мережевих джерел.</string>
+    <string name="welcome_title_2">Типи ресурсів</string>
+    <string name="welcome_description_2">Підключайтеся до локальних тек, Windows/Samba (SMB), FTP/SFTP серверів та хмарних сховищ (Google Drive, Dropbox, OneDrive). Переглядайте все в одному місці!</string>
+    <string name="welcome_title_3_touch_zones">Жести навігації</string>
+    <string name="welcome_description_3_touch_zones">Керуйте медіа за допомогою зон дотику в повноекранному плеєрі для сортування:\n\n• Дотик ЗЛІВА → Попередній файл\n• Дотик СПРАВА → Наступний файл\n• Дотик ПО ЦЕНТРУ → Відтворення/Пауза (відео/аудіо)\n• Дотик ВГОРІ/ВНИЗУ по центру → Показати/Сховати елементи керування\n\nПід час відтворення відео торкайтеся зліва-посередині для перемотування назад або справа-посередині для перемотування вперед на 10 секунд.</string>
+    <string name="welcome_title_features">Додаткові можливості</string>
+    <string name="welcome_description_features">Потужні інструменти для покращення робочого процесу:\n\n• OCR (Розпізнавання тексту) - Витягування тексту із зображень\n• Переклад - Переклад тексту в зображеннях та документах\n• Текстовий пошук - Пошук у PDF, EPUB та текстових файлах\n• Інтеграція з Google Lens - Розпізнавання об\'єктів та тексту\n\nУсі функції працюють офлайн після початкового налаштування!</string>
+    <string name="welcome_title_4">Призначення та дозволи</string>
+    <string name="welcome_description_4">Налаштуйте "Призначення" для переміщення/копіювання одним дотиком через плаваючу кнопку дій.\n\nНалаштуйте хмарні облікові дані та мережеві ресурси в Налаштуваннях.\n\nДля початку роботи нам потрібні дозволи на доступ до сховища.</string>
+    <string name="permissions_required">Потрібні дозволи сховища</string>
+    <string name="permissions_description">Для перегляду та керування файлами нам потрібен доступ до сховища.</string>
+    <string name="grant_permission">Надати дозвіл</string>
+    <string name="grant_permissions">Надати дозволи</string>
+    <string name="skip">Пропустити</string>
+    <string name="next">Далі</string>
+    <string name="previous">Назад</string>
+    <string name="finish">Готово</string>
+    <string name="get_started">Почати</string>
+    <string name="permission_required_title">Потрібен дозвіл</string>
+    <string name="permission_required_message">FastMediaSorter потребує доступу до сховища для перегляду та організації ваших медіафайлів. Без цього дозволу програма не зможе працювати.</string>
+    <string name="permission_denied_title">Дозвіл відхилено</string>
+    <string name="permission_denied_message">Дозвіл на доступ до сховища був відхилений. Будь ласка, увімкніть його в налаштуваннях програми.</string>
+    <string name="open_settings">Відкрити налаштування</string>
+    <string name="action_previous">Попередній</string>
+    <string name="action_next">Наступний</string>
+</resources>
